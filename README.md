@@ -1,20 +1,39 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# Microservices with MassTransit Syllabus
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+Create a microservice-architected restaurant application.
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+We will have an inventory API with one service per ingredient.  Each ingredient will support a method of both modifying ([consumer](https://masstransit-project.com/usage/consumers.html)) and retrieving ([producer](https://masstransit-project.com/usage/producers.html)) inventory.
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+[Creating](https://masstransit-project.com/usage/sagas/) & “[cooking](<https://masstransit-project.com/usage/sagas/>)” an order will also be supported, with each ingredient-service also responsible for preparing the ingredient.
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+1. Advanced Preparation
+    1. Clone Repository
+    2. Create/Push Own Branch
+    3. Confirm Able to Start Solution Under Docker-Compose profile.
+2. Docker, Docker Compose, and Local Development
+3. Introduction to Consumers
+    1. Concept
+    2. Add the Lettuce service to the solution
+    3. API Registration of the Lettuce Service
+    4. Respecting the Timeout
+    5. Homework: Add a Tomato service to the solution
+4. Introduction to Producers
+    1. Concept
+    2. Add the Lettuce Producer to the Lettuce service
+    3. Homework:
+        1. Add a Tomato service to the solution
+        2. Aggregate the Tomato & Lettuce in an API call
+5. Introduction to Sagas (Distributed Transactions)
+    1. Concepts
+        1. Instance
+        2. States
+        3. Events
+    2. Activities
+        1. Discuss
+        2. Add Activities
+    3. Activity Compensation
+        1. Discuss
+        2. Demonstrate Compensation
+        3. Providing Saga Status
+6. Testing
+7. Export Service 3000 Overview
