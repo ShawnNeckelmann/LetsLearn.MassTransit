@@ -1,0 +1,24 @@
+services:
+  rabbit:
+    # RabbitMq Management will be available at http://localhost:15672/#/
+    # User & password are in the Dockerfile
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    hostname: rabbit
+    environment:
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=password
+  mssql:
+    # Password is Datalink!1
+    image: mcr.microsoft.com/mssql/server:2019-CU12-ubuntu-20.04
+    container_name: mssql
+    hostname: mssql
+    ports:
+      - 1433:1433
+    environment:
+      - SA_PASSWORD=Datalink!1
+      - ACCEPT_EULA=Y
+      - MSSQL_PID=Express
