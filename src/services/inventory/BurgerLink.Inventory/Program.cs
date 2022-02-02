@@ -1,43 +1,48 @@
 using System.Reflection;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Hosting;
+using BurgerLink.Inventory.Services;
+using BurgerLink.Shared.AppConfiguration;
+using BurgerLink.Shared.MongDbConfiguration;
 using MassTransit;
 
-namespace BurgerLink.Inventory
+namespace BurgerLink.Inventory;
+
+public static class Program
 {
-    public class Program
+    public static async Task Main(string[] args)
     {
-        public static async Task Main(string[] args)
-        {
-            await CreateHostBuilder(args).Build().RunAsync();
-        }
+        await CreateHostBuilder(args).Build().RunAsync();
+    }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureServices((hostContext, services) =>
+    private static IHostBuilder CreateHostBuilder(string[] args)
+    {
+        return Host.CreateDefaultBuilder(args)
+            .ConfigureAppConfiguration(BurgerLinkConfigurationExtensions.LoadAppSettings)
+            .ConfigureLogging()
+            .ConfigureServices((hostContext, services) =>
+            {
+                services.AddSingleton<IInventoryService, MongoDbInventoryService>();
+
+                services.Configure<MongoDbSettings>(hostContext.Configuration.GetSection("InventoryDatabase"));
+
+                services.AddMassTransit(x =>
                 {
-                    services.AddMassTransit(x =>
+                    x.SetKebabCaseEndpointNameFormatter();
+
+                    var entryAssembly = Assembly.GetEntryAssembly();
+
+                    x.AddConsumers(entryAssembly);
+                    x.AddSagaStateMachines(entryAssembly);
+                    x.AddSagas(entryAssembly);
+                    x.AddActivities(entryAssembly);
+                    x.UsingRabbitMq((context, configurator) =>
                     {
-                        x.SetKebabCaseEndpointNameFormatter();
-
-                        // By default, sagas are in-memory, but should be changed to a durable
-                        // saga repository.
-                        x.SetInMemorySagaRepositoryProvider();
-
-                        var entryAssembly = Assembly.GetEntryAssembly();
-
-                        x.AddConsumers(entryAssembly);
-                        x.AddSagaStateMachines(entryAssembly);
-                        x.AddSagas(entryAssembly);
-                        x.AddActivities(entryAssembly);
-
-                        x.UsingInMemory((context, cfg) =>
-                        {
-                            cfg.ConfigureEndpoints(context);
-                        });
+                        var cs = hostContext.Configuration.GetConnectionString("RabbitMq");
+                        configurator.Host(cs);
+                        configurator.ConfigureEndpoints(context);
                     });
-
-                    services.AddMassTransitHostedService(true);
                 });
+
+                services.AddMassTransitHostedService(true);
+            });
     }
 }

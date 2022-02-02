@@ -1,24 +1,29 @@
 services:
-  rabbit:
+  rabbitmq:
     # RabbitMq Management will be available at http://localhost:15672/#/
-    # User & password are in the Dockerfile
+    # User: guest
+    # Password: guest
     image: rabbitmq:3-management
-    container_name: rabbitmq
+    container_name: 'rabbitmq'
     ports:
       - 5672:5672
       - 15672:15672
     hostname: rabbit
+  mongo:
+    image: mongo
+    restart: always
     environment:
-      - RABBITMQ_DEFAULT_USER=user
-      - RABBITMQ_DEFAULT_PASS=password
-  mssql:
-    # Password is Datalink!1
-    image: mcr.microsoft.com/mssql/server:2019-CU12-ubuntu-20.04
-    container_name: mssql
-    hostname: mssql
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
     ports:
-      - 1433:1433
+      - 27017:27017
+  mongo-express:
+    # Mong Management will be available at http://localhost:8081/
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
     environment:
-      - SA_PASSWORD=Datalink!1
-      - ACCEPT_EULA=Y
-      - MSSQL_PID=Express
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/

@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\shared\BurgerLink.Shared\BurgerLink.Shared.csproj" />
+    <ProjectReference Include="..\BurgerLink.Order.Contracts\BurgerLink.Order.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

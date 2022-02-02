@@ -1,8 +1,10 @@
 using System.Reflection;
+using BurgerLink.Order.Services;
 using BurgerLink.Shared.AppConfiguration;
+using BurgerLink.Shared.MongDbConfiguration;
 using MassTransit;
 
-namespace BurgerLink.Preparation;
+namespace BurgerLink.Order;
 
 public class Program
 {
@@ -18,6 +20,9 @@ public class Program
             .ConfigureLogging()
             .ConfigureServices((hostContext, services) =>
             {
+                services.AddSingleton<IOrderService, OrderService>();
+                services.Configure<MongoDbSettings>(hostContext.Configuration.GetSection("OrderDatabase"));
+
                 services.AddMassTransit(x =>
                 {
                     x.SetKebabCaseEndpointNameFormatter();

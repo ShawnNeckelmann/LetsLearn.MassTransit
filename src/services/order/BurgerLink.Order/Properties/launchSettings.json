@@ -1,6 +1,6 @@
 ﻿{
   "profiles": {
-    "BurgerLink.Preparation": {
+    "BurgerLink.Order": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "environmentVariables": {
