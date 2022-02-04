@@ -1,0 +1,43 @@
+title POST /Order/start
+
+fontawesome f0ac Status #1da1f2
+actor Client
+
+participantgroup #lightblue API Service
+Client->OrderController.cs:GET /Order/start SagaBeginPreparation
+end 
+
+participantgroup #purple Order Service
+OrderController.cs->OrderStateMachine.cs:SagaBeginPreparation
+note over OrderController.cs,OrderStateMachine.cs:OrderStateMachine maps\nSagaBeginPreparation to event EventBeginPreparation
+database OrderService Database
+OrderStateMachine.cs->PrepareOrderConsumer.cs:PrepareOrder
+end 
+
+
+participantgroup #yellow Inventory Service
+loop RoutingSlip Activity Per Order Item
+PrepareOrderConsumer.cs->DecrementItemInventoryActivity.Execute.cs:DecrementItemInventory
+database InventoryService Database
+DecrementItemInventoryActivity.Execute.cs->InventoryService Database:Decremement Inventory
+
+alt #red No Inventory for item!  Begin Compensation
+InventoryService Database->DecrementItemInventoryActivity.Compensate.cs:No Inventory!
+DecrementItemInventoryActivity.Compensate.cs->InventoryService Database:Put Inventory Back
+DecrementItemInventoryActivity.Compensate.cs->OrderStateMachine.cs:<color:#red>ItemUnavailable
+OrderStateMachine.cs->Status:Item Unavailable
+end
+end
+end 
+loop RoutingSlip Activity Per Order Item
+
+participantgroup #lightgreen Prep Service
+PrepareOrderConsumer.cs->PrepareItemActivity.Execute.cs:IPrepareItemActivityArguments
+PrepareItemActivity.Execute.cs->OrderStateMachine.cs:ItemPrepared
+
+
+OrderStateMachine.cs->OrderService Database:Add Prepared Order
+OrderStateMachine.cs->Status:Item is Prepared
+end
+
+end

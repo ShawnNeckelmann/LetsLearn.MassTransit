@@ -6,8 +6,13 @@
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
+    <ItemGroup>
+        <PackageReference Include="MassTransit.MongoDb" Version="7.3.1" />
+    </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\..\shared\BurgerLink.Shared\BurgerLink.Shared.csproj" />
+    <ProjectReference Include="..\..\preparation\BurgerLink.Preparation.Contracts\BurgerLink.Preparation.Contracts.csproj" />
     <ProjectReference Include="..\BurgerLink.Order.Contracts\BurgerLink.Order.Contracts.csproj" />
   </ItemGroup>
 

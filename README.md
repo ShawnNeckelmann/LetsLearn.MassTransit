@@ -38,3 +38,34 @@ We will have an inventory API with one service per ingredient.  Each ingredient 
             1. No inventory?
 6. Testing
 7. Export Service 3000 Overview
+
+<br>
+<br>
+<br>
+
+# Inventory Endpoints
+## Consumer CreateItem UpsertInventoryItem
+![UpsertInventoryItem](./readme-assets/UpsertInventoryItem/UpsertInventoryItem.png)
+
+## Producer GetAllItems GetAllInventoryItems
+![GetAllInventoryItems](./readme-assets/GetAllInventoryItems/GetAllInventoryItems.png)
+
+## Producer GetItem
+![GetItem](./readme-assets/GetItem/GetItem.png)
+<br>
+<br>
+<br>
+
+# Order Endpoints
+
+## StartOrder
+![StartOrder](./readme-assets/StartOrder/StartOrder.png)
+
+## OrderStatus
+![OrderStatus](./readme-assets/OrderStatus/OrderStatus.png)
+
+## Order AddItem
+![OrderAddItem](./readme-assets/order-addItem/order-addItem/order-addItem.png)
+
+## PrepareOrder
+![PrepareOrder](./readme-assets/prepare-order/prepare-order.png)

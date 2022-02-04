@@ -1,7 +1,6 @@
 ﻿namespace BurgerLink.Order.Contracts.Commands;
 
-public class AddIngredientToOrder
+public class SagaBeginPreparation
 {
-    public string IngredientName { get; set; }
     public string OrderName { get; set; }
 }

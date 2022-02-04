@@ -6,4 +6,6 @@ namespace BurgerLink.Inventory.Services;
 public interface IInventoryService
 {
     IMongoCollection<InventoryEntity> Collection { get; set; }
+
+    Task<InventoryEntity?> InventoryEntityByItemName(string itemName);
 }

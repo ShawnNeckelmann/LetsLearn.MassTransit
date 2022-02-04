@@ -35,7 +35,8 @@ public class UpsertInventoryItemConsumer : IConsumer<Contracts.Commands.UpsertIn
             var quantity = context.Message.Quantity + entity.Quantity;
 
             await _inventoryService.Collection.UpdateOneAsync(
-                Builders<InventoryEntity>.Filter.Eq(inventoryEntity => inventoryEntity.ItemName, context.Message.ItemName),
+                Builders<InventoryEntity>.Filter.Eq(inventoryEntity => inventoryEntity.ItemName,
+                    context.Message.ItemName),
                 Builders<InventoryEntity>.Update.Set(inventoryEntity => inventoryEntity.Quantity, quantity)
             );
         }

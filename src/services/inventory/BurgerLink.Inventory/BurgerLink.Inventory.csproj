@@ -5,9 +5,6 @@
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="MongoDB.Driver" />
-    </ItemGroup>
-    <ItemGroup>
         <ProjectReference Include="..\..\..\shared\BurgerLink.Shared\BurgerLink.Shared.csproj" />
         <ProjectReference Include="..\BurgerLink.Inventory.Contracts\BurgerLink.Inventory.Contracts.csproj" />
     </ItemGroup>

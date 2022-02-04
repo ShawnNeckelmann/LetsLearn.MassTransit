@@ -8,7 +8,4 @@
         <ProjectReference Include="..\..\..\shared\BurgerLink.Shared\BurgerLink.Shared.csproj" />
         <ProjectReference Include="..\BurgerLink.Preparation.Contracts\BurgerLink.Preparation.Contracts.csproj" />
     </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Commands\" />
-    </ItemGroup>
 </Project>

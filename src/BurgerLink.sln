@@ -34,9 +34,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "order", "order", "{A2F03DD7-0449-41F1-BD45-1C3EDA9EF9A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BurgerLink.Order", "services\order\BurgerLink.Order\BurgerLink.Order.csproj", "{3501923E-1FF8-4649-A3B7-66C4BE865B30}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BurgerLink.Order", "services\order\BurgerLink.Order\BurgerLink.Order.csproj", "{3501923E-1FF8-4649-A3B7-66C4BE865B30}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BurgerLink.Order.Contracts", "services\order\BurgerLink.Order.Contracts\BurgerLink.Order.Contracts.csproj", "{136AE4CA-EDD0-4527-B285-2B40348A148F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BurgerLink.Order.Contracts", "services\order\BurgerLink.Order.Contracts\BurgerLink.Order.Contracts.csproj", "{136AE4CA-EDD0-4527-B285-2B40348A148F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,0 +1,42 @@
+title POST /Order/addItem
+
+fontawesome f0ac Status #1da1f2
+actor Client
+
+participantgroup #lightblue API Service
+Client->OrderController.cs:GET /Order/addItem SagaModifyOrderAddItem
+end 
+
+participantgroup #pink Order Service
+OrderController.cs->OrderStateMachine.cs:SagaModifyOrderAddItem
+note over OrderController.cs,OrderStateMachine.cs:OrderStateMachine maps\nSagaModifyOrderAddItem to event EventAddItem
+database OrderService Database
+OrderStateMachine.cs->OrderService:Find Order
+group #green orderName Found
+OrderService->OrderStateMachine.cs:Order Found
+OrderStateMachine.cs->OrderController.cs:OrderUpdateAccepted
+OrderController.cs->Client:Accepted 202
+end
+
+group #red orderName Not Found
+OrderService->OrderStateMachine.cs:Order Not Found
+OrderStateMachine.cs->OrderController.cs:OrderNotFound
+OrderController.cs->Client:NotFound 404
+end
+
+OrderStateMachine.cs->AddItemToOrderConsumer.cs:AddItemToOrder
+end
+
+group Routing Slip
+participantgroup #lightblue Inventory Service
+AddItemToOrderConsumer.cs->ValidateItemAvailabilityActivity.cs:ValidateItemAvailability
+database InventoryService Database
+ValidateItemAvailabilityActivity.cs->InventoryService Database:Exists
+end
+
+AddItemToOrderConsumer.cs->OrderStateMachine.cs:ItemAvailabilityValidated
+note over AddItemToOrderConsumer.cs,OrderStateMachine.cs:OrderStateMachine maps\ItemAvailabilityValidated to event EventItemValidated
+OrderStateMachine.cs->OrderService Database:Add Ingredient if it exists
+OrderStateMachine.cs->Status:Notify Ingredient Added (if Status Url present)
+
+end
