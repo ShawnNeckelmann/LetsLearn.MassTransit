@@ -27,9 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BurgerLink.Shared", "shared
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1A16BDFE-1680-4706-9ADD-D32DDCABE3B1}"
 	ProjectSection(SolutionItems) = preProject
-		commonsettings.json = commonsettings.json
 		Directory.Build.targets = Directory.Build.targets
-		docker-compose.yaml = docker-compose.yaml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "order", "order", "{A2F03DD7-0449-41F1-BD45-1C3EDA9EF9A7}"
@@ -37,6 +35,13 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BurgerLink.Order", "services\order\BurgerLink.Order\BurgerLink.Order.csproj", "{3501923E-1FF8-4649-A3B7-66C4BE865B30}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BurgerLink.Order.Contracts", "services\order\BurgerLink.Order.Contracts\BurgerLink.Order.Contracts.csproj", "{136AE4CA-EDD0-4527-B285-2B40348A148F}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{7D3FFBD0-EBEF-4BB3-ADCE-A99789A5C220}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "local-settings", "local-settings", "{9F3ACE09-5535-4329-B4D4-2FB6C50F1359}"
+	ProjectSection(SolutionItems) = preProject
+		local-settings\commonsettings.json = local-settings\commonsettings.json
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -144,6 +149,18 @@ Global
 		{136AE4CA-EDD0-4527-B285-2B40348A148F}.Release|x64.Build.0 = Release|Any CPU
 		{136AE4CA-EDD0-4527-B285-2B40348A148F}.Release|x86.ActiveCfg = Release|Any CPU
 		{136AE4CA-EDD0-4527-B285-2B40348A148F}.Release|x86.Build.0 = Release|Any CPU
+		{7D3FFBD0-EBEF-4BB3-ADCE-A99789A5C220}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D3FFBD0-EBEF-4BB3-ADCE-A99789A5C220}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D3FFBD0-EBEF-4BB3-ADCE-A99789A5C220}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7D3FFBD0-EBEF-4BB3-ADCE-A99789A5C220}.Debug|x64.Build.0 = Debug|Any CPU
+		{7D3FFBD0-EBEF-4BB3-ADCE-A99789A5C220}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7D3FFBD0-EBEF-4BB3-ADCE-A99789A5C220}.Debug|x86.Build.0 = Debug|Any CPU
+		{7D3FFBD0-EBEF-4BB3-ADCE-A99789A5C220}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D3FFBD0-EBEF-4BB3-ADCE-A99789A5C220}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D3FFBD0-EBEF-4BB3-ADCE-A99789A5C220}.Release|x64.ActiveCfg = Release|Any CPU
+		{7D3FFBD0-EBEF-4BB3-ADCE-A99789A5C220}.Release|x64.Build.0 = Release|Any CPU
+		{7D3FFBD0-EBEF-4BB3-ADCE-A99789A5C220}.Release|x86.ActiveCfg = Release|Any CPU
+		{7D3FFBD0-EBEF-4BB3-ADCE-A99789A5C220}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -160,6 +177,7 @@ Global
 		{A2F03DD7-0449-41F1-BD45-1C3EDA9EF9A7} = {565C4CD0-805F-45ED-8D0E-F87841E4F9B2}
 		{3501923E-1FF8-4649-A3B7-66C4BE865B30} = {A2F03DD7-0449-41F1-BD45-1C3EDA9EF9A7}
 		{136AE4CA-EDD0-4527-B285-2B40348A148F} = {A2F03DD7-0449-41F1-BD45-1C3EDA9EF9A7}
+		{9F3ACE09-5535-4329-B4D4-2FB6C50F1359} = {1A16BDFE-1680-4706-9ADD-D32DDCABE3B1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D0D17E16-F294-4022-AF4A-85E532645FA3}

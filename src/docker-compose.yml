@@ -1,0 +1,76 @@
+version: '3.4'
+
+services:
+  # http://localhost:8080/swagger/index.html
+  burgerlink.api:
+    container_name: BurgerLink.Api
+    image: ${DOCKER_REGISTRY-}burgerlinkapi
+    build:
+      context: .
+      dockerfile: api/BurgerLink.Api/Dockerfile
+    volumes:
+      - ./local-settings:/app/settings
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    ports:
+      - 8080:8080
+    environment:
+        ASPNETCORE_URLS: http://+:8080
+
+  burgerlink.inventory:
+    container_name: BurgerLink.Inventory
+    image: ${DOCKER_REGISTRY-}burgerlinkinventory
+    build:
+      context: .
+      dockerfile: services/inventory/BurgerLink.Inventory/Dockerfile
+    volumes:
+      - ./local-settings:/app/settings
+
+  burgerlink.order:
+    container_name: BurgerLink.Order
+    image: ${DOCKER_REGISTRY-}burgerlinkorder
+    build:
+      context: .
+      dockerfile: services/order/BurgerLink.Order/Dockerfile
+    volumes:
+      - ./local-settings:/app/settings
+
+  burgerlink.preparation:
+    container_name: BurgerLink.Preparation
+    image: ${DOCKER_REGISTRY-}burgerlinkpreparation
+    build:
+      context: .
+      dockerfile: services/preparation/BurgerLink.Preparation/Dockerfile
+    volumes:
+      - ./local-settings:/app/settings
+
+##### Supporting Services #####
+  rabbitmq:
+    # RabbitMq Management will be available at http://localhost:15672/#/
+    # User: guest
+    # Password: guest
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    hostname: rabbit
+  mongo:
+    image: mongo
+    restart: always
+    container_name: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - 27017:27017
+  mongo-express:
+    # Mong Management will be available at http://localhost:8081/
+    image: mongo-express
+    container_name: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/

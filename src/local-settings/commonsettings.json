@@ -6,16 +6,17 @@
     }
   },
   "ConnectionStrings": {
-    "RabbitMq": "amqp://guest:guest@localhost:5672"
+    "RabbitMq": "amqp://guest:guest@rabbitmq:5672"
   },
   "InventoryDatabase": {
-    "ConnectionString": "mongodb://root:example@localhost:27017",
+    "ConnectionString": "mongodb://root:example@mongo:27017",
     "DatabaseName": "InventoryService",
     "CollectionName": "Inventory"
   },
   "OrderDatabase": {
-    "ConnectionString": "mongodb://root:example@localhost:27017",
+    "ConnectionString": "mongodb://root:example@mongo:27017",
     "DatabaseName": "OrderService",
     "CollectionName": "Orders"
-  }
+  },
+  "ASPNETCORE_ENVIRONMENT": "Development"
 }
