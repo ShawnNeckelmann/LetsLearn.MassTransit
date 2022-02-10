@@ -53,11 +53,14 @@ public class PrepareOrderConsumer : IConsumer<PrepareOrder>
             context.SourceAddress,
             RoutingSlipEvents.Completed,
             RoutingSlipEventContents.None,
-            endpoint => endpoint.Send<PreparationComplete.PreparationComplete>(new
+            endpoint =>
             {
-                context.Message.Order.OrderName
-            })
-        );
+                Thread.Sleep(1000);
+                return endpoint.Send<PreparationComplete.PreparationComplete>(new
+                {
+                    context.Message.Order.OrderName
+                });
+            });
 
         var slip = builder.Build();
         await context.Execute(slip);
