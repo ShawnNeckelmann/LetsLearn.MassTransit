@@ -1,5 +1,5 @@
 ﻿using BurgerLink.Preparation.Contracts.Commands;
-using MassTransit.Courier;
+using MassTransit;
 
 namespace BurgerLink.Preparation.Activities.PrepareItem;
 

@@ -7,7 +7,6 @@ using BurgerLink.Order.State;
 using BurgerLink.Preparation.Contracts.Commands;
 using BurgerLink.Shared.AppConfiguration;
 using BurgerLink.Shared.MongDbConfiguration;
-using GreenPipes;
 using MassTransit;
 using Microsoft.Extensions.Options;
 using System.Reflection;
@@ -24,7 +23,7 @@ public class Program
     private static IHostBuilder CreateHostBuilder(string[] args)
     {
         return Host.CreateDefaultBuilder(args)
-            .ConfigureAppConfiguration(BurgerLinkConfigurationExtensions.LoadAppSettings)
+            .ConfigureAppConfiguration((_, builder) => BurgerLinkConfigurationExtensions.LoadAppSettings(builder))
             .ConfigureLogging()
             .ConfigureServices((hostContext, services) =>
             {
@@ -50,14 +49,30 @@ public class Program
                                 {
                                     var partition = sagaConfigurator.CreatePartitioner(5);
 
-                                    sagaConfigurator.Message<SagaModifyOrderAddItem>(x => x.UsePartitioner(partition, consumeContext => consumeContext.Message.OrderName));
-                                    sagaConfigurator.Message<SagaBeginPreparation>(x => x.UsePartitioner(partition, consumeContext => consumeContext.Message.OrderName));
-                                    sagaConfigurator.Message<SagaCreateOrder>(x => x.UsePartitioner(partition, consumeContext => consumeContext.Message.OrderName));
-                                    sagaConfigurator.Message<ItemPrepared>(x => x.UsePartitioner(partition, consumeContext => consumeContext.Message.OrderName));
-                                    sagaConfigurator.Message<ItemUnavailable>(x => x.UsePartitioner(partition, consumeContext => consumeContext.Message.OrderName));
-                                    sagaConfigurator.Message<ItemAvailabilityValidated>(x => x.UsePartitioner(partition, consumeContext => consumeContext.Message.OrderName));
-                                    sagaConfigurator.Message<PreparationComplete>(x => x.UsePartitioner(partition, consumeContext => consumeContext.Message.OrderName));
-                                    sagaConfigurator.Message<SagaOrderStatusRequest>(x => x.UsePartitioner(partition, consumeContext => consumeContext.Message.OrderName));
+                                    sagaConfigurator.Message<SagaModifyOrderAddItem>(x =>
+                                        x.UsePartitioner(partition,
+                                            consumeContext => consumeContext.Message.OrderName));
+                                    sagaConfigurator.Message<SagaBeginPreparation>(x =>
+                                        x.UsePartitioner(partition,
+                                            consumeContext => consumeContext.Message.OrderName));
+                                    sagaConfigurator.Message<SagaCreateOrder>(x =>
+                                        x.UsePartitioner(partition,
+                                            consumeContext => consumeContext.Message.OrderName));
+                                    sagaConfigurator.Message<ItemPrepared>(x =>
+                                        x.UsePartitioner(partition,
+                                            consumeContext => consumeContext.Message.OrderName));
+                                    sagaConfigurator.Message<ItemUnavailable>(x =>
+                                        x.UsePartitioner(partition,
+                                            consumeContext => consumeContext.Message.OrderName));
+                                    sagaConfigurator.Message<ItemAvailabilityValidated>(x =>
+                                        x.UsePartitioner(partition,
+                                            consumeContext => consumeContext.Message.OrderName));
+                                    sagaConfigurator.Message<PreparationComplete>(x =>
+                                        x.UsePartitioner(partition,
+                                            consumeContext => consumeContext.Message.OrderName));
+                                    sagaConfigurator.Message<SagaOrderStatusRequest>(x =>
+                                        x.UsePartitioner(partition,
+                                            consumeContext => consumeContext.Message.OrderName));
                                 });
                             });
                         mqBusFactoryConfigurator.ConfigureEndpoints(context);
@@ -76,8 +91,6 @@ public class Program
                             mongoDbSagaRepositoryConfigurator.CollectionName = settings.CollectionName;
                         });
                 });
-
-                services.AddMassTransitHostedService(true);
             });
     }
 }

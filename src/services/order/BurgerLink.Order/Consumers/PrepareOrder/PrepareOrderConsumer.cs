@@ -1,6 +1,5 @@
 ﻿using BurgerLink.Order.Consumers.PreparationComplete;
 using MassTransit;
-using MassTransit.Courier;
 using MassTransit.Courier.Contracts;
 
 namespace BurgerLink.Order.Consumers.PrepareOrder;
@@ -14,7 +13,6 @@ public class PrepareOrderConsumer : IConsumer<PrepareOrder>
 
         // First remove all the items from inventory.
         foreach (var itemName in order.Items)
-        {
             builder.AddActivity(
                 $"Decrement{itemName}",
                 new Uri("queue:decrement-item-inventory_execute"),
@@ -23,11 +21,9 @@ public class PrepareOrderConsumer : IConsumer<PrepareOrder>
                     itemName
                 }
             );
-        }
 
         // Prepare all the items.
         foreach (var itemName in order.Items)
-        {
             builder.AddActivity(
                 $"Decrement{itemName}",
                 new Uri("queue:prepare-item_execute"),
@@ -37,11 +33,10 @@ public class PrepareOrderConsumer : IConsumer<PrepareOrder>
                     order.OrderName
                 }
             );
-        }
 
         await builder.AddSubscription(
             context.SourceAddress,
-            RoutingSlipEvents.Faulted ,
+            RoutingSlipEvents.Faulted,
             RoutingSlipEventContents.All,
             endpoint => endpoint.Send<ItemUnavailable>(new
             {

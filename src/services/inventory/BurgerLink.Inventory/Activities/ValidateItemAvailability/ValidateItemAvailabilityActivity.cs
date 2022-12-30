@@ -1,5 +1,5 @@
 ﻿using BurgerLink.Inventory.Services;
-using MassTransit.Courier;
+using MassTransit;
 using MongoDB.Driver;
 
 namespace BurgerLink.Inventory.Activities.ValidateItemAvailability;

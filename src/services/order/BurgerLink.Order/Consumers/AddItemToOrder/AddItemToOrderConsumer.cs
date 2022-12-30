@@ -1,6 +1,5 @@
 ﻿using BurgerLink.Order.Contracts;
 using MassTransit;
-using MassTransit.Courier;
 using MassTransit.Courier.Contracts;
 
 namespace BurgerLink.Order.Consumers.AddItemToOrder;

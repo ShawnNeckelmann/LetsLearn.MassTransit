@@ -1,11 +1,12 @@
 ﻿using BurgerLink.Inventory.Entity;
 using BurgerLink.Inventory.Services;
-using MassTransit.Courier;
+using MassTransit;
 using MongoDB.Driver;
 
 namespace BurgerLink.Inventory.Activities.DecrementItemInventory;
 
-public class DecrementItemInventoryActivity : IActivity<Contracts.Commands.DecrementItemInventory, DecrementItemInventoryLog>
+public class
+    DecrementItemInventoryActivity : IActivity<Contracts.Commands.DecrementItemInventory, DecrementItemInventoryLog>
 {
     private readonly IInventoryService _inventoryService;
 
@@ -44,8 +45,8 @@ public class DecrementItemInventoryActivity : IActivity<Contracts.Commands.Decre
             return context
                 .FaultedWithVariables(
                     new ArgumentOutOfRangeException(nameof(context.Arguments.ItemName)),
-                vars
-                    );
+                    vars
+                );
         }
 
         var filter = MongoDbFilters.InventoryFilter(context.Arguments.ItemName);

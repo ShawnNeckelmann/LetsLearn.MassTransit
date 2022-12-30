@@ -1,0 +1,23 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "composeLaunchAction": "LaunchBrowser",
+      "composeLaunchServiceName": "burgerlink.api",
+      "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}/swagger",
+      "serviceActions": {
+        "burgerlink.api": "StartDebugging",
+        "burgerlink.inventory": "StartDebugging",
+        "burgerlink.order": "StartDebugging",
+        "burgerlink.preparation": "StartDebugging",
+        "grafana": "StartWithoutDebugging",
+        "loki": "StartWithoutDebugging",
+        "mongo": "StartWithoutDebugging",
+        "mongo-express": "StartWithoutDebugging",
+        "prometheus": "StartWithoutDebugging",
+        "rabbitmq": "StartWithoutDebugging"
+      }
+    }
+  }
+}

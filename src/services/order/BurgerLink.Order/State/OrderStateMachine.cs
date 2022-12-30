@@ -1,5 +1,4 @@
-﻿using Automatonymous;
-using BurgerLink.Order.Consumers.AddItemToOrder;
+﻿using BurgerLink.Order.Consumers.AddItemToOrder;
 using BurgerLink.Order.Consumers.PreparationComplete;
 using BurgerLink.Order.Consumers.PrepareOrder;
 using BurgerLink.Order.Contracts;
@@ -8,7 +7,6 @@ using BurgerLink.Order.Contracts.Requests;
 using BurgerLink.Order.Contracts.Responses;
 using BurgerLink.Order.Entity;
 using BurgerLink.Preparation.Contracts.Commands;
-using GreenPipes;
 using MassTransit;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -32,16 +30,16 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
     public Event<ItemAvailabilityValidated> EventItemValidated { get; set; }
     public Event<PreparationComplete> EventPreparationComplete { get; set; }
     public Event<SagaOrderStatusRequest> EventStatusRequest { get; set; }
-    public Automatonymous.State StatePreparing { get; set; }
-    public Automatonymous.State StateSubmitted { get; set; }
-    public Automatonymous.State StateValidatingItemRequest { get; set; }
+    public MassTransit.State StatePreparing { get; set; }
+    public MassTransit.State StateSubmitted { get; set; }
+    public MassTransit.State StateValidatingItemRequest { get; set; }
 
     private static async Task AddItemRequest(BehaviorContext<OrderState, SagaModifyOrderAddItem> obj)
     {
         await obj.GetPayload<ConsumeContext>().Publish<AddItemToOrder>(new
         {
-            obj.Data.OrderName,
-            obj.Data.ItemName
+            obj.Message.OrderName,
+            obj.Message.ItemName
         });
     }
 
@@ -49,25 +47,28 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
     {
         await obj.GetPayload<ConsumeContext>().Publish<PrepareOrder>(new
         {
-            Order = obj.Instance
+            Order = obj.Saga
         });
     }
 
     private static async Task OnItemPrepared(BehaviorContext<OrderState, ItemPrepared> arg)
     {
-        arg.Instance.Prepared.Add(arg.Data.PreparedOrderItem);
+        arg.Saga.Prepared.Add(arg.Message.PreparedOrderItem);
 
-        if (arg.Instance.StatusUpdateAddress == null) return;
+        if (arg.Saga.StatusUpdateAddress == null)
+        {
+            return;
+        }
 
         var client = new HttpClient();
-        client.BaseAddress = arg.Instance.StatusUpdateAddress;
+        client.BaseAddress = arg.Saga.StatusUpdateAddress;
 
         await client.PostAsJsonAsync(
             (string?)null,
             new
             {
                 Message = "item prepared",
-                arg.Data.PreparedOrderItem
+                arg.Message.PreparedOrderItem
             },
             new JsonSerializerOptions(JsonSerializerDefaults.Web),
             CancellationToken.None);
@@ -76,9 +77,9 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
     private static async Task OnItemUnavailable(BehaviorContext<OrderState, ItemUnavailable> arg)
     {
         var client = new HttpClient();
-        client.BaseAddress = arg.Instance.StatusUpdateAddress;
+        client.BaseAddress = arg.Saga.StatusUpdateAddress;
 
-        arg.Data.Variables.TryGetValue("unavailable-item", out var o);
+        arg.Message.Variables.TryGetValue("unavailable-item", out var o);
         var item = o as string;
 
         await client.PostAsJsonAsync(
@@ -87,7 +88,7 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
             {
                 Message = "item unavailable",
                 Item = item,
-                arg.Data.OrderName
+                arg.Message.OrderName
             },
             new JsonSerializerOptions(JsonSerializerDefaults.Web),
             CancellationToken.None);
@@ -95,16 +96,16 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
 
     private static async Task OnItemValidated(BehaviorContext<OrderState, ItemAvailabilityValidated> obj)
     {
-        var (_, value) = obj.Data.Variables.ToList().First(pair => pair.Key.Equals("Valid"));
+        var (_, value) = obj.Message.Variables.ToList().First(pair => pair.Key.Equals("Valid"));
 
         if (value is true)
         {
-            obj.Instance.Items.Add(obj.Data.ItemName);
-            await SendStatusUpdate(obj.Data, obj.Instance.StatusUpdateAddress, true);
+            obj.Saga.Items.Add(obj.Message.ItemName);
+            await SendStatusUpdate(obj.Message, obj.Saga.StatusUpdateAddress, true);
         }
         else
         {
-            await SendStatusUpdate(obj.Data, obj.Instance.StatusUpdateAddress, false);
+            await SendStatusUpdate(obj.Message, obj.Saga.StatusUpdateAddress, false);
         }
     }
 
@@ -130,7 +131,7 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
 
     private static async Task OnOrderPrepared(BehaviorContext<OrderState, PreparationComplete> arg)
     {
-        var uri = arg.Instance.StatusUpdateAddress;
+        var uri = arg.Saga.StatusUpdateAddress;
         if (uri == null)
         {
             return;
@@ -139,17 +140,20 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
         var client = new HttpClient();
         client.BaseAddress = uri;
         await client.PostAsJsonAsync((string?)null, new
-        {
-            Message = $"order for {arg.Instance.OrderName} is ready",
-            Timestamp = DateTime.UtcNow
-        },
+            {
+                Message = $"order for {arg.Saga.OrderName} is ready",
+                Timestamp = DateTime.UtcNow
+            },
             new JsonSerializerOptions(JsonSerializerDefaults.Web),
             CancellationToken.None);
     }
 
     private static async Task SendStatusUpdate(ItemAvailabilityValidated itemValidated, Uri? uri, bool valid)
     {
-        if (uri == null) return;
+        if (uri == null)
+        {
+            return;
+        }
 
         var status = new Status
         {
@@ -211,9 +215,9 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
                     async context => await context.Init<OrderStatus>(
                         new OrderStatus
                         {
-                            Items = context.Instance.Items.ToList(),
-                            OrderName = context.Instance.OrderName,
-                            StatusUpdateAddress = context.Instance.StatusUpdateAddress
+                            Items = context.Saga.Items.ToList(),
+                            OrderName = context.Saga.OrderName,
+                            StatusUpdateAddress = context.Saga.StatusUpdateAddress
                         })
                 )
         );
@@ -249,11 +253,20 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
             }
         );
 
-        Event(() => EventItemUnavailable, x => { x.CorrelateBy((state, context) => state.OrderName == context.Message.OrderName); });
-        Event(() => EventItemValidated, x => { x.CorrelateBy((state, context) => state.OrderName == context.Message.OrderName); });
-        Event(() => EventStatusRequest, x => { x.CorrelateBy((state, context) => state.OrderName == context.Message.OrderName); x.OnMissingInstance(OnMissingInstance); });
-        Event(() => EventBeginPreparation, x => { x.CorrelateBy((state, context) => state.OrderName == context.Message.OrderName); });
-        Event(() => EventItemPrepard, x => { x.CorrelateBy((state, context) => state.OrderName == context.Message.OrderName); });
-        Event(() => EventPreparationComplete, x => { x.CorrelateBy((state, context) => state.OrderName == context.Message.OrderName); });
+        Event(() => EventItemUnavailable,
+            x => { x.CorrelateBy((state, context) => state.OrderName == context.Message.OrderName); });
+        Event(() => EventItemValidated,
+            x => { x.CorrelateBy((state, context) => state.OrderName == context.Message.OrderName); });
+        Event(() => EventStatusRequest, x =>
+        {
+            x.CorrelateBy((state, context) => state.OrderName == context.Message.OrderName);
+            x.OnMissingInstance(OnMissingInstance);
+        });
+        Event(() => EventBeginPreparation,
+            x => { x.CorrelateBy((state, context) => state.OrderName == context.Message.OrderName); });
+        Event(() => EventItemPrepard,
+            x => { x.CorrelateBy((state, context) => state.OrderName == context.Message.OrderName); });
+        Event(() => EventPreparationComplete,
+            x => { x.CorrelateBy((state, context) => state.OrderName == context.Message.OrderName); });
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 using System.Reflection;
+using Serilog.Sinks.Grafana.Loki;
 
 namespace BurgerLink.Shared.AppConfiguration;
 
@@ -12,14 +13,29 @@ public static class BurgerLinkConfigurationExtensions
     {
         return hostBuilder.UseSerilog((host, log) =>
         {
+            var applicationName = Assembly.GetEntryAssembly().GetName().Name;
+
             log.MinimumLevel.Debug();
             log.MinimumLevel.Override("Microsoft", LogEventLevel.Warning);
             log.MinimumLevel.Override("Quartz", LogEventLevel.Information);
             log.WriteTo.Console();
+            log.WriteTo.GrafanaLoki("http://loki:3100", new List<LokiLabel>
+            {
+                new()
+                {
+                    Key = "Application",
+                    Value = applicationName
+                },
+                new()
+                {
+                    Key = "Environment",
+                    Value = host.HostingEnvironment.EnvironmentName
+                }
+            });
         });
     }
 
-    public static void LoadAppSettings(HostBuilderContext context, IConfigurationBuilder builder)
+    public static void LoadAppSettings(IConfigurationBuilder builder)
     {
         var path = Path.Combine(Directory.GetCurrentDirectory(), "settings", "commonsettings.json");
 
