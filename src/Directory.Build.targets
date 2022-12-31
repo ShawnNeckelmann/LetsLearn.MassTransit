@@ -3,8 +3,8 @@
     <ItemGroup Condition="$(MSBuildProjectName.Contains('Test')) == 'false' And $(MSBuildProjectName.Contains('Contracts')) == 'false'" >
         <Content Include="$(SolutionDir)local-settings\commonsettings.json" CopyToOutputDirectory="PreserveNewest" LinkBase="\" />
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
-        <PackageReference Include="MassTransit.Analyzers" Version="8.0.9" />
-        <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.9" />
+        <PackageReference Include="MassTransit.Analyzers" Version="8.0.10" />
+        <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.10" />
         <PackageReference Include="MongoDB.Driver" Version="2.18.0" />
     </ItemGroup>
 
@@ -12,7 +12,7 @@
     <ItemGroup Condition="$(MSBuildProjectName.Contains('Test'))" >
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
-        <PackageReference Include="Moq" Version="4.18.3" />
+        <PackageReference Include="Moq" Version="4.18.4" />
         <PackageReference Include="xunit" Version="2.4.2" />
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -25,7 +25,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Update="MassTransit.MongoDb" Version="8.0.9" />
+        <PackageReference Update="MassTransit.MongoDb" Version="8.0.10" />
         <PackageReference Update="MassTransit.Prometheus" Version="8.0.9" />
         <PackageReference Update="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
         <PackageReference Update="MongoDB.Driver" Version="2.18.0" />
