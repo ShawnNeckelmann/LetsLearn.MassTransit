@@ -18,14 +18,16 @@ public class OrderController : BaseController
         IPublishEndpoint publishEndpoint)
     {
         _addItemRequestClient = addItemRequestClient ?? throw new ArgumentNullException(nameof(addItemRequestClient));
-        _orderStatusRequestClient = orderStatusRequestClient;
+        _orderStatusRequestClient = orderStatusRequestClient ??
+                                    throw new ArgumentNullException(nameof(orderStatusRequestClient));
         _publishEndpoint = publishEndpoint ?? throw new ArgumentNullException(nameof(publishEndpoint));
     }
 
     [HttpPost("addItem")]
     public async Task<IActionResult> AddItem(SagaModifyOrderAddItem addItemToOrder)
     {
-        var (accepted, notfound) = await _addItemRequestClient.GetResponse<OrderUpdateAccepted, OrderNotFound>(addItemToOrder);
+        var (accepted, notfound) =
+            await _addItemRequestClient.GetResponse<OrderUpdateAccepted, OrderNotFound>(addItemToOrder);
 
         if (accepted.IsCompletedSuccessfully)
         {

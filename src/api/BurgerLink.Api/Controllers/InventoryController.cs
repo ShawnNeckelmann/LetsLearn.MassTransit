@@ -19,7 +19,7 @@ public class InventoryController : BaseController
     {
         _publishEndpoint = publishEndpoint ?? throw new ArgumentNullException(nameof(publishEndpoint));
         _getItemRequestClient = getItemRequestClient ?? throw new ArgumentNullException(nameof(getItemRequestClient));
-        _getAllInventoryItems = getAllInventoryItems;
+        _getAllInventoryItems = getAllInventoryItems ?? throw new ArgumentNullException(nameof(getAllInventoryItems));
     }
 
     [HttpPost]

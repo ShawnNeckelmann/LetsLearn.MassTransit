@@ -7,6 +7,7 @@ builder.Host
     .ConfigureLogging();
 
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -23,3 +24,11 @@ app.UseSwagger()
 app.MapControllers();
 
 app.Run();
+
+
+namespace BurgerLink.Api
+{
+    public partial class Program
+    {
+    }
+}
