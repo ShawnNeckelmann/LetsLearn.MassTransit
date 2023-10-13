@@ -41,6 +41,16 @@ services:
       timeout: 3s
       retries: 10
       start_period: 10s
+  zipkin:
+    container_name: zipkin
+    image: openzipkin/zipkin
+    ports:
+      - 9411:9411
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus
+    ports: 
+      - 9090:9090
 # http://localhost:3000/
 # U: admin
 # P: admin
@@ -52,13 +62,8 @@ services:
     depends_on:
       loki:
         condition: service_healthy
-  zipkin:
-    container_name: zipkin
-    image: openzipkin/zipkin
-    ports:
-      - 9411:9411
-  prometheus:
-    container_name: prometheus
-    image: prom/prometheus
-    ports: 
-      - 9090:9090
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+    - ./provisioning/grafana:/etc/grafana/provisioning/datasources
