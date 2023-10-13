@@ -32,7 +32,13 @@ public static class OpenTelemetryConfigurationExtensions
             {
                 meterProviderBuilder
                     .AddMeter(InstrumentationOptions.CreateDefault().PublishTotal)
-                    .AddPrometheusExporter();
+                    .AddPrometheusHttpListener(options =>
+                    {
+                        options.UriPrefixes = new List<string>
+                        {
+                            "http://prometheus:9184/"
+                        };
+                    });
             });
     }
 }
