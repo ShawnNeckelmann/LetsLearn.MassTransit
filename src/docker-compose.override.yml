@@ -64,6 +64,6 @@ services:
         condition: service_healthy
     environment:
       - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SECURITY_ADMIN_PASSWORD=neckelmann
     volumes:
     - ./provisioning/grafana:/etc/grafana/provisioning/datasources
