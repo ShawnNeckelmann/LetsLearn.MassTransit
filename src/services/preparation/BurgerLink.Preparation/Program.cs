@@ -4,11 +4,6 @@ namespace BurgerLink.Preparation;
 
 public class Program
 {
-    public static async Task Main(string[] args)
-    {
-        await CreateHostBuilder(args).Build().RunAsync();
-    }
-
     private static IHostBuilder CreateHostBuilder(string[] args)
     {
         return Host.CreateDefaultBuilder(args)
@@ -16,7 +11,13 @@ public class Program
             .ConfigureLogging()
             .ConfigureServices((hostContext, services) =>
             {
+                services.ConfigureTelemetry("BurgerLink.Preparation");
                 services.AddAndConfigureMassTransit(hostContext.Configuration.GetConnectionString("RabbitMq"));
             });
+    }
+
+    public static async Task Main(string[] args)
+    {
+        await CreateHostBuilder(args).Build().RunAsync();
     }
 }

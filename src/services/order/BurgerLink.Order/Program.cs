@@ -1,3 +1,4 @@
+using System.Reflection;
 using BurgerLink.Order.Consumers.PreparationComplete;
 using BurgerLink.Order.Contracts;
 using BurgerLink.Order.Contracts.Commands;
@@ -9,17 +10,11 @@ using BurgerLink.Shared.AppConfiguration;
 using BurgerLink.Shared.MongDbConfiguration;
 using MassTransit;
 using Microsoft.Extensions.Options;
-using System.Reflection;
 
 namespace BurgerLink.Order;
 
 public class Program
 {
-    public static async Task Main(string[] args)
-    {
-        await CreateHostBuilder(args).Build().RunAsync();
-    }
-
     private static IHostBuilder CreateHostBuilder(string[] args)
     {
         return Host.CreateDefaultBuilder(args)
@@ -27,6 +22,7 @@ public class Program
             .ConfigureLogging()
             .ConfigureServices((hostContext, services) =>
             {
+                services.ConfigureTelemetry("BurgerLink.Order");
                 services.AddSingleton<IOrderService, OrderService>();
                 services.Configure<MongoDbSettings>(hostContext.Configuration.GetSection("OrderDatabase"));
 
@@ -92,5 +88,10 @@ public class Program
                         });
                 });
             });
+    }
+
+    public static async Task Main(string[] args)
+    {
+        await CreateHostBuilder(args).Build().RunAsync();
     }
 }

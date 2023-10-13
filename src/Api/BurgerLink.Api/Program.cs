@@ -12,9 +12,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddAndConfigureMassTransit(
-    builder.Configuration.GetConnectionString("RabbitMq")
-);
+builder.Services
+    .AddAndConfigureMassTransit(builder.Configuration.GetConnectionString("RabbitMq"))
+    .ConfigureTelemetry("BurgerLink.Api");
 
 var app = builder.Build();
 
@@ -28,7 +28,7 @@ app.Run();
 
 namespace BurgerLink.Api
 {
-    public partial class Program
+    public class Program
     {
     }
 }
