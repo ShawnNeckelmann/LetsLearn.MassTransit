@@ -5,6 +5,9 @@
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
     <ItemGroup>
+      <PackageReference Include="OpenTelemetry.Exporter.Prometheus.AspNetCore" Version="1.6.0-rc.1" />
+      <PackageReference Include="OpenTelemetry.Exporter.Zipkin" Version="1.6.0" />
+      <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.6.0" />
       <PackageReference Include="Serilog" />
       <PackageReference Include="Serilog.Extensions.Hosting" />
       <PackageReference Include="Serilog.Sinks.Console" />
