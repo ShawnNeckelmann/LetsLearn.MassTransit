@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.Reflection;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
-using System.Reflection;
 using Serilog.Sinks.Grafana.Loki;
 
 namespace BurgerLink.Shared.AppConfiguration;
@@ -49,7 +49,6 @@ public static class BurgerLinkConfigurationExtensions
             .SetBasePath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location))
             .AddJsonFile(path, false, true)
             .AddEnvironmentVariables();
-
         builder.Build();
     }
 }
