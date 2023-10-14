@@ -7,6 +7,7 @@
             <PackageReference Include="MongoDB.Driver" Version="2.18.0"/>
         </ItemGroup>
         <ItemGroup Condition="$(MSBuildProjectName.Contains('Test'))">
+            <Content Include="$(SolutionDir)local-settings\commonsettings.json" CopyToOutputDirectory="PreserveNewest" LinkBase="\"/>
             <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0"/>
             <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.2"/>
             <PackageReference Include="Moq" Version="4.20.69"/>

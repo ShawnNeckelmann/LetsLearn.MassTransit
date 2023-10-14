@@ -43,15 +43,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "local-settings", "local-set
 		local-settings\commonsettings.json = local-settings\commonsettings.json
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BurgerLink.Api.Test", "Api\BurgerLink.Api.Test\BurgerLink.Api.Test.csproj", "{5921B62B-663A-4860-BD18-190D023A8F86}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BurgerLink.Api.Test", "Api\BurgerLink.Api.Test\BurgerLink.Api.Test.csproj", "{5921B62B-663A-4860-BD18-190D023A8F86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BurgerLink.Inventory.Test", "services\inventory\BurgerLink.Inventory.Test\BurgerLink.Inventory.Test.csproj", "{0528C918-4344-418E-B248-37FE238BE13E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BurgerLink.Inventory.Test", "services\inventory\BurgerLink.Inventory.Test\BurgerLink.Inventory.Test.csproj", "{0528C918-4344-418E-B248-37FE238BE13E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BurgerLink.Order.Test", "services\order\BurgerLink.Order.Test\BurgerLink.Order.Test.csproj", "{AAA918BE-D9F5-4FC9-8998-688C999377BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BurgerLink.Order.Test", "services\order\BurgerLink.Order.Test\BurgerLink.Order.Test.csproj", "{AAA918BE-D9F5-4FC9-8998-688C999377BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BurgerLink.Preparation.Test", "services\preparation\BurgerLink.Preparation.Test\BurgerLink.Preparation.Test.csproj", "{2A0C40CB-0F3B-40E4-95A0-CDBFCE002696}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BurgerLink.Preparation.Test", "services\preparation\BurgerLink.Preparation.Test\BurgerLink.Preparation.Test.csproj", "{2A0C40CB-0F3B-40E4-95A0-CDBFCE002696}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BurgerLink.Shared.Test", "shared\BurgerLink.Shared.Test\BurgerLink.Shared.Test.csproj", "{5C400B41-6A56-4119-B941-6CA8BA1DB523}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BurgerLink.Shared.Test", "shared\BurgerLink.Shared.Test\BurgerLink.Shared.Test.csproj", "{5C400B41-6A56-4119-B941-6CA8BA1DB523}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
