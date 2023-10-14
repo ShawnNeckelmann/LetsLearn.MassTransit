@@ -46,15 +46,9 @@ services:
     image: openzipkin/zipkin
     ports:
       - 9411:9411
-  prometheus:
-    container_name: prometheus
-    image: prom/prometheus
-    ports: 
-      - 9090:9090
-# http://localhost:3000/
-# U: admin
-# P: admin
+
   grafana:
+    # http://localhost:3000/
     container_name: grafana
     image: grafana/grafana:master
     ports:
@@ -63,7 +57,8 @@ services:
       loki:
         condition: service_healthy
     environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=neckelmann
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
     volumes:
     - ./provisioning/grafana:/etc/grafana/provisioning/datasources
