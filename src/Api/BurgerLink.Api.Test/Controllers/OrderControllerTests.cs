@@ -1,4 +1,3 @@
-using BurgerLink.Inventory.Contracts.Requests;
 using BurgerLink.Order.Contracts.Commands;
 using BurgerLink.Order.Contracts.Requests;
 using BurgerLink.Order.Contracts.Responses;
@@ -7,47 +6,6 @@ namespace BurgerLink.Api.Test.Controllers;
 
 public class OrderControllerTests
 {
-    [Fact]
-    public async Task It_Should_Start_An_Order()
-    {
-        async Task Test(ITestHarness harness, HttpClient client)
-        {
-            var orderId = NewId.NextGuid();
-            const string urlGetAll = "/order";
-            var httpResponseMessage = await client.PostAsync(urlGetAll, JsonContent.Create(new SagaCreateOrder()
-            {
-                OrderId = orderId,
-                OrderName = "Test",
-                StatusUpdateAddress = new Uri("http://localhost")
-            }));
-
-            httpResponseMessage.EnsureSuccessStatusCode();
-            Assert.Equal(StatusCodes.Status202Accepted, (int)httpResponseMessage.StatusCode);
-            Assert.True(await harness.Published.Any<SagaCreateOrder>());
-        }
-
-        await MassTransitTestHarness.RunTest(Test);
-    }
-
-    [Fact]
-    public async Task It_Should_Start_Order_Preparation()
-    {
-        async Task Test(ITestHarness harness, HttpClient client)
-        {
-            const string urlGetAll = "/order/start";
-            var httpResponseMessage = await client.PostAsync(urlGetAll, JsonContent.Create(new SagaBeginPreparation()
-            {
-                OrderName = "Test"
-            }));
-
-            httpResponseMessage.EnsureSuccessStatusCode();
-            Assert.Equal(StatusCodes.Status202Accepted, (int)httpResponseMessage.StatusCode);
-            Assert.True(await harness.Published.Any<SagaBeginPreparation>());
-        }
-
-        await MassTransitTestHarness.RunTest(Test);
-    }
-
     [Fact]
     public async Task It_Should_Add_An_Item_To_An_Order()
     {
@@ -59,7 +17,7 @@ public class OrderControllerTests
         async Task Test(ITestHarness harness, HttpClient client)
         {
             const string urlGetAll = "/order/addItem";
-            var httpResponseMessage = await client.PostAsync(urlGetAll, JsonContent.Create(new SagaModifyOrderAddItem()
+            var httpResponseMessage = await client.PostAsync(urlGetAll, JsonContent.Create(new SagaModifyOrderAddItem
             {
                 OrderName = "Test",
                 ItemName = "Test Item"
@@ -73,30 +31,29 @@ public class OrderControllerTests
         await MassTransitTestHarness.RunTest(Test, Configurator);
     }
 
-
     [Fact]
-    public async Task It_Should_Return_404_If_Order_Not_Found()
+    public async Task It_Should_Get_A_404_When_Order_Does_Not_Exist()
     {
+        const string orderName = "test_name";
+
         void Configurator(IBusRegistrationConfigurator configurator)
         {
-            configurator.AddHandler<SagaModifyOrderAddItem>(context => context.RespondAsync(new OrderNotFound()
+            configurator.AddHandler<SagaOrderStatusRequest>(context => context.RespondAsync(new OrderNotFound
             {
-                OrderName = context.Message.OrderName,
-                Timestamp = DateTime.UtcNow
+                OrderName = context.Message.OrderName
             }));
         }
 
         async Task Test(ITestHarness harness, HttpClient client)
         {
-            const string urlGetAll = "/order/addItem";
-            var httpResponseMessage = await client.PostAsync(urlGetAll, JsonContent.Create(new SagaModifyOrderAddItem()
-            {
-                OrderName = "Test",
-                ItemName = "Test Item"
-            }));
+            const string urlGetAll = $"/order?orderName={orderName}";
+            var httpResponseMessage = await client.GetAsync(urlGetAll);
+            var orderStatus = await httpResponseMessage.Content.ReadFromJsonAsync<OrderNotFound>();
 
+            Assert.NotNull(orderStatus);
+            Assert.EndsWith(orderStatus.OrderName, orderName);
             Assert.Equal(StatusCodes.Status404NotFound, (int)httpResponseMessage.StatusCode);
-            Assert.True(await harness.Consumed.Any<SagaModifyOrderAddItem>());
+            Assert.True(await harness.Consumed.Any<SagaOrderStatusRequest>());
         }
 
         await MassTransitTestHarness.RunTest(Test, Configurator);
@@ -110,7 +67,7 @@ public class OrderControllerTests
 
         void Configurator(IBusRegistrationConfigurator configurator)
         {
-            configurator.AddHandler<SagaOrderStatusRequest>(context => context.RespondAsync(new OrderStatus()
+            configurator.AddHandler<SagaOrderStatusRequest>(context => context.RespondAsync(new OrderStatus
             {
                 OrderName = context.Message.OrderName
             }));
@@ -133,31 +90,73 @@ public class OrderControllerTests
         await MassTransitTestHarness.RunTest(Test, Configurator);
     }
 
-    [Fact]
-    public async Task It_Should_Get_A_404_When_Order_Does_Not_Exist()
-    {
-        const string orderName = "test_name";
 
+    [Fact]
+    public async Task It_Should_Return_404_If_Order_Not_Found()
+    {
         void Configurator(IBusRegistrationConfigurator configurator)
         {
-            configurator.AddHandler<SagaOrderStatusRequest>(context => context.RespondAsync(new OrderNotFound()
+            configurator.AddHandler<SagaModifyOrderAddItem>(context => context.RespondAsync(new OrderNotFound
             {
-                OrderName = context.Message.OrderName
+                OrderName = context.Message.OrderName,
+                Timestamp = DateTime.UtcNow
             }));
         }
 
         async Task Test(ITestHarness harness, HttpClient client)
         {
-            const string urlGetAll = $"/order?orderName={orderName}";
-            var httpResponseMessage = await client.GetAsync(urlGetAll);
-            var orderStatus = await httpResponseMessage.Content.ReadFromJsonAsync<OrderNotFound>();
+            const string urlGetAll = "/order/addItem";
+            var httpResponseMessage = await client.PostAsync(urlGetAll, JsonContent.Create(new SagaModifyOrderAddItem
+            {
+                OrderName = "Test",
+                ItemName = "Test Item"
+            }));
 
-            Assert.NotNull(orderStatus);
-            Assert.EndsWith(orderStatus.OrderName, orderName);
             Assert.Equal(StatusCodes.Status404NotFound, (int)httpResponseMessage.StatusCode);
-            Assert.True(await harness.Consumed.Any<SagaOrderStatusRequest>());
+            Assert.True(await harness.Consumed.Any<SagaModifyOrderAddItem>());
         }
 
         await MassTransitTestHarness.RunTest(Test, Configurator);
+    }
+
+    [Fact]
+    public async Task It_Should_Start_An_Order()
+    {
+        async Task Test(ITestHarness harness, HttpClient client)
+        {
+            var orderId = NewId.NextGuid();
+            const string urlGetAll = "/order";
+            var httpResponseMessage = await client.PostAsync(urlGetAll, JsonContent.Create(new SagaCreateOrder
+            {
+                OrderId = orderId,
+                OrderName = "Test",
+                StatusUpdateAddress = new Uri("http://localhost")
+            }));
+
+            httpResponseMessage.EnsureSuccessStatusCode();
+            Assert.Equal(StatusCodes.Status202Accepted, (int)httpResponseMessage.StatusCode);
+            Assert.True(await harness.Published.Any<SagaCreateOrder>());
+        }
+
+        await MassTransitTestHarness.RunTest(Test);
+    }
+
+    [Fact]
+    public async Task It_Should_Start_Order_Preparation()
+    {
+        async Task Test(ITestHarness harness, HttpClient client)
+        {
+            const string urlGetAll = "/order/start";
+            var httpResponseMessage = await client.PostAsync(urlGetAll, JsonContent.Create(new SagaBeginPreparation
+            {
+                OrderName = "Test"
+            }));
+
+            httpResponseMessage.EnsureSuccessStatusCode();
+            Assert.Equal(StatusCodes.Status202Accepted, (int)httpResponseMessage.StatusCode);
+            Assert.True(await harness.Published.Any<SagaBeginPreparation>());
+        }
+
+        await MassTransitTestHarness.RunTest(Test);
     }
 }
