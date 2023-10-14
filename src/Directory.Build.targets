@@ -2,10 +2,9 @@
 
     <ItemGroup Condition="
                $(MSBuildProjectName.Contains('Test')) == 'false' And 
-               $(MSBuildProjectName.Contains('Contracts')) == 'false' And 
-               $(MSBuildProjectName.Contains('Shared')) == 'false'">
+               $(MSBuildProjectName.Contains('Contracts')) == 'false'">
             <!-- Service Projects -->
-            <!--<Content Include="$(SolutionDir)local-settings\commonsettings.json" CopyToOutputDirectory="PreserveNewest" LinkBase="\" />-->
+            <Content Include="$(SolutionDir)local-settings\commonsettings.json" CopyToOutputDirectory="PreserveNewest" LinkBase="\" />
             <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1"/>
             <PackageReference Include="MassTransit.Analyzers" Version="8.1.1"/>
             <PackageReference Include="MassTransit.RabbitMQ" Version="8.1.1"/>
@@ -14,7 +13,7 @@
 
         <ItemGroup Condition="$(MSBuildProjectName.Contains('Test'))">
             <!-- Test Projects -->
-            <!--<Content Include="$(SolutionDir)local-settings\commonsettings.json" CopyToOutputDirectory="PreserveNewest" LinkBase="\"/>-->
+            <Content Include="$(SolutionDir)local-settings\commonsettings.json" CopyToOutputDirectory="PreserveNewest" LinkBase="\"/>
             <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0"/>
             <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.2"/>
             <PackageReference Include="Moq" Version="4.20.69"/>
@@ -34,6 +33,8 @@
             <PackageReference Update="MassTransit.MongoDb" Version="8.1.1"/>
             <PackageReference Update="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5"/>
             <PackageReference Update="MongoDB.Driver" Version="2.22.0"/>
+            <PackageReference Update="OpenTelemetry.Exporter.Zipkin" Version="1.6.0" />
+            <PackageReference Update="OpenTelemetry.Extensions.Hosting" Version="1.6.0" />
             <PackageReference Update="Swashbuckle.AspNetCore" Version="6.5.0"/>
             <PackageReference Update="Serilog" Version="3.0.1"/>
             <PackageReference Update="Serilog.Extensions.Hosting" Version="7.0.0"/>
