@@ -4,10 +4,30 @@ namespace BurgerLink.Api.Test;
 
 public static class MassTransitTestHarness
 {
+    private static void CopySettingsFile()
+    {
+        var current = Path.Combine(Directory.GetCurrentDirectory(), "settings");
+
+        if (!Directory.Exists(current))
+        {
+            Directory.CreateDirectory(current);
+        }
+
+        const string sourceFileName = "commonsettings.json";
+        var filePath = Path.Combine(current, sourceFileName);
+        if (!File.Exists(filePath))
+        {
+            File.Copy(sourceFileName, filePath);
+        }
+    }
+
     public static async Task RunTest(
         Func<ITestHarness, HttpClient, Task> test,
         Action<IBusRegistrationConfigurator>? configurator = null)
     {
+        CopySettingsFile();
+
+
         await using var application = new WebApplicationFactory<Program>()
             .WithWebHostBuilder(builder =>
             {
