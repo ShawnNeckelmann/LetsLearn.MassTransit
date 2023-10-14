@@ -38,8 +38,13 @@ public static class BurgerLinkConfigurationExtensions
     public static void LoadAppSettings(IConfigurationBuilder builder)
     {
         var current = Directory.GetCurrentDirectory();
+        var files = Directory.GetFiles(current).ToList();
+        var dirs = Directory.GetDirectories(current).ToList();
+
         var path = Path.Combine(current, "settings", "commonsettings.json");
-        var files = Directory.GetFiles(path).ToList();
+        files = Directory.GetFiles(Path.Combine(current, "settings")).ToList();
+        dirs = Directory.GetDirectories(Path.Combine(current, "settings")).ToList();
+
 
         if (!File.Exists(path))
         {

@@ -1,13 +1,20 @@
 <Project>
-        <ItemGroup Condition="$(MSBuildProjectName.Contains('Test')) == 'false' And $(MSBuildProjectName.Contains('Contracts')) == 'false'">
-            <Content Include="$(SolutionDir)local-settings\commonsettings.json" CopyToOutputDirectory="PreserveNewest" LinkBase="\"/>
+
+    <ItemGroup Condition="
+               $(MSBuildProjectName.Contains('Test')) == 'false' And 
+               $(MSBuildProjectName.Contains('Contracts')) == 'false' And 
+               $(MSBuildProjectName.Contains('Shared')) == 'false'">
+            <!-- Service Projects -->
+            <!--<Content Include="$(SolutionDir)local-settings\commonsettings.json" CopyToOutputDirectory="PreserveNewest" LinkBase="\" />-->
             <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1"/>
             <PackageReference Include="MassTransit.Analyzers" Version="8.1.1"/>
             <PackageReference Include="MassTransit.RabbitMQ" Version="8.1.1"/>
             <PackageReference Include="MongoDB.Driver" Version="2.18.0"/>
         </ItemGroup>
+
         <ItemGroup Condition="$(MSBuildProjectName.Contains('Test'))">
-            <Content Include="$(SolutionDir)local-settings\commonsettings.json" CopyToOutputDirectory="PreserveNewest" LinkBase="\"/>
+            <!-- Test Projects -->
+            <!--<Content Include="$(SolutionDir)local-settings\commonsettings.json" CopyToOutputDirectory="PreserveNewest" LinkBase="\"/>-->
             <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0"/>
             <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.2"/>
             <PackageReference Include="Moq" Version="4.20.69"/>
@@ -21,7 +28,9 @@
                 <PrivateAssets>all</PrivateAssets>
             </PackageReference>
         </ItemGroup>
+
         <ItemGroup>
+            <!-- Optional packages -->
             <PackageReference Update="MassTransit.MongoDb" Version="8.1.1"/>
             <PackageReference Update="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5"/>
             <PackageReference Update="MongoDB.Driver" Version="2.22.0"/>
@@ -31,4 +40,5 @@
             <PackageReference Update="Serilog.Sinks.Console" Version="4.1.0"/>
             <PackageReference Update="Serilog.Sinks.Grafana.Loki" Version="8.1.0"/>
         </ItemGroup>
+
 </Project>
