@@ -22,7 +22,7 @@
             </PackageReference>
         </ItemGroup>
         <ItemGroup>
-            <PackageReference Update="MassTransit.MongoDb" Version="8.1.11"/>
+            <PackageReference Update="MassTransit.MongoDb" Version="8.1.1"/>
             <PackageReference Update="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5"/>
             <PackageReference Update="MongoDB.Driver" Version="2.22.0"/>
             <PackageReference Update="Swashbuckle.AspNetCore" Version="6.5.0"/>
