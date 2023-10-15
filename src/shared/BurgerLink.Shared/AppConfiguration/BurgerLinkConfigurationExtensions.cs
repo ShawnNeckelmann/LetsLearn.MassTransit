@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.Reflection;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
-using System.Reflection;
 using Serilog.Sinks.Grafana.Loki;
 
 namespace BurgerLink.Shared.AppConfiguration;
