@@ -18,11 +18,11 @@ public class Program
     private static IHostBuilder CreateHostBuilder(string[] args)
     {
         return Host.CreateDefaultBuilder(args)
-            .ConfigureAppConfiguration((_, builder) => BurgerLinkConfigurationExtensions.LoadAppSettings(builder))
+            .ConfigureAppConfiguration((_, builder) => builder.LoadAppSettings())
             .ConfigureLogging()
             .ConfigureServices((hostContext, services) =>
             {
-                services.ConfigureTelemetry("BurgerLink.Order");
+                services.ConfigureTelemetry();
                 services.AddSingleton<IOrderService, OrderService>();
                 services.Configure<MongoDbSettings>(hostContext.Configuration.GetSection("OrderDatabase"));
 

@@ -7,6 +7,27 @@ namespace BurgerLink.Api.Test.Controllers;
 public class InventoryControllerTests
 {
     [Fact]
+    public async Task It_Should_Create_An_Item()
+    {
+        await MassTransitTestHarness.RunTest(Test);
+        return;
+
+        async Task Test(ITestHarness harness, HttpClient client)
+        {
+            const string urlGetAll = "/inventory";
+
+            var httpResponseMessage = await client.PostAsync(urlGetAll, JsonContent.Create(new UpsertInventoryItem
+            {
+                ItemName = "Test",
+                Quantity = 1
+            }));
+
+            Assert.Equal(StatusCodes.Status202Accepted, (int)httpResponseMessage.StatusCode);
+            Assert.True(await harness.Published.Any<UpsertInventoryItem>());
+        }
+    }
+
+    [Fact]
     public async Task It_Should_Request_AllItems()
     {
         var responseAllItems = new AllInventoryItems
@@ -21,6 +42,12 @@ public class InventoryControllerTests
                 }
             }
         };
+
+        await MassTransitTestHarness.RunTest(
+            Test,
+            Configurator
+        );
+        return;
 
         void Configurator(IBusRegistrationConfigurator configurator)
         {
@@ -41,11 +68,6 @@ public class InventoryControllerTests
             Assert.NotNull(allItems);
             Assert.Equal(responseAllItems.Count, allItems.Count);
         }
-
-        await MassTransitTestHarness.RunTest(
-            Test,
-            Configurator
-        );
     }
 
     [Fact]
@@ -56,6 +78,12 @@ public class InventoryControllerTests
             Quantity = 1,
             ItemName = "TestItem1"
         };
+
+        await MassTransitTestHarness.RunTest(
+            Test,
+            Configurator
+        );
+        return;
 
         void Configurator(IBusRegistrationConfigurator configurator)
         {
@@ -76,17 +104,18 @@ public class InventoryControllerTests
             Assert.NotNull(allItems);
             Assert.Equal(inventoryItem.Quantity, allItems.Quantity);
         }
-
-        await MassTransitTestHarness.RunTest(
-            Test,
-            Configurator
-        );
     }
 
     [Fact]
     public async Task It_Should_Return_404_If_Not_Found()
     {
         var notFound = new InventoryItemNotFound();
+
+        await MassTransitTestHarness.RunTest(
+            Test,
+            Configurator
+        );
+        return;
 
         void Configurator(IBusRegistrationConfigurator configurator)
         {
@@ -104,30 +133,5 @@ public class InventoryControllerTests
             var allItems = await httpResponseMessage.Content.ReadFromJsonAsync<InventoryItemNotFound>();
             Assert.NotNull(allItems);
         }
-
-        await MassTransitTestHarness.RunTest(
-            Test,
-            Configurator
-        );
-    }
-
-    [Fact]
-    public async Task It_Should_Create_An_Item()
-    {
-        async Task Test(ITestHarness harness, HttpClient client)
-        {
-            const string urlGetAll = "/inventory";
-
-            var httpResponseMessage = await client.PostAsync(urlGetAll, JsonContent.Create(new UpsertInventoryItem()
-            {
-                ItemName = "Test",
-                Quantity = 1
-            }));
-
-            Assert.Equal(StatusCodes.Status202Accepted, (int)httpResponseMessage.StatusCode);
-            Assert.True(await harness.Published.Any<UpsertInventoryItem>());
-        }
-
-        await MassTransitTestHarness.RunTest(Test);
     }
 }
