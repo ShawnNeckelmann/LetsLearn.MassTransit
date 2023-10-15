@@ -1,8 +1,8 @@
-﻿using System.Reflection;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
+using System.Reflection;
 using Serilog.Sinks.Grafana.Loki;
 
 namespace BurgerLink.Shared.AppConfiguration;
@@ -35,17 +35,7 @@ public static class BurgerLinkConfigurationExtensions
         });
     }
 
-    public static void LoadAppSettings(this ConfigurationManager builder)
-    {
-        builder.PrivateAppSettings();
-    }
-
-    public static void LoadAppSettings(this IConfigurationBuilder builder)
-    {
-        builder.PrivateAppSettings();
-    }
-
-    private static void PrivateAppSettings(this IConfigurationBuilder builder)
+    public static void LoadAppSettings(IConfigurationBuilder builder)
     {
         var path = Path.Combine(Directory.GetCurrentDirectory(), "settings", "commonsettings.json");
 
@@ -60,7 +50,6 @@ public static class BurgerLinkConfigurationExtensions
             .AddJsonFile(path, false, true)
             .AddEnvironmentVariables();
 
-        var y = builder.Build();
-        Console.WriteLine(y);
+        builder.Build();
     }
 }

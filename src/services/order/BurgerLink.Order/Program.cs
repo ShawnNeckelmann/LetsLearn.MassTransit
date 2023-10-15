@@ -18,7 +18,7 @@ public class Program
     private static IHostBuilder CreateHostBuilder(string[] args)
     {
         return Host.CreateDefaultBuilder(args)
-            .ConfigureAppConfiguration((_, builder) => builder.LoadAppSettings())
+            .ConfigureAppConfiguration((_, builder) => BurgerLinkConfigurationExtensions.LoadAppSettings(builder))
             .ConfigureLogging()
             .ConfigureServices((hostContext, services) =>
             {
