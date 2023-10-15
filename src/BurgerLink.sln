@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "api", "api", "{1AADFA8C-80F4-4CA3-9276-9A21146C965D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BurgerLink.Api", "api\BurgerLink.Api\BurgerLink.Api.csproj", "{66FF56B8-B550-4436-BBAB-AAE1562A56DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BurgerLink.Api", "Api\BurgerLink.Api\BurgerLink.Api.csproj", "{66FF56B8-B550-4436-BBAB-AAE1562A56DB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "services", "services", "{565C4CD0-805F-45ED-8D0E-F87841E4F9B2}"
 EndProject

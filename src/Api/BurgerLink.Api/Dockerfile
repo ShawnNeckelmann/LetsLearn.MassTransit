@@ -7,13 +7,13 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["api/BurgerLink.Api/BurgerLink.Api.csproj", "api/BurgerLink.Api/"]
+COPY ["Api/BurgerLink.Api/BurgerLink.Api.csproj", "Api/BurgerLink.Api/"]
 COPY ["services/inventory/BurgerLink.Inventory.Contracts/BurgerLink.Inventory.Contracts.csproj", "services/inventory/BurgerLink.Inventory.Contracts/"]
 COPY ["services/order/BurgerLink.Order.Contracts/BurgerLink.Order.Contracts.csproj", "services/order/BurgerLink.Order.Contracts/"]
 COPY ["shared/BurgerLink.Shared/BurgerLink.Shared.csproj", "shared/BurgerLink.Shared/"]
-RUN dotnet restore "api/BurgerLink.Api/BurgerLink.Api.csproj"
+RUN dotnet restore "Api/BurgerLink.Api/BurgerLink.Api.csproj"
 COPY . .
-WORKDIR "/src/api/BurgerLink.Api"
+WORKDIR "/src/Api/BurgerLink.Api"
 RUN dotnet build "BurgerLink.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish
