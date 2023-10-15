@@ -132,5 +132,8 @@
       }
     }
   },
-  "defaultProject": "BurgerLink.Ui"
+  "defaultProject": "BurgerLink.Ui",
+  "cli": {
+    "analytics": "043622be-b75a-45d8-8fb6-204bce17c14d"
+  }
 }
