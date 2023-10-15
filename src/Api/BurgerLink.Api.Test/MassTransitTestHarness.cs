@@ -27,7 +27,6 @@ public static class MassTransitTestHarness
     {
         CopySettingsFile();
 
-
         await using var application = new WebApplicationFactory<Program>()
             .WithWebHostBuilder(builder =>
             {

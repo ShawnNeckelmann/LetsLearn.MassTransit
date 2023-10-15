@@ -9,11 +9,11 @@ public static class Program
     private static IHostBuilder CreateHostBuilder(string[] args)
     {
         return Host.CreateDefaultBuilder(args)
-            .ConfigureAppConfiguration((_, builder) => BurgerLinkConfigurationExtensions.LoadAppSettings(builder))
+            .ConfigureAppConfiguration((_, builder) => builder.LoadAppSettings())
             .ConfigureLogging()
             .ConfigureServices((hostContext, services) =>
             {
-                services.ConfigureTelemetry("BurgerLink.Inventory");
+                services.ConfigureTelemetry();
                 services.AddSingleton<IInventoryService, MongoDbInventoryService>();
                 services.Configure<MongoDbSettings>(hostContext.Configuration.GetSection("InventoryDatabase"));
                 services.AddAndConfigureMassTransit(hostContext.Configuration.GetConnectionString("RabbitMq"));

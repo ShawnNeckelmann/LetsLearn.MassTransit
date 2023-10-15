@@ -2,9 +2,8 @@ using BurgerLink.Shared.AppConfiguration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host
-    .ConfigureAppConfiguration((_, builder1) => BurgerLinkConfigurationExtensions.LoadAppSettings(builder1))
-    .ConfigureLogging();
+builder.Configuration.LoadAppSettings();
+builder.Host.ConfigureLogging();
 
 builder.Services.AddControllers();
 
@@ -14,7 +13,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services
     .AddAndConfigureMassTransit(builder.Configuration.GetConnectionString("RabbitMq"))
-    .ConfigureTelemetry("BurgerLink.Api");
+    .ConfigureTelemetry();
 
 var app = builder.Build();
 
