@@ -5,10 +5,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.LoadAppSettings();
 builder.Host.ConfigureLogging();
 
-
-//.ConfigureAppConfiguration((_, builder1) => BurgerLinkConfigurationExtensions.LoadAppSettings(builder1))
-
-
 builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -17,7 +13,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services
     .AddAndConfigureMassTransit(builder.Configuration.GetConnectionString("RabbitMq"))
-    .ConfigureTelemetry("BurgerLink.Api");
+    .ConfigureTelemetry();
 
 var app = builder.Build();
 
