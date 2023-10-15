@@ -1,3 +1,4 @@
+using System.Reflection;
 using MassTransit.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using OpenTelemetry.Resources;
@@ -12,8 +13,10 @@ public static class OpenTelemetryConfigurationExtensions
         obj.AddService(serviceName, serviceInstanceId: Environment.MachineName);
     }
 
-    public static void ConfigureTelemetry(this IServiceCollection serviceCollection, string serviceName)
+    public static void ConfigureTelemetry(this IServiceCollection serviceCollection)
     {
+        var serviceName = Assembly.GetEntryAssembly().GetName().Name;
+
         serviceCollection.AddOpenTelemetry()
             .ConfigureResource(o => ConfigureResource(o, serviceName))
             .WithTracing(tracerProviderBuilder =>

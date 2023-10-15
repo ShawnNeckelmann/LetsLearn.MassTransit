@@ -35,7 +35,7 @@ public static class BurgerLinkConfigurationExtensions
         });
     }
 
-    public static void LoadAppSettings(IConfigurationBuilder builder)
+    public static void LoadAppSettings(this ConfigurationManager builder)
     {
         var path = Path.Combine(Directory.GetCurrentDirectory(), "settings", "commonsettings.json");
 
@@ -49,7 +49,5 @@ public static class BurgerLinkConfigurationExtensions
             .SetBasePath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location))
             .AddJsonFile(path, false, true)
             .AddEnvironmentVariables();
-
-        builder.Build();
     }
 }
