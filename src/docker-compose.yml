@@ -15,7 +15,9 @@ services:
       - 8080:8080
     environment:
         ASPNETCORE_URLS: http://+:8080
-
+    env_file:
+      - ./local-settings/.env
+      
   burgerlink.inventory:
     container_name: BurgerLink.Inventory
     image: ${DOCKER_REGISTRY-}burgerlinkinventory
@@ -24,6 +26,8 @@ services:
       dockerfile: services/inventory/BurgerLink.Inventory/Dockerfile
     volumes:
       - ./local-settings:/app/settings
+    env_file:
+      - ./local-settings/.env
 
   burgerlink.order:
     container_name: BurgerLink.Order
@@ -33,6 +37,8 @@ services:
       dockerfile: services/order/BurgerLink.Order/Dockerfile
     volumes:
       - ./local-settings:/app/settings
+    env_file:
+      - ./local-settings/.env
 
   burgerlink.preparation:
     container_name: BurgerLink.Preparation
@@ -42,4 +48,5 @@ services:
       dockerfile: services/preparation/BurgerLink.Preparation/Dockerfile
     volumes:
       - ./local-settings:/app/settings
-
+    env_file:
+      - ./local-settings/.env
