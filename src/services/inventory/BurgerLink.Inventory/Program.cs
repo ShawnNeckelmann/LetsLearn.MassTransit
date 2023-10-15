@@ -10,7 +10,6 @@ public static class Program
     {
         return Host.CreateDefaultBuilder(args)
             .ConfigureAppConfiguration((_, builder) => builder.LoadAppSettings())
-            .ConfigureLogging()
             .ConfigureServices((hostContext, services) =>
             {
                 services.ConfigureTelemetry();

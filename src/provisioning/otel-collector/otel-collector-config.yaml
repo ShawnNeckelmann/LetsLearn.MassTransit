@@ -1,0 +1,10 @@
+tempo:
+  configs:
+  - name: default
+    push_config:
+      endpoint: http://grafana:443
+      
+    receivers:
+      otlp:
+        protocols:
+          grpc:

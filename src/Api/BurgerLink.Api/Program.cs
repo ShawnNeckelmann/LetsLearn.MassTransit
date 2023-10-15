@@ -2,8 +2,8 @@ using BurgerLink.Shared.AppConfiguration;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Logging.ConfigureLogging(builder.Environment.EnvironmentName);
 builder.Configuration.LoadAppSettings();
-builder.Host.ConfigureLogging();
 
 builder.Services.AddControllers();
 

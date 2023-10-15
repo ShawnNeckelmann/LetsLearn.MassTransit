@@ -1,6 +1,9 @@
 ﻿using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Resources;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.Grafana.Loki;
@@ -33,6 +36,32 @@ public static class BurgerLinkConfigurationExtensions
                 }
             });
         });
+    }
+
+    public static ILoggingBuilder ConfigureLogging(this ILoggingBuilder loggingBuilder, string environment)
+    {
+        var resourceBuilder = ResourceBuilder.CreateDefault()
+            .AddService(Assembly.GetEntryAssembly().GetName().Name, serviceVersion: "1.0.0")
+            .AddTelemetrySdk()
+            .AddAttributes(new Dictionary<string, object>
+            {
+                ["host.name"] = Environment.MachineName,
+                ["deployment.environment"] = environment
+            });
+
+        return loggingBuilder
+            .ClearProviders()
+            .AddOpenTelemetry(options =>
+            {
+                options
+                    .SetResourceBuilder(resourceBuilder)
+                    .AddOtlpExporter()
+                    .AddConsoleExporter();
+
+                options.IncludeFormattedMessage = true;
+                options.IncludeScopes = true;
+                options.ParseStateValues = true;
+            });
     }
 
     public static void LoadAppSettings(this IConfigurationBuilder builder)
