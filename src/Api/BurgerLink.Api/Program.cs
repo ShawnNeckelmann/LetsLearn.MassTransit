@@ -7,6 +7,8 @@ builder.Configuration.LoadAppSettings();
 builder.Host
     .ConfigureLogging();
 
+var y = builder.Environment.EnvironmentName;
+
 builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

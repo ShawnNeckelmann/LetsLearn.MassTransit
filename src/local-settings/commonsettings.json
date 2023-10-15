@@ -17,6 +17,5 @@
     "ConnectionString": "mongodb://root:example@mongo:27017",
     "DatabaseName": "OrderService",
     "CollectionName": "Orders"
-  },
-  "ASPNETCORE_ENVIRONMENT": "Development"
+  }
 }

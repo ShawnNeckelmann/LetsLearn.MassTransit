@@ -15,6 +15,7 @@ services:
       - 8080:8080
     environment:
         ASPNETCORE_URLS: http://+:8080
+        DOTNET_ENVIRONMENT: Development
 
   # burgerlink.inventory:
   #   container_name: BurgerLink.Inventory

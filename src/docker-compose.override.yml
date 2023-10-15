@@ -1,15 +1,15 @@
-# services:
-#   rabbitmq:
+services:
+  rabbitmq:
     
-#     # RabbitMq Management will be available at http://localhost:15672/#/
-#     # User: guest
-#     # Password: guest
-#     image: rabbitmq:3-management
-#     container_name: rabbitmq
-#     ports:
-#       - 5672:5672
-#       - 15672:15672
-#     hostname: rabbit
+    # RabbitMq Management will be available at http://localhost:15672/#/
+    # User: guest
+    # Password: guest
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    hostname: rabbit
 #   mongo:
 #     image: mongo
 #     restart: always
