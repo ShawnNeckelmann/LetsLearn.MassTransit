@@ -2,26 +2,28 @@ using BurgerLink.Inventory.Services;
 using BurgerLink.Shared.AppConfiguration;
 using BurgerLink.Shared.MongDbConfiguration;
 
-namespace BurgerLink.Inventory;
+var builder = WebApplication.CreateBuilder(args);
 
-public static class Program
+builder.Configuration.LoadAppSettings();
+builder.Host.ConfigureLogging();
+
+// Add services to the container.
+builder.Services
+    .ConfigureIt(builder.Configuration)
+    .AddAndConfigureMassTransit(builder.Configuration.GetConnectionString("RabbitMq"))
+    .ConfigureTelemetry();
+
+var app = builder.Build();
+
+app.Run();
+
+internal static class ConfiguratgionTextension
 {
-    private static IHostBuilder CreateHostBuilder(string[] args)
+    internal static IServiceCollection ConfigureIt(this IServiceCollection services, ConfigurationManager configuration)
     {
-        return Host.CreateDefaultBuilder(args)
-            .ConfigureAppConfiguration((_, builder) => builder.LoadAppSettings())
-            .ConfigureLogging()
-            .ConfigureServices((hostContext, services) =>
-            {
-                services.ConfigureTelemetry();
-                services.AddSingleton<IInventoryService, MongoDbInventoryService>();
-                services.Configure<MongoDbSettings>(hostContext.Configuration.GetSection("InventoryDatabase"));
-                services.AddAndConfigureMassTransit(hostContext.Configuration.GetConnectionString("RabbitMq"));
-            });
-    }
+        services.AddSingleton<IInventoryService, MongoDbInventoryService>();
+        services.Configure<MongoDbSettings>(configuration.GetSection("InventoryDatabase"));
 
-    public static async Task Main(string[] args)
-    {
-        await CreateHostBuilder(args).Build().RunAsync();
+        return services;
     }
 }

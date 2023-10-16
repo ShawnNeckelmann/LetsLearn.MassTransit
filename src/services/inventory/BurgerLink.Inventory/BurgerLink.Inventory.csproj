@@ -1,16 +1,21 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
-    <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
-        <Nullable>enable</Nullable>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-        <DockerfileContext>..\..\..</DockerfileContext>
-    </PropertyGroup>
-    <ItemGroup>
-      <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" />
-    </ItemGroup>
-    <ItemGroup>
-        <ProjectReference Include="..\..\..\shared\BurgerLink.Shared\BurgerLink.Shared.csproj" />
-        <ProjectReference Include="..\BurgerLink.Inventory.Contracts\BurgerLink.Inventory.Contracts.csproj" />
-    </ItemGroup>
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>7e9eddb8-bf6e-45b4-b68b-6a313f65bf7e</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..\..</DockerfileContext>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\shared\BurgerLink.Shared\BurgerLink.Shared.csproj" />
+    <ProjectReference Include="..\BurgerLink.Inventory.Contracts\BurgerLink.Inventory.Contracts.csproj" />
+  </ItemGroup>
+
 </Project>
