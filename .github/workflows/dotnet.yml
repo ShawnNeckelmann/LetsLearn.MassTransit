@@ -9,10 +9,6 @@ on:
   pull_request:
     branches: [ "main" ]
 
-defaults:
-  run:
-    working-directory: /src
-
 env:
     SOLUTION: BurgerLink.sln
 
@@ -28,7 +24,7 @@ jobs:
       with:
         dotnet-version: 7.0.x
     - name: Restore dependencies
-      run: "dotnet restore BurgerLink.sln"
+      run: "dotnet restore src/BurgerLink.sln"
     - name: Build
       run: dotnet build --no-restore
     - name: Test
