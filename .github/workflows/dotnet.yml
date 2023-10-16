@@ -18,6 +18,8 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7.0.x
+    - name: Remove dcproj
+      run: dotnet sln ./src/BurgerLink.sln remove ./src/docker-compose.dcproj
     - name: Restore dependencies
       run: dotnet restore ./src/BurgerLink.sln
     - name: Build
