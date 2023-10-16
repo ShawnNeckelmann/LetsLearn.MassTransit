@@ -1,6 +1,8 @@
 using System.Reflection;
 using MassTransit.Logging;
+using MassTransit.Monitoring;
 using Microsoft.Extensions.DependencyInjection;
+using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 
@@ -28,6 +30,10 @@ public static class OpenTelemetryConfigurationExtensions
                         var hostName = new Uri("http://zipkin:9411/api/v2/spans");
                         zipkinExporterOptions.Endpoint = hostName;
                     });
-            });
+            })
+            .WithMetrics(b => b
+                .AddMeter(InstrumentationOptions.MeterName) // MassTransit Meter
+                .AddPrometheusExporter()
+            );
     }
 }
