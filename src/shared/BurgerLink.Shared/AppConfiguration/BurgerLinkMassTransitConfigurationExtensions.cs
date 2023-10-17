@@ -1,6 +1,6 @@
+using System.Reflection;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
 
 namespace BurgerLink.Shared.AppConfiguration;
 
@@ -22,6 +22,7 @@ public static class BurgerLinkMassTransitConfigurationExtensions
 
             configurator.UsingRabbitMq((hostContext, factoryConfigurator) =>
             {
+                factoryConfigurator.UsePrometheusMetrics(serviceName: entryAssembly.GetName().Name);
                 factoryConfigurator.Host(connectionStringRabbitMq);
                 factoryConfigurator.ConfigureEndpoints(hostContext);
             });

@@ -2,8 +2,7 @@ version: '3.4'
 
 services:
 #   # http://localhost:8080/swagger/index.html
-  burgerlink.api:
-    container_name: BurgerLink.Api
+  Burgerlink.Api:
     image: ${DOCKER_REGISTRY-}burgerlinkapi
     build:
       context: .
@@ -18,9 +17,10 @@ services:
         ASPNETCORE_URLS: http://+:8080
     env_file:
       - ./local-settings/.env
+    networks:
+      - localprom
       
   burgerlink.inventory:
-    container_name: BurgerLink.Inventory
     image: ${DOCKER_REGISTRY-}burgerlinkinventory
     build:
       context: .
@@ -30,6 +30,8 @@ services:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
     env_file:
       - ./local-settings/.env
+    networks:
+      - localprom
 
 #   burgerlink.order:
 #     container_name: BurgerLink.Order

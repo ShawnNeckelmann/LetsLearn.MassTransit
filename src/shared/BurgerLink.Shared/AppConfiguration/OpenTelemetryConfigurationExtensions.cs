@@ -33,14 +33,7 @@ public static class OpenTelemetryConfigurationExtensions
             })
             .WithMetrics(b => b
                 .AddMeter(InstrumentationOptions.MeterName) // MassTransit Meter
-                .AddPrometheusHttpListener(options => options.UriPrefixes = new List<string>
-                {
-                    "http://BurgerLink.Api:9464/",
-                    "https://BurgerLink.Api:9464/",
-
-                    "http://localhost:9464/",
-                    "https://localhost:9464/"
-                })
+                .AddPrometheusHttpListener()
             );
     }
 }
