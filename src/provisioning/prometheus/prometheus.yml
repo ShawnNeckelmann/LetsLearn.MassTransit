@@ -2,11 +2,8 @@ global:
   scrape_interval: 10s
 
 scrape_configs:
-  - job_name: masstransit
-    tls_config:
-      insecure_skip_verify: true
-    scheme: https
+  - job_name: api
+    scrape_interval: 1s
     static_configs:
       - targets:
-        - 'host.docker.internal:5001'
-
+        - 'BurgerLink.Api:9464'

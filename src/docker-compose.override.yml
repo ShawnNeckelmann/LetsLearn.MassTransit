@@ -50,6 +50,7 @@ services:
   prometheus:
     container_name: prometheus
     image: prom/prometheus
+    command: --log.level=debug
     ports:
       - "9090:9090"
     volumes:
