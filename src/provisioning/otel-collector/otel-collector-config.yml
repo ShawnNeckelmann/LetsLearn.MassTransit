@@ -10,6 +10,12 @@ exporters:
   zipkin:
     endpoint: http://zipkin:9411/api/v2/spans
 
+  loki:
+    endpoint: http://loki:3100
+    default_labels_enabled:
+      exporter: false
+      job: true
+
   debug:
     verbosity: detailed
 
