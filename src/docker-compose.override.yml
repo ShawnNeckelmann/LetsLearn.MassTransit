@@ -63,9 +63,6 @@ services:
     image: grafana/grafana:master
     ports:
       - "3000:3000"
-    # depends_on:
-    #   loki:
-    #     condition: service_healthy
     environment:
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
