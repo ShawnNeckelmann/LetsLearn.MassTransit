@@ -1,5 +1,8 @@
 using BurgerLink.Shared.AppConfiguration;
 
+// This must be set before creating a GrpcChannel/HttpClient when calling an insecure service
+AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.LoadAppSettings();
