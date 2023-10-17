@@ -6,6 +6,9 @@ receivers:
 exporters:
   prometheus:
     endpoint: "0.0.0.0:8889"
+  
+  zipkin:
+    endpoint: http://zipkin:9411/api/v2/spans
 
   debug:
     verbosity: detailed

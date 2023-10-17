@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   # http://localhost:8080/swagger/index.html
-  Burgerlink.Api:
+  burgerlink.api:
     image: ${DOCKER_REGISTRY-}burgerlinkapi
     build:
       context: .
@@ -33,24 +33,24 @@ services:
     depends_on:
       - rabbitmq
 
-  burgerlink.order:
-    container_name: BurgerLink.Order
-    image: ${DOCKER_REGISTRY-}burgerlinkorder
-    build:
-      context: .
-      dockerfile: services/order/BurgerLink.Order/Dockerfile
-    volumes:
-      - ./local-settings:/app/settings
-    env_file:
-      - ./local-settings/.env
+  # burgerlink.order:
+  #   container_name: BurgerLink.Order
+  #   image: ${DOCKER_REGISTRY-}burgerlinkorder
+  #   build:
+  #     context: .
+  #     dockerfile: services/order/BurgerLink.Order/Dockerfile
+  #   volumes:
+  #     - ./local-settings:/app/settings
+  #   env_file:
+  #     - ./local-settings/.env
 
-  burgerlink.preparation:
-    container_name: BurgerLink.Preparation
-    image: ${DOCKER_REGISTRY-}burgerlinkpreparation
-    build:
-      context: .
-      dockerfile: services/preparation/BurgerLink.Preparation/Dockerfile
-    volumes:
-      - ./local-settings:/app/settings
-    env_file:
-      - ./local-settings/.env
+  # burgerlink.preparation:
+  #   container_name: BurgerLink.Preparation
+  #   image: ${DOCKER_REGISTRY-}burgerlinkpreparation
+  #   build:
+  #     context: .
+  #     dockerfile: services/preparation/BurgerLink.Preparation/Dockerfile
+  #   volumes:
+  #     - ./local-settings:/app/settings
+  #   env_file:
+  #     - ./local-settings/.env
