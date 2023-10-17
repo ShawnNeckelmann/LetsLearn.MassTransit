@@ -9,8 +9,6 @@ services:
       - 5672:5672
       - 15672:15672
     hostname: rabbit
-    networks:
-      - localprom
 
   # mongo:
   #   image: mongo
@@ -58,8 +56,6 @@ services:
       - "9090:9090"
     volumes:
        - ./provisioning/prometheus:/etc/prometheus/
-    networks:
-      - localprom
 
   grafana:
     # http://localhost:3000/
@@ -76,9 +72,15 @@ services:
       - GF_AUTH_DISABLE_LOGIN_FORM=true
     volumes:
     - ./provisioning/grafana:/etc/grafana/provisioning/datasources
-    networks:
-      - localprom
 
-networks:
-  localprom:
-    driver: bridge
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib # https://github.com/open-telemetry/opentelemetry-collector-contrib/issues/3702
+    container_name: otel-collector
+    command: ["--config=/etc/otel-collector-config.yml"]
+    volumes:
+      - ./provisioning/otel-collector/otel-collector-config.yml:/etc/otel-collector-config.yml:ro
+    ports:
+      - "8888:8888" 
+      - "8889:8889" 
+      - "13133:13133"
+      - "4317:4317"

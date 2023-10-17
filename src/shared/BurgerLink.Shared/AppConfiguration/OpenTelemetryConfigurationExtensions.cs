@@ -1,10 +1,8 @@
 using System.Reflection;
-using MassTransit.Logging;
 using MassTransit.Monitoring;
 using Microsoft.Extensions.DependencyInjection;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
-using OpenTelemetry.Trace;
 
 namespace BurgerLink.Shared.AppConfiguration;
 
@@ -19,21 +17,16 @@ public static class OpenTelemetryConfigurationExtensions
     {
         var serviceName = Assembly.GetEntryAssembly().GetName().Name;
 
-        serviceCollection.AddOpenTelemetry()
-            .ConfigureResource(o => ConfigureResource(o, serviceName))
-            .WithTracing(tracerProviderBuilder =>
+        serviceCollection.AddOpenTelemetry().WithMetrics(opts => opts
+            .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(serviceName))
+            .AddMeter(InstrumentationOptions.MeterName)
+            .AddAspNetCoreInstrumentation()
+            .AddRuntimeInstrumentation()
+            .AddProcessInstrumentation()
+            .AddConsoleExporter()
+            .AddOtlpExporter(otlpExporterOptions =>
             {
-                tracerProviderBuilder
-                    .AddSource(DiagnosticHeaders.DefaultListenerName)
-                    .AddZipkinExporter(zipkinExporterOptions =>
-                    {
-                        var hostName = new Uri("http://zipkin:9411/api/v2/spans");
-                        zipkinExporterOptions.Endpoint = hostName;
-                    });
-            })
-            .WithMetrics(b => b
-                .AddMeter(InstrumentationOptions.MeterName) // MassTransit Meter
-                .AddPrometheusHttpListener()
-            );
+                otlpExporterOptions.Endpoint = new Uri("http://otel-collector:4317/");
+            }));
     }
 }
