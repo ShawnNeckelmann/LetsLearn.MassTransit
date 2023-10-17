@@ -4,12 +4,13 @@ receivers:
       grpc:
 
 exporters:
-  logzio:
-    account_token: "<YOUR_TRACE_TOKEN>"
-    region: "NL"
+  # Data sources: metrics
+  prometheus:
+    endpoint: prometheus:9090
+    namespace: default
 
 service:
   pipelines:
-    traces:
+    metrics:
       receivers: [otlp]
-      exporters: [logzio]
+      exporters: [prometheus]
