@@ -4,13 +4,19 @@ receivers:
       grpc:
 
 exporters:
-  # Data sources: metrics
   prometheus:
-    endpoint: prometheus:9090
-    namespace: default
+    endpoint: "0.0.0.0:8889"
+
+processors:
+  batch:
+
+extensions:
+  health_check:
 
 service:
+  extensions: [health_check]
   pipelines:
     metrics:
       receivers: [otlp]
+      processors: [batch]
       exporters: [prometheus]
