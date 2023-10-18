@@ -3,7 +3,7 @@ version: '3.4'
 services:
   # http://localhost:8080/swagger/index.html
   burgerlink.api:
-    container_name: BurgerLink.Api
+    container_name: BurgerLink.Api	
     image: ${DOCKER_REGISTRY-}burgerlinkapi
     build:
       context: .
@@ -17,17 +17,22 @@ services:
         ASPNETCORE_URLS: http://+:8080
     env_file:
       - ./local-settings/.env
+    depends_on:
+      - rabbitmq
       
   burgerlink.inventory:
-    container_name: BurgerLink.Inventory
+    container_name: BurgerLink.Inventory	
     image: ${DOCKER_REGISTRY-}burgerlinkinventory
     build:
       context: .
       dockerfile: services/inventory/BurgerLink.Inventory/Dockerfile
     volumes:
       - ./local-settings:/app/settings
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
     env_file:
       - ./local-settings/.env
+    depends_on:
+      - rabbitmq
 
   burgerlink.order:
     container_name: BurgerLink.Order
@@ -37,8 +42,11 @@ services:
       dockerfile: services/order/BurgerLink.Order/Dockerfile
     volumes:
       - ./local-settings:/app/settings
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
     env_file:
       - ./local-settings/.env
+    depends_on:
+      - rabbitmq
 
   burgerlink.preparation:
     container_name: BurgerLink.Preparation
@@ -48,5 +56,8 @@ services:
       dockerfile: services/preparation/BurgerLink.Preparation/Dockerfile
     volumes:
       - ./local-settings:/app/settings
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
     env_file:
       - ./local-settings/.env
+    depends_on:
+      - rabbitmq
