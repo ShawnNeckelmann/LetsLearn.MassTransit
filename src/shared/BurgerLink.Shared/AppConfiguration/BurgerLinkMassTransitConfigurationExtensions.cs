@@ -22,7 +22,6 @@ public static class BurgerLinkMassTransitConfigurationExtensions
 
             configurator.UsingRabbitMq((hostContext, factoryConfigurator) =>
             {
-                factoryConfigurator.UsePrometheusMetrics(serviceName: entryAssembly.GetName().Name);
                 factoryConfigurator.Host(connectionStringRabbitMq);
                 factoryConfigurator.ConfigureEndpoints(hostContext);
             });
