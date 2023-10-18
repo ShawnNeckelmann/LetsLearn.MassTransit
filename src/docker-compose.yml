@@ -43,6 +43,8 @@ services:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
     env_file:
       - ./local-settings/.env
+    depends_on:
+      - rabbitmq
 
   burgerlink.preparation:
     container_name: BurgerLink.Preparation
@@ -55,3 +57,5 @@ services:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
     env_file:
       - ./local-settings/.env
+    depends_on:
+      - rabbitmq
