@@ -12,7 +12,6 @@ services:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
     ports:
       - 8080:8080
-      - 9464:9464
     environment:
         ASPNETCORE_URLS: http://+:8080
     env_file:
