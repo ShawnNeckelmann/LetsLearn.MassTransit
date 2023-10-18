@@ -1,23 +1,14 @@
 using BurgerLink.Shared.AppConfiguration;
 
-namespace BurgerLink.Preparation;
+var builder = WebApplication.CreateBuilder(args);
 
-public class Program
-{
-    private static IHostBuilder CreateHostBuilder(string[] args)
-    {
-        return Host.CreateDefaultBuilder(args)
-            .ConfigureAppConfiguration((_, builder) => builder.LoadAppSettings())
-            .ConfigureLogging()
-            .ConfigureServices((hostContext, services) =>
-            {
-                services.ConfigureTelemetry();
-                services.AddAndConfigureMassTransit(hostContext.Configuration.GetConnectionString("RabbitMq"));
-            });
-    }
+builder.Configuration.LoadAppSettings();
+builder.Host.ConfigureLogging();
 
-    public static async Task Main(string[] args)
-    {
-        await CreateHostBuilder(args).Build().RunAsync();
-    }
-}
+builder.Services
+    .AddAndConfigureMassTransit(builder.Configuration.GetConnectionString("RabbitMq"))
+    .ConfigureTelemetry();
+
+var app = builder.Build();
+
+app.Run();

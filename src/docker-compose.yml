@@ -45,13 +45,14 @@ services:
     env_file:
       - ./local-settings/.env
 
-  # burgerlink.preparation:
-  #   container_name: BurgerLink.Preparation
-  #   image: ${DOCKER_REGISTRY-}burgerlinkpreparation
-  #   build:
-  #     context: .
-  #     dockerfile: services/preparation/BurgerLink.Preparation/Dockerfile
-  #   volumes:
-  #     - ./local-settings:/app/settings
-  #   env_file:
-  #     - ./local-settings/.env
+  burgerlink.preparation:
+    container_name: BurgerLink.Preparation
+    image: ${DOCKER_REGISTRY-}burgerlinkpreparation
+    build:
+      context: .
+      dockerfile: services/preparation/BurgerLink.Preparation/Dockerfile
+    volumes:
+      - ./local-settings:/app/settings
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    env_file:
+      - ./local-settings/.env
