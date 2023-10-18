@@ -19,6 +19,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: example
     ports:
       - 27017:27017
+      
   mongo-express:
     # Mong Management will be available at http://localhost:8081/
     image: mongo-express
