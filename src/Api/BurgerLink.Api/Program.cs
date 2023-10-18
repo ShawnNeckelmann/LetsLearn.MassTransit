@@ -17,8 +17,6 @@ builder.Services
 
 var app = builder.Build();
 
-app.UseHttpLogging();
-
 app.UseSwagger()
     .UseSwaggerUI();
 
