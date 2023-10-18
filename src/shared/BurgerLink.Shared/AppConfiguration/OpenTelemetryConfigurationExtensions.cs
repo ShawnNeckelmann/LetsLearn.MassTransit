@@ -1,9 +1,12 @@
 using System.Reflection;
+using System.Runtime.InteropServices;
 using MassTransit.Logging;
 using MassTransit.Monitoring;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using OpenTelemetry;
 using OpenTelemetry.Exporter;
+using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -12,6 +15,15 @@ namespace BurgerLink.Shared.AppConfiguration;
 
 public static class OpenTelemetryConfigurationExtensions
 {
+    private static string ServiceName
+    {
+        get
+        {
+            var serviceName = Assembly.GetEntryAssembly()?.GetName().Name;
+            return string.IsNullOrEmpty(serviceName) ? throw new ArgumentNullException() : serviceName;
+        }
+    }
+
     private static Action<OtlpExporterOptions> ConfigureExporter()
     {
         return otlpExporterOptions =>
@@ -22,25 +34,37 @@ public static class OpenTelemetryConfigurationExtensions
         };
     }
 
-    public static void ConfigureTelemetry(this IServiceCollection serviceCollection)
+    public static ILoggingBuilder ConfigureLogging(this ILoggingBuilder loggingBuilder)
     {
-        var serviceName = Assembly.GetEntryAssembly().GetName().Name;
-        if (serviceName is null)
-        {
-            throw new ArgumentNullException(nameof(serviceCollection));
-        }
+        loggingBuilder
+            .ClearProviders()
+            .AddOpenTelemetry(options =>
+            {
+                options
+                    .SetResourceBuilder(ResourceBuilder())
+                    .AddConsoleExporter()
+                    .AddOtlpExporter(ConfigureExporter());
 
-        serviceCollection.AddOpenTelemetry()
-            .ConfigureResource(builder => { builder.AddService(serviceName); })
-            .PrivateConfigureTracing()
-            .PrivateConfigureMetrics(serviceName);
+                options.IncludeFormattedMessage = true;
+                options.IncludeScopes = true;
+                options.ParseStateValues = true;
+            });
+
+        return loggingBuilder;
     }
 
-    private static OpenTelemetryBuilder PrivateConfigureMetrics(this OpenTelemetryBuilder openTelemetryBuilder,
-        string serviceName)
+    public static void ConfigureTelemetry(this IServiceCollection serviceCollection)
+    {
+        serviceCollection.AddOpenTelemetry()
+            .ConfigureResource(builder => { builder.AddService(ServiceName); })
+            .PrivateConfigureTracing()
+            .PrivateConfigureMetrics();
+    }
+
+    private static OpenTelemetryBuilder PrivateConfigureMetrics(this OpenTelemetryBuilder openTelemetryBuilder)
     {
         return openTelemetryBuilder.WithMetrics(opts => opts
-            .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(serviceName))
+            .SetResourceBuilder(ResourceBuilder())
             .AddMeter(InstrumentationOptions.MeterName)
             .AddAspNetCoreInstrumentation()
             .AddRuntimeInstrumentation()
@@ -54,9 +78,23 @@ public static class OpenTelemetryConfigurationExtensions
         return openTelemetryBuilder.WithTracing(tracerProviderBuilder =>
         {
             tracerProviderBuilder
+                .SetResourceBuilder(ResourceBuilder())
                 .AddSource(DiagnosticHeaders.DefaultListenerName)
                 .AddConsoleExporter()
                 .AddOtlpExporter(ConfigureExporter());
         });
+    }
+
+    private static ResourceBuilder ResourceBuilder()
+    {
+        return OpenTelemetry.Resources.ResourceBuilder
+            .CreateDefault()
+            .AddService(ServiceName)
+            .AddTelemetrySdk()
+            .AddAttributes(new Dictionary<string, object>
+            {
+                ["host.name"] = Environment.MachineName,
+                ["os.description"] = RuntimeInformation.OSDescription
+            });
     }
 }

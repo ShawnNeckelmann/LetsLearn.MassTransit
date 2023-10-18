@@ -3,7 +3,7 @@ using BurgerLink.Shared.AppConfiguration;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.LoadAppSettings();
-builder.Host.ConfigureLogging();
+builder.Logging.ConfigureLogging();
 
 // Add services to the container.
 builder.Services

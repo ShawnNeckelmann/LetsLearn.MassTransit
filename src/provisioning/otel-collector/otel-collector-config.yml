@@ -11,10 +11,12 @@ exporters:
     endpoint: http://zipkin:9411/api/v2/spans
 
   loki:
-    endpoint: http://loki:3100
+    endpoint: http://loki:3100/loki/api/v1/push
     default_labels_enabled:
       exporter: false
       job: true
+    tls:
+      insecure: true
 
   debug:
     verbosity: detailed
@@ -34,11 +36,15 @@ service:
 
   extensions: [health_check]
   pipelines:
-    metrics:
-      receivers: [otlp]
-      processors: [batch]
-      exporters: [prometheus]
+    # metrics:
+    #   receivers: [otlp]
+    #   processors: [batch]
+    #   exporters: [prometheus]
     logs:
       receivers: [otlp]
       processors: [batch]
-      exporters: [loki]
+      exporters: [loki, debug]
+    # traces:
+    #   receivers: [otlp]
+    #   processors: [batch]
+    #   exporters: [zipkin]
