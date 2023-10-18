@@ -35,16 +35,17 @@ datasources:
     readOnly: false
 
   - id: 3
-    uid: jaeger
+    uid: 4TrP9G7Iz
     orgId: 1
-    name: Jaeger
-    type: jaeger
-    typeName: Jaeger
+    name: Zipkin
+    type: zipkin
+    typeName: Zipkin
+    typeLogoUrl: public/app/plugins/datasource/zipkin/img/zipkin-logo.svg
     access: proxy
-    url: http://jaeger:16686
-    password: ''
-    user: ''
-    database: ''
+    url: http://Zipkin:9411
+    password: ""
+    user: ""
+    database: ""
     basicAuth: false
     isDefault: false
     jsonData: {}
