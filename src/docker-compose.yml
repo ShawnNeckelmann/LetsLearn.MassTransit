@@ -3,6 +3,7 @@ version: '3.4'
 services:
   # http://localhost:8080/swagger/index.html
   burgerlink.api:
+    container_name: BurgerLink.Api	
     image: ${DOCKER_REGISTRY-}burgerlinkapi
     build:
       context: .
@@ -20,6 +21,7 @@ services:
       - rabbitmq
       
   burgerlink.inventory:
+    container_name: BurgerLink.Inventory	
     image: ${DOCKER_REGISTRY-}burgerlinkinventory
     build:
       context: .
