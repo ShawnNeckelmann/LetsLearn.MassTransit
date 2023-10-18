@@ -36,15 +36,15 @@ service:
 
   extensions: [health_check]
   pipelines:
-    metrics:
-      receivers: [otlp]
-      processors: [batch]
-      exporters: [prometheus]
-    logs:
-      receivers: [otlp]
-      processors: [batch]
-      exporters: [loki, debug]
-    # traces:
+    # metrics:
     #   receivers: [otlp]
     #   processors: [batch]
-    #   exporters: [zipkin]
+    #   exporters: [prometheus]
+    # logs:
+    #   receivers: [otlp]
+    #   processors: [batch]
+    #   exporters: [loki, debug]
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [zipkin]
