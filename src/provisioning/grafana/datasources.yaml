@@ -19,14 +19,13 @@ datasources:
     readOnly: false
 
   - id: 2
-    uid: avVWUyGIz
+    uid: prom
     orgId: 1
-    name: Zipkin
-    type: zipkin
-    typeName: Zipkin
-    typeLogoUrl: public/app/plugins/datasource/zipkin/img/zipkin-logo.svg
+    name: Prometheus
+    type: prometheus
+    typeName: Prometheus
     access: proxy
-    url: http://Zipkin:9411
+    url: http://Prometheus:9090
     password: ''
     user: ''
     database: ''
@@ -36,13 +35,13 @@ datasources:
     readOnly: false
 
   - id: 3
-    uid: prom
+    uid: jaeger
     orgId: 1
-    name: Prometheus
-    type: prometheus
-    typeName: Prometheus
+    name: Jaeger
+    type: jaeger
+    typeName: Jaeger
     access: proxy
-    url: http://Prometheus:9090
+    url: http://jaeger:16686
     password: ''
     user: ''
     database: ''

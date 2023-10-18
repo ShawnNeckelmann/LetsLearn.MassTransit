@@ -3,6 +3,7 @@ using MassTransit.Logging;
 using MassTransit.Monitoring;
 using Microsoft.Extensions.DependencyInjection;
 using OpenTelemetry;
+using OpenTelemetry.Exporter;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -11,6 +12,16 @@ namespace BurgerLink.Shared.AppConfiguration;
 
 public static class OpenTelemetryConfigurationExtensions
 {
+    private static Action<OtlpExporterOptions> ConfigureExporter()
+    {
+        return otlpExporterOptions =>
+        {
+            otlpExporterOptions.ExportProcessorType = ExportProcessorType.Simple;
+            otlpExporterOptions.Protocol = OtlpExportProtocol.Grpc;
+            otlpExporterOptions.Endpoint = new Uri("http://otel-collector:4317/");
+        };
+    }
+
     public static void ConfigureTelemetry(this IServiceCollection serviceCollection)
     {
         var serviceName = Assembly.GetEntryAssembly().GetName().Name;
@@ -35,10 +46,7 @@ public static class OpenTelemetryConfigurationExtensions
             .AddRuntimeInstrumentation()
             .AddProcessInstrumentation()
             .AddConsoleExporter()
-            .AddOtlpExporter(otlpExporterOptions =>
-            {
-                otlpExporterOptions.Endpoint = new Uri("http://otel-collector:4317/");
-            }));
+            .AddOtlpExporter(ConfigureExporter()));
     }
 
     private static OpenTelemetryBuilder PrivateConfigureTracing(this OpenTelemetryBuilder openTelemetryBuilder)
@@ -48,10 +56,7 @@ public static class OpenTelemetryConfigurationExtensions
             tracerProviderBuilder
                 .AddSource(DiagnosticHeaders.DefaultListenerName)
                 .AddConsoleExporter()
-                .AddOtlpExporter(otlpExporterOptions =>
-                {
-                    otlpExporterOptions.Endpoint = new Uri("http://otel-collector:4317/");
-                });
+                .AddOtlpExporter(ConfigureExporter());
         });
     }
 }

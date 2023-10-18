@@ -33,16 +33,17 @@ services:
     depends_on:
       - rabbitmq
 
-  # burgerlink.order:
-  #   container_name: BurgerLink.Order
-  #   image: ${DOCKER_REGISTRY-}burgerlinkorder
-  #   build:
-  #     context: .
-  #     dockerfile: services/order/BurgerLink.Order/Dockerfile
-  #   volumes:
-  #     - ./local-settings:/app/settings
-  #   env_file:
-  #     - ./local-settings/.env
+  burgerlink.order:
+    container_name: BurgerLink.Order
+    image: ${DOCKER_REGISTRY-}burgerlinkorder
+    build:
+      context: .
+      dockerfile: services/order/BurgerLink.Order/Dockerfile
+    volumes:
+      - ./local-settings:/app/settings
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    env_file:
+      - ./local-settings/.env
 
   # burgerlink.preparation:
   #   container_name: BurgerLink.Preparation
