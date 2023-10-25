@@ -9,6 +9,7 @@ services:
       - 5672:5672
       - 15672:15672
     hostname: rabbit
+
   mongo:
     image: mongo
     restart: always
@@ -18,6 +19,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: example
     ports:
       - 27017:27017
+      
   mongo-express:
     # Mong Management will be available at http://localhost:8081/
     image: mongo-express
@@ -29,6 +31,7 @@ services:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: example
       ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+
   loki:
     container_name: loki
     image: grafana/loki:master
@@ -41,11 +44,21 @@ services:
       timeout: 3s
       retries: 10
       start_period: 10s
+      
   zipkin:
     container_name: zipkin
     image: openzipkin/zipkin
     ports:
       - 9411:9411
+
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus
+    command: --config.file=/etc/prometheus/prometheus.yml --log.level=debug
+    ports:
+      - "9090:9090"
+    volumes:
+       - ./provisioning/prometheus:/etc/prometheus/
 
   grafana:
     # http://localhost:3000/
@@ -53,12 +66,21 @@ services:
     image: grafana/grafana:master
     ports:
       - "3000:3000"
-    depends_on:
-      loki:
-        condition: service_healthy
     environment:
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
       - GF_AUTH_DISABLE_LOGIN_FORM=true
     volumes:
     - ./provisioning/grafana:/etc/grafana/provisioning/datasources
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib # https://github.com/open-telemetry/opentelemetry-collector-contrib/issues/3702
+    container_name: otel-collector
+    command: ["--config=/etc/otel-collector-config.yml"]
+    volumes:
+      - ./provisioning/otel-collector/otel-collector-config.yml:/etc/otel-collector-config.yml:ro
+    ports:
+      - "8888:8888" 
+      - "8889:8889" 
+      - "13133:13133"
+      - "4317:4317"

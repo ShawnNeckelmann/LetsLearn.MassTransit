@@ -9,8 +9,4 @@
     <ProjectReference Include="..\..\services\inventory\BurgerLink.Inventory.Contracts\BurgerLink.Inventory.Contracts.csproj" />
     <ProjectReference Include="..\BurgerLink.Api\BurgerLink.Api.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.1" />
-  </ItemGroup>
 </Project>

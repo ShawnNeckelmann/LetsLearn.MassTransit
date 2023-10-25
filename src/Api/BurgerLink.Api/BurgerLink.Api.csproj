@@ -9,10 +9,6 @@
         <DockerfileContext>..\..</DockerfileContext>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" />
-        <PackageReference Include="Swashbuckle.AspNetCore" />
-    </ItemGroup>
-    <ItemGroup>
       <ProjectReference Include="..\..\services\inventory\BurgerLink.Inventory.Contracts\BurgerLink.Inventory.Contracts.csproj" />
       <ProjectReference Include="..\..\services\order\BurgerLink.Order.Contracts\BurgerLink.Order.Contracts.csproj" />
       <ProjectReference Include="..\..\shared\BurgerLink.Shared\BurgerLink.Shared.csproj" />
