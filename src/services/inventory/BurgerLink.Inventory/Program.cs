@@ -1,27 +1,16 @@
-using BurgerLink.Inventory.Services;
 using BurgerLink.Shared.AppConfiguration;
-using BurgerLink.Shared.MongDbConfiguration;
 
-namespace BurgerLink.Inventory;
+var builder = WebApplication.CreateBuilder(args);
 
-public static class Program
-{
-    private static IHostBuilder CreateHostBuilder(string[] args)
-    {
-        return Host.CreateDefaultBuilder(args)
-            .ConfigureAppConfiguration((_, builder) => builder.LoadAppSettings())
-            .ConfigureLogging()
-            .ConfigureServices((hostContext, services) =>
-            {
-                services.ConfigureTelemetry();
-                services.AddSingleton<IInventoryService, MongoDbInventoryService>();
-                services.Configure<MongoDbSettings>(hostContext.Configuration.GetSection("InventoryDatabase"));
-                services.AddAndConfigureMassTransit(hostContext.Configuration.GetConnectionString("RabbitMq"));
-            });
-    }
+builder.Configuration.LoadAppSettings();
+builder.Logging.ConfigureLogging();
 
-    public static async Task Main(string[] args)
-    {
-        await CreateHostBuilder(args).Build().RunAsync();
-    }
-}
+// Add services to the container.
+builder.Services
+    .ConfigureServiceCollection(builder.Configuration)
+    .AddAndConfigureMassTransit(builder.Configuration.GetConnectionString("RabbitMq"))
+    .ConfigureTelemetry();
+
+var app = builder.Build();
+
+app.Run();
