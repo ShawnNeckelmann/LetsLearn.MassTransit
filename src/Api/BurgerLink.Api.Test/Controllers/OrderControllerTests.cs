@@ -65,9 +65,6 @@ public class OrderControllerTests
 
             Assert.NotNull(orderStatus);
             Assert.EndsWith(orderStatus.OrderName, orderName);
-
-            _helper.WriteLine($"Received Status Code: {httpResponseMessage.StatusCode}");
-
             Assert.Equal(StatusCodes.Status404NotFound, (int)httpResponseMessage.StatusCode);
             Assert.True(await harness.Consumed.Any<SagaOrderStatusRequest>());
         }
