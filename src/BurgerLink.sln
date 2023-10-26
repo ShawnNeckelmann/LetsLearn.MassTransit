@@ -36,8 +36,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BurgerLink.Order", "service
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BurgerLink.Order.Contracts", "services\order\BurgerLink.Order.Contracts\BurgerLink.Order.Contracts.csproj", "{136AE4CA-EDD0-4527-B285-2B40348A148F}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{7D3FFBD0-EBEF-4BB3-ADCE-A99789A5C220}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "local-settings", "local-settings", "{9F3ACE09-5535-4329-B4D4-2FB6C50F1359}"
 	ProjectSection(SolutionItems) = preProject
 		local-settings\commonsettings.json = local-settings\commonsettings.json
@@ -159,18 +157,6 @@ Global
 		{136AE4CA-EDD0-4527-B285-2B40348A148F}.Release|x64.Build.0 = Release|Any CPU
 		{136AE4CA-EDD0-4527-B285-2B40348A148F}.Release|x86.ActiveCfg = Release|Any CPU
 		{136AE4CA-EDD0-4527-B285-2B40348A148F}.Release|x86.Build.0 = Release|Any CPU
-		{7D3FFBD0-EBEF-4BB3-ADCE-A99789A5C220}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7D3FFBD0-EBEF-4BB3-ADCE-A99789A5C220}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7D3FFBD0-EBEF-4BB3-ADCE-A99789A5C220}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{7D3FFBD0-EBEF-4BB3-ADCE-A99789A5C220}.Debug|x64.Build.0 = Debug|Any CPU
-		{7D3FFBD0-EBEF-4BB3-ADCE-A99789A5C220}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{7D3FFBD0-EBEF-4BB3-ADCE-A99789A5C220}.Debug|x86.Build.0 = Debug|Any CPU
-		{7D3FFBD0-EBEF-4BB3-ADCE-A99789A5C220}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7D3FFBD0-EBEF-4BB3-ADCE-A99789A5C220}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7D3FFBD0-EBEF-4BB3-ADCE-A99789A5C220}.Release|x64.ActiveCfg = Release|Any CPU
-		{7D3FFBD0-EBEF-4BB3-ADCE-A99789A5C220}.Release|x64.Build.0 = Release|Any CPU
-		{7D3FFBD0-EBEF-4BB3-ADCE-A99789A5C220}.Release|x86.ActiveCfg = Release|Any CPU
-		{7D3FFBD0-EBEF-4BB3-ADCE-A99789A5C220}.Release|x86.Build.0 = Release|Any CPU
 		{5921B62B-663A-4860-BD18-190D023A8F86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5921B62B-663A-4860-BD18-190D023A8F86}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5921B62B-663A-4860-BD18-190D023A8F86}.Debug|x64.ActiveCfg = Debug|Any CPU
