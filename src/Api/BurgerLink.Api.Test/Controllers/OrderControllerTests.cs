@@ -1,11 +1,20 @@
 using BurgerLink.Order.Contracts.Commands;
 using BurgerLink.Order.Contracts.Requests;
 using BurgerLink.Order.Contracts.Responses;
+using Xunit.Abstractions;
 
 namespace BurgerLink.Api.Test.Controllers;
 
 public class OrderControllerTests
 {
+    private readonly ITestOutputHelper _helper;
+
+    public OrderControllerTests(ITestOutputHelper helper)
+    {
+        _helper = helper;
+    }
+
+
     [Fact]
     public async Task It_Should_Add_An_Item_To_An_Order()
     {
@@ -56,6 +65,9 @@ public class OrderControllerTests
 
             Assert.NotNull(orderStatus);
             Assert.EndsWith(orderStatus.OrderName, orderName);
+
+            _helper.WriteLine($"Received Status Code: {httpResponseMessage.StatusCode}");
+
             Assert.Equal(StatusCodes.Status404NotFound, (int)httpResponseMessage.StatusCode);
             Assert.True(await harness.Consumed.Any<SagaOrderStatusRequest>());
         }
