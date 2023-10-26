@@ -21,15 +21,17 @@ jobs:
         dotnet-version: 7.0.x
 
     - name: Remove dcproj
-      run: dotnet sln ./src/BurgerLink.sln remove ./src/docker-compose.dcproj
+      run: dotnet sln BurgerLink.sln remove docker-compose.dcproj
+      working-directory: ./src
 
     - name: Restore dependencies
       run: dotnet restore BurgerLink.sln
       working-directory: ./src
 
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build BurgerLink.sln --no-restore
+      working-directory: ./src
 
     - name: Test
       run: dotnet test --no-build --verbosity normal
-      
+      working-directory: ./src
