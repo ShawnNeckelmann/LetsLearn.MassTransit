@@ -33,5 +33,5 @@ jobs:
       working-directory: ./src
 
     - name: Test
-      run: dotnet test BurgerLink.sln --no-build --verbosity normal
+      run: dotnet test BurgerLink.sln --no-build 
       working-directory: ./src
