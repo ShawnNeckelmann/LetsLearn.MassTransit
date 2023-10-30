@@ -37,7 +37,8 @@ jobs:
       name: "Docker Compose Build"
       runs-on: ubuntu-latest
       steps:
-        - name: Docker Build
-          run: docker -v
-          # run: docker compose build
-          # working-directory: ./src
+        - uses: actions/checkout@v2
+
+        - name: Docker Build          
+          run: docker compose build
+          working-directory: ./src
