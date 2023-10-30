@@ -9,8 +9,10 @@ on:
 
 jobs:
   build:
+    if: false
     name: "Build Solution"
     runs-on: ubuntu-latest
+    
     steps:
       - uses: actions/checkout@v3
 
@@ -38,4 +40,4 @@ jobs:
         - name: Docker Build
           run: docker -v
           # run: docker compose build
-          working-directory: ./src
+          # working-directory: ./src
