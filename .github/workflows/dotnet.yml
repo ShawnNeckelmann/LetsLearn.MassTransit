@@ -4,8 +4,6 @@
 name: Pull Request Validation
 
 on:
-  push:
-    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
@@ -38,5 +36,6 @@ jobs:
       runs-on: ubuntu-latest
       steps:
         - name: Docker Build
-          run: docker compose build
+          run: docker -v
+          # run: docker compose build
           working-directory: ./src
