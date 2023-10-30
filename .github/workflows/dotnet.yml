@@ -11,6 +11,7 @@ on:
 
 jobs:
   build:
+    name: "this is the build name"
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
