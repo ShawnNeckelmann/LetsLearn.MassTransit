@@ -1,7 +1,6 @@
 using BurgerLink.Inventory.Contracts.Commands;
 using BurgerLink.Inventory.Contracts.Requests;
 using BurgerLink.Inventory.Contracts.Responses;
-using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BurgerLink.Api.Controllers;
