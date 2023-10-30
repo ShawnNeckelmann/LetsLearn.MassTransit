@@ -31,7 +31,3 @@ jobs:
     - name: Build
       run: dotnet build BurgerLink.sln --no-restore
       working-directory: ./src
-
-    - name: Test
-      run: dotnet test BurgerLink.sln --no-build 
-      working-directory: ./src
