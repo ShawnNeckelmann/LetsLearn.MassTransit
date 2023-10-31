@@ -35,12 +35,6 @@ jobs:
       steps:
         - uses: actions/checkout@v2
 
-        - name: tree install
-          run: sudo apt-get install tree
-
-        - name: tree
-          run: tree
-
         - name: Docker Build          
           run: docker compose build --no-cache
           working-directory: ./src
