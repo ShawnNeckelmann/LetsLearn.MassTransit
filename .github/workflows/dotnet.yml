@@ -39,8 +39,11 @@ jobs:
       steps:
         - uses: actions/checkout@v2
 
+        - name: tree install
+          run: sudo apt-get install tree
+
         - name: tree
-          run: find . -type d | sed -e "s/[^-][^\/]*\//  |/g" -e "s/|\([^ ]\)/| - \1/"
+          run: tree
 
         - name: Docker Build          
           run: docker compose build
