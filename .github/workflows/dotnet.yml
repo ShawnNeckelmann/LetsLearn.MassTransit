@@ -39,6 +39,9 @@ jobs:
       steps:
         - uses: actions/checkout@v2
 
+        - name: tree
+          run: find . -type d | sed -e "s/[^-][^\/]*\//  |/g" -e "s/|\([^ ]\)/| - \1/"
+
         - name: Docker Build          
           run: docker compose build
           working-directory: ./src
