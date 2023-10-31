@@ -1,0 +1,40 @@
+name: Pull Request Validation
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    name: "Build Solution"
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0.x
+
+      - name: Remove dcproj
+        run: dotnet sln BurgerLink.sln remove docker-compose.dcproj
+        working-directory: ./src
+
+      - name: Restore dependencies
+        run: dotnet restore BurgerLink.sln
+        working-directory: ./src
+
+      - name: Build
+        run: dotnet build BurgerLink.sln --no-restore
+        working-directory: ./src
+
+  docker-build:
+      name: "Docker Compose Build"
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v2
+
+        - name: Docker Build          
+          run: docker compose build --no-cache
+          working-directory: ./src
