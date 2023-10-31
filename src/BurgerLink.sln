@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "api", "api", "{1AADFA8C-80F4-4CA3-9276-9A21146C965D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BurgerLink.Api", "Api\BurgerLink.Api\BurgerLink.Api.csproj", "{66FF56B8-B550-4436-BBAB-AAE1562A56DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BurgerLink.Api", "api\BurgerLink.Api\BurgerLink.Api.csproj", "{66FF56B8-B550-4436-BBAB-AAE1562A56DB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "services", "services", "{565C4CD0-805F-45ED-8D0E-F87841E4F9B2}"
 EndProject
@@ -41,7 +41,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "local-settings", "local-set
 		local-settings\commonsettings.json = local-settings\commonsettings.json
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BurgerLink.Api.Test", "Api\BurgerLink.Api.Test\BurgerLink.Api.Test.csproj", "{5921B62B-663A-4860-BD18-190D023A8F86}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BurgerLink.Api.Test", "api\BurgerLink.Api.Test\BurgerLink.Api.Test.csproj", "{5921B62B-663A-4860-BD18-190D023A8F86}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BurgerLink.Inventory.Test", "services\inventory\BurgerLink.Inventory.Test\BurgerLink.Inventory.Test.csproj", "{0528C918-4344-418E-B248-37FE238BE13E}"
 EndProject
