@@ -55,6 +55,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ui", "ui", "{8FAEDD56-9759-
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BurgerLink.Ui", "ui\BurgerLink.Ui\BurgerLink.Ui.csproj", "{71F33CDD-1748-4276-AB9B-5B09DDAEFBE4}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{49DA0C6E-5CD3-41B1-980B-6D239CE6500E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -233,6 +235,18 @@ Global
 		{71F33CDD-1748-4276-AB9B-5B09DDAEFBE4}.Release|x64.Build.0 = Release|Any CPU
 		{71F33CDD-1748-4276-AB9B-5B09DDAEFBE4}.Release|x86.ActiveCfg = Release|Any CPU
 		{71F33CDD-1748-4276-AB9B-5B09DDAEFBE4}.Release|x86.Build.0 = Release|Any CPU
+		{49DA0C6E-5CD3-41B1-980B-6D239CE6500E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49DA0C6E-5CD3-41B1-980B-6D239CE6500E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49DA0C6E-5CD3-41B1-980B-6D239CE6500E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{49DA0C6E-5CD3-41B1-980B-6D239CE6500E}.Debug|x64.Build.0 = Debug|Any CPU
+		{49DA0C6E-5CD3-41B1-980B-6D239CE6500E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{49DA0C6E-5CD3-41B1-980B-6D239CE6500E}.Debug|x86.Build.0 = Debug|Any CPU
+		{49DA0C6E-5CD3-41B1-980B-6D239CE6500E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49DA0C6E-5CD3-41B1-980B-6D239CE6500E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49DA0C6E-5CD3-41B1-980B-6D239CE6500E}.Release|x64.ActiveCfg = Release|Any CPU
+		{49DA0C6E-5CD3-41B1-980B-6D239CE6500E}.Release|x64.Build.0 = Release|Any CPU
+		{49DA0C6E-5CD3-41B1-980B-6D239CE6500E}.Release|x86.ActiveCfg = Release|Any CPU
+		{49DA0C6E-5CD3-41B1-980B-6D239CE6500E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

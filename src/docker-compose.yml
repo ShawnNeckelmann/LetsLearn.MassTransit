@@ -2,12 +2,30 @@ version: '3.4'
 
 services:
   # http://localhost:8080/swagger/index.html
-  burgerlink.api:
-    container_name: BurgerLink.Api	
-    image: ${DOCKER_REGISTRY-}burgerlinkapi
+  # burgerlink.api:
+  #   container_name: BurgerLink.Api	
+  #   image: ${DOCKER_REGISTRY-}burgerlinkapi
+  #   build:
+  #     context: .
+  #     dockerfile: api/BurgerLink.Api/Dockerfile
+  #   volumes:
+  #     - ./local-settings:/app/settings
+  #     - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+  #   ports:
+  #     - 8080:8080
+  #   environment:
+  #       ASPNETCORE_URLS: http://+:8080
+  #   env_file:
+  #     - ./local-settings/.env
+  #   depends_on:
+  #     - rabbitmq
+
+  burgerlink.ui:
+    image: ${DOCKER_REGISTRY-}burgerlinkui
+    container_name: BurgerLink.Ui
     build:
       context: .
-      dockerfile: api/BurgerLink.Api/Dockerfile
+      dockerfile: ui/BurgerLink.Ui/Dockerfile
     volumes:
       - ./local-settings:/app/settings
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
@@ -19,6 +37,8 @@ services:
       - ./local-settings/.env
     depends_on:
       - rabbitmq
+
+
       
   burgerlink.inventory:
     container_name: BurgerLink.Inventory	
