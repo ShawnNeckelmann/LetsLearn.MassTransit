@@ -14,7 +14,7 @@ public class InventoryControllerTests
 
         async Task Test(ITestHarness harness, HttpClient client)
         {
-            const string urlGetAll = "/Inventory";
+            const string urlGetAll = "/inventory";
 
             var httpResponseMessage = await client.PostAsync(urlGetAll, JsonContent.Create(new UpsertInventoryItem
             {
@@ -56,7 +56,7 @@ public class InventoryControllerTests
 
         async Task Test(ITestHarness harness, HttpClient client)
         {
-            const string urlGetAll = "/Inventory/all";
+            const string urlGetAll = "/inventory/all";
             var httpResponseMessage = await client.GetAsync(urlGetAll);
 
 
