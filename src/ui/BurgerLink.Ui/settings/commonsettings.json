@@ -1,0 +1,21 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "ConnectionStrings": {
+    "RabbitMq": "amqp://guest:guest@rabbitmq:5672"
+  },
+  "InventoryDatabase": {
+    "ConnectionString": "mongodb://root:example@mongo:27017",
+    "DatabaseName": "InventoryService",
+    "CollectionName": "Inventory"
+  },
+  "OrderDatabase": {
+    "CollectionName": "Orders",
+    "ConnectionString": "mongodb://root:example@mongo:27017",
+    "DatabaseName": "OrderService"
+  }
+}

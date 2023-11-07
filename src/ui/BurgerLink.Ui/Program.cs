@@ -1,6 +1,9 @@
+using BurgerLink.Shared.AppConfiguration;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Configuration.LoadAppSettings();
+builder.Logging.ConfigureLogging();
 
 builder.Services.AddControllersWithViews();
 
