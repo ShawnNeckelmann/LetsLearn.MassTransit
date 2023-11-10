@@ -6,7 +6,7 @@
     }
   },
   "ConnectionStrings": {
-    "RabbitMq": "amqp://guest:guest@rabbitmq:5672"
+    "RabbitMq": "amqp://guest:guest@rabbitmq:5672"    
   },
   "InventoryDatabase": {
     "ConnectionString": "mongodb://root:example@mongo:27017",
@@ -17,5 +17,8 @@
     "CollectionName": "Orders",
     "ConnectionString": "mongodb://root:example@mongo:27017",
     "DatabaseName": "OrderService"
+  },
+  "Otel": {
+    "Address": "http://otel-collector:4317/"
   }
 }

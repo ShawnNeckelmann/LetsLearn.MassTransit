@@ -54,4 +54,8 @@
       </ResolvedFileToPublish>
     </ItemGroup>
   </Target>
+  
+  <ItemGroup>
+    <Content Remove="C:\Users\shawn\Source\github\ShawnNeckelmann\LetsLearn.MassTransit\src\local-settings\commonsettings.json" />
+  </ItemGroup>
 </Project>
