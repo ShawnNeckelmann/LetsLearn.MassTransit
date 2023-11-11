@@ -6,3 +6,10 @@ public record UpsertInventoryItem
 
     public int Quantity { get; set; }
 }
+
+public record InventoryItemSet
+{
+    public string ItemName { get; init; }
+
+    public int Quantity { get; set; }
+}

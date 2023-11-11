@@ -1,3 +1,4 @@
+using BurgerLink.Inventory.Contracts.Commands;
 using BurgerLink.Inventory.Entity;
 using BurgerLink.Inventory.Services;
 using MassTransit;
@@ -29,6 +30,11 @@ public class UpsertInventoryItemConsumer : IConsumer<Contracts.Commands.UpsertIn
             };
 
             await _inventoryService.Collection.InsertOneAsync(item);
+            await context.Publish<InventoryItemSet>(new
+            {
+                context.Message.ItemName,
+                context.Message.Quantity
+            });
         }
         else
         {
@@ -39,6 +45,12 @@ public class UpsertInventoryItemConsumer : IConsumer<Contracts.Commands.UpsertIn
                     context.Message.ItemName),
                 Builders<InventoryEntity>.Update.Set(inventoryEntity => inventoryEntity.Quantity, quantity)
             );
+
+            await context.Publish<InventoryItemSet>(new
+            {
+                context.Message.ItemName,
+                quantity
+            });
         }
     }
 }
