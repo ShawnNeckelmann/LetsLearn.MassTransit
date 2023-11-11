@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\services\inventory\BurgerLink.Inventory.Contracts\BurgerLink.Inventory.Contracts.csproj" />
     <ProjectReference Include="..\..\shared\BurgerLink.Shared\BurgerLink.Shared.csproj" />
   </ItemGroup>
 
