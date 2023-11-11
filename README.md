@@ -6,7 +6,7 @@ We will have an inventory API with one service per ingredient.  Each ingredient 
 
 [Creating](https://masstransit-project.com/usage/sagas/) & “[cooking](<https://masstransit-project.com/usage/sagas/>)” an order will also be supported, with each ingredient-service also responsible for preparing the ingredient.
 
-1. Advanced Preparation
+1. Advance Preparation
     1. Clone Repository
     2. Create/Push Own Branch
     3. Confirm Able to Start Solution Under Docker-Compose profile.
