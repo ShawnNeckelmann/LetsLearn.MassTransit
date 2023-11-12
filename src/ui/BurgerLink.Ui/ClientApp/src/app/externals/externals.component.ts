@@ -28,7 +28,7 @@ export class ExternalsComponent {
     this.products.push({
       name: 'Grafana',
       address: 'http://localhost:3000/',
-      information: 'Grafana',
+      information: 'Metrics, traces, and logs.',
       credentials: '',
     });
   }
