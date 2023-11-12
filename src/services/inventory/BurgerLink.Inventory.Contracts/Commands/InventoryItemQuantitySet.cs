@@ -1,6 +1,6 @@
 namespace BurgerLink.Inventory.Contracts.Commands;
 
-public record UpsertInventoryItem
+public record InventoryItemQuantitySet
 {
     public string ItemName { get; init; }
 

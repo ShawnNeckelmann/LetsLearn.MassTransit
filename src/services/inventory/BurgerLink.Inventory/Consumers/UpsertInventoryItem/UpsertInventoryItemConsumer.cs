@@ -30,7 +30,7 @@ public class UpsertInventoryItemConsumer : IConsumer<Contracts.Commands.UpsertIn
             };
 
             await _inventoryService.Collection.InsertOneAsync(item);
-            await context.Publish<InventoryItemSet>(new
+            await context.Publish<InventoryItemQuantitySet>(new
             {
                 context.Message.ItemName,
                 context.Message.Quantity
@@ -46,7 +46,7 @@ public class UpsertInventoryItemConsumer : IConsumer<Contracts.Commands.UpsertIn
                 Builders<InventoryEntity>.Update.Set(inventoryEntity => inventoryEntity.Quantity, quantity)
             );
 
-            await context.Publish<InventoryItemSet>(new
+            await context.Publish<InventoryItemQuantitySet>(new
             {
                 context.Message.ItemName,
                 quantity

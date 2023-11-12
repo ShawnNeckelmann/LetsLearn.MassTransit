@@ -4,21 +4,21 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace BurgerLink.Ui.Consumers;
 
-public class UpsertInventoryItemConsumer : IConsumer<InventoryItemSet>
+public class InventoryItemQuantitySetConsumer : IConsumer<InventoryItemQuantitySet>
 {
     private readonly IHubContext<BurgerLinkEventHub> _hubContext;
 
-    public UpsertInventoryItemConsumer(IHubContext<BurgerLinkEventHub> hubContext)
+    public InventoryItemQuantitySetConsumer(IHubContext<BurgerLinkEventHub> hubContext)
     {
         _hubContext = hubContext;
     }
 
-    public Task Consume(ConsumeContext<InventoryItemSet> context)
+    public Task Consume(ConsumeContext<InventoryItemQuantitySet> context)
     {
         Console.WriteLine(context.Message.ItemName);
 
         _hubContext.Clients.All.SendCoreAsync(
-            nameof(InventoryItemSet),
+            nameof(InventoryItemQuantitySet),
             new object?[] { context.Message },
             context.CancellationToken);
 
