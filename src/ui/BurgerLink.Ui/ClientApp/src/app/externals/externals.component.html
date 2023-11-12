@@ -1,0 +1,19 @@
+<p-table [value]="products"
+         [tableStyle]="{ 'min-width': '50rem' }">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Name</th>
+      <th>Credentials</th>
+      <th>Information</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body"
+               let-product>
+    <tr>
+      <td><a [href]=product.address
+           target="_blank">{{ product.name }}</a></td>
+      <td>{{ product.credentials }}</td>
+      <td>{{ product.information }}</td>
+    </tr>
+  </ng-template>
+</p-table>

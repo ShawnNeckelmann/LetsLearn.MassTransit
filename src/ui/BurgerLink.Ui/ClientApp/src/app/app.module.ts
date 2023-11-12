@@ -11,6 +11,9 @@ import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 
 import { ButtonModule } from 'primeng/button';
+import { TableModule } from 'primeng/table';
+
+import { ExternalsComponent } from './externals/externals.component';
 
 @NgModule({
   declarations: [
@@ -18,10 +21,12 @@ import { ButtonModule } from 'primeng/button';
     NavMenuComponent,
     HomeComponent,
     CounterComponent,
-    FetchDataComponent
+    FetchDataComponent,
+    ExternalsComponent,
   ],
   imports: [
     ButtonModule,
+    TableModule,
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
@@ -29,9 +34,10 @@ import { ButtonModule } from 'primeng/button';
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
-    ])
+      { path: 'externals', component: ExternalsComponent },
+    ]),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

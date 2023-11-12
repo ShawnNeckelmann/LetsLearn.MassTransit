@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { SignalrService } from './services/signalr.service';
+import { InventoryService } from './services/InventoryService.service';
 
 @Component({
   selector: 'app-root',
@@ -8,10 +8,10 @@ import { SignalrService } from './services/signalr.service';
 export class AppComponent {
   title = 'app';
 
-  constructor(public signalRService: SignalrService) {}
+  constructor(public svcInventory: InventoryService) {}
 
   ngOnInit() {
-    this.signalRService.OnInventoryItemQuantitySet.subscribe((obj) => {
+    this.svcInventory.onInventoryItemQuantitySet.subscribe((obj) => {
       console.log(`Item name: ${obj.itemName}`);
       console.log(`Item quantity: ${obj.quantity}`);
     });

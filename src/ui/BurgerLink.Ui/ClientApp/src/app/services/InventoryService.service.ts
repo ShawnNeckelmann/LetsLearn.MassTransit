@@ -6,7 +6,7 @@ import { Subject } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class SignalrService {
+export class InventoryService {
   private eventSubject = new Subject<InventoryItemQuantitySet>();
   private hubConnection: HubConnection;
 
@@ -33,7 +33,7 @@ export class SignalrService {
     });
   }
 
-  get OnInventoryItemQuantitySet() {
+  get onInventoryItemQuantitySet() {
     return this.eventSubject.asObservable();
   }
 }
