@@ -1,0 +1,30 @@
+<p-splitter>
+  <ng-template pTemplate>
+    <div class="col flex align-items-center justify-content-center">
+      Menu
+      <p-divider></p-divider>
+      <div class="flex justify-content-center">
+        <p-listbox [options]="cities"
+                   [filter]="true"
+                   [(ngModel)]="selectedCities"
+                   [multiple]="true"
+                   optionLabel="name"
+                   [metaKeySelection]="true"
+                   [style]="{'width':'15rem'}"></p-listbox>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate>
+    <div class="col flex align-items-center justify-content-center">
+      Order
+      <p-divider></p-divider>
+      <div class="card flex justify-content-center">
+        <p-listbox [options]="selectedCities"
+                   optionLabel="name"
+                   [style]="{'width':'15rem'}"></p-listbox>
+      </div>
+    </div>
+
+  </ng-template>
+</p-splitter>
