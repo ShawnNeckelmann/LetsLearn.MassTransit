@@ -1,4 +1,4 @@
-<p-table [value]="products"
+<p-table [value]="(products$ | async)!"
          [tableStyle]="{ 'min-width': '50rem' }">
   <ng-template pTemplate="header">
     <tr>

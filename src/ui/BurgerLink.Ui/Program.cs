@@ -26,8 +26,16 @@ builder.Services
     .AddAndConfigureMassTransit(cs)
     .ConfigureTelemetry(otelAddress);
 
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 
 var app = builder.Build();
+
+app.UseSwagger()
+    .UseSwaggerUI();
+
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
