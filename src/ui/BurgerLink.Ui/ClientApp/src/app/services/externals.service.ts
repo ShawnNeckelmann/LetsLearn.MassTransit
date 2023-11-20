@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -13,8 +13,14 @@ export class ExternalsService {
 
   public Sites(): Observable<ExternalSite[]> {
     console.log('BASE URL' + this.baseUrl);
-    return this.http.get<ExternalSite[]>(this.baseUrl + 'externals');
+    return this.http
+      .get<ExternalsResponse>(this.baseUrl + 'api/externals')
+      .pipe(map((x) => x.externals));
   }
+}
+
+export interface ExternalsResponse {
+  externals: ExternalSite[];
 }
 
 export interface ExternalSite {

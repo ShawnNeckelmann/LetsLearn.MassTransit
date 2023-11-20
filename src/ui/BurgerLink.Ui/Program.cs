@@ -10,6 +10,7 @@ var cs = builder.Configuration.GetConnectionString("RabbitMq") ??
 var otelAddress = builder.Configuration.GetSection("Otel")["Address"] ??
                   throw new ArgumentNullException("builder.Configuration.GetSection(\"Otel\")[\"Address\"]");
 
+builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssembly(typeof(Program).Assembly));
 builder.Services.AddSignalR();
 builder.Logging.ConfigureLogging(otelAddress);
 

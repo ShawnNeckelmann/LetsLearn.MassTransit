@@ -1,4 +1,4 @@
-using BurgerLink.Inventory.Contracts.Commands;
+using BurgerLink.Inventory.Contracts.Events;
 using BurgerLink.Inventory.Entity;
 using BurgerLink.Inventory.Services;
 using MassTransit;
@@ -30,10 +30,12 @@ public class UpsertInventoryItemConsumer : IConsumer<Contracts.Commands.UpsertIn
             };
 
             await _inventoryService.Collection.InsertOneAsync(item);
-            await context.Publish<InventoryItemQuantitySet>(new
+
+            await context.Publish(new InventoryItemAdded
             {
-                context.Message.ItemName,
-                context.Message.Quantity
+                Id = item.Id,
+                ItemName = context.Message.ItemName,
+                Quantity = context.Message.Quantity
             });
         }
         else
@@ -46,10 +48,13 @@ public class UpsertInventoryItemConsumer : IConsumer<Contracts.Commands.UpsertIn
                 Builders<InventoryEntity>.Update.Set(inventoryEntity => inventoryEntity.Quantity, quantity)
             );
 
-            await context.Publish<InventoryItemQuantitySet>(new
+            var id = entity.Id ?? Guid.NewGuid().ToString();
+
+            await context.Publish(new InventoryItemModified
             {
-                context.Message.ItemName,
-                quantity
+                Id = id,
+                ItemName = context.Message.ItemName,
+                Quantity = quantity
             });
         }
     }

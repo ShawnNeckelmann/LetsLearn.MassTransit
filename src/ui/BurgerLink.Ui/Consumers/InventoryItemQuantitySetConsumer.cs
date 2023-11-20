@@ -1,10 +1,10 @@
-﻿using BurgerLink.Inventory.Contracts.Commands;
+﻿using BurgerLink.Inventory.Contracts.Events;
 using MassTransit;
 using Microsoft.AspNetCore.SignalR;
 
 namespace BurgerLink.Ui.Consumers;
 
-public class InventoryItemQuantitySetConsumer : IConsumer<InventoryItemQuantitySet>
+public class InventoryItemQuantitySetConsumer : IConsumer<InventoryItemModified>, IConsumer<InventoryItemAdded>
 {
     private readonly IHubContext<BurgerLinkEventHub> _hubContext;
 
@@ -13,12 +13,24 @@ public class InventoryItemQuantitySetConsumer : IConsumer<InventoryItemQuantityS
         _hubContext = hubContext;
     }
 
-    public Task Consume(ConsumeContext<InventoryItemQuantitySet> context)
+    public Task Consume(ConsumeContext<InventoryItemAdded> context)
     {
         Console.WriteLine(context.Message.ItemName);
 
         _hubContext.Clients.All.SendCoreAsync(
-            nameof(InventoryItemQuantitySet),
+            nameof(InventoryItemAdded),
+            new object?[] { context.Message },
+            context.CancellationToken);
+
+        return Task.CompletedTask;
+    }
+
+    public Task Consume(ConsumeContext<InventoryItemModified> context)
+    {
+        Console.WriteLine(context.Message.ItemName);
+
+        _hubContext.Clients.All.SendCoreAsync(
+            nameof(InventoryItemModified),
             new object?[] { context.Message },
             context.CancellationToken);
 

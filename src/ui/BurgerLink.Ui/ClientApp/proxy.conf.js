@@ -5,12 +5,12 @@ const { env } = require('process');
 //   env.ASPNETCORE_URLS ? env.ASPNETCORE_URLS.split(';')[0] :
 //     'http://localhost:8125';
 
-const target = 'https://localhost:7221/api';
+const target = 'https://localhost:7221';
 
 const PROXY_CONFIG = [
   {
     context: [
-      "/externals",
+      "/api/*",
    ],
     proxyTimeout: 10000,
     target: target,
