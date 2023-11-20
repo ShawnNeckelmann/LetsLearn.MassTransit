@@ -29,7 +29,12 @@ import { MessageService } from 'primeng/api';
     HttpClientModule,
     FormsModule,
     RouterModule.forRoot([
-      { path: '', component: InventoryComponent, pathMatch: 'full' },
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: '/inventory',
+      },
+      { path: 'inventory', component: InventoryComponent },
       { path: 'menu', component: MenuComponent },
       { path: 'orders', component: OrdersComponent },
       { path: 'externals', component: ExternalsComponent },

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MessageService, SelectItem } from 'primeng/api';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-inventory',
@@ -7,58 +7,33 @@ import { MessageService, SelectItem } from 'primeng/api';
   styleUrls: ['./inventory.component.css'],
 })
 export class InventoryComponent {
-  products: Product[];
-  statuses: SelectItem[];
-  clonedProducts: { [s: string]: Product } = {};
+  inventoryItems: InventoryItem[];
 
-  constructor(private messageService: MessageService) {
-    this.statuses = [
-      { label: 'In Stock', value: 'INSTOCK' },
-      { label: 'Low Stock', value: 'LOWSTOCK' },
-      { label: 'Out of Stock', value: 'OUTOFSTOCK' },
-    ];
-
-    this.products = [];
-    this.products.push({
+  constructor(private serviceTitle: Title) {
+    this.serviceTitle.setTitle('BurgerLink.Ui > Inventory');
+    this.inventoryItems = [];
+    this.inventoryItems.push({
       id: 1,
-      code: 'test',
       name: 'first',
-      price: 1,
-      inventoryStatus: 'INSTOCK',
+      quantity: 10,
     });
   }
 
-  onRowEditInit(product: Product) {
-    this.clonedProducts[product.id] = { ...product };
+  onRowEditInit(inventoryItem: InventoryItem) {
+    console.log(inventoryItem);
   }
 
-  onRowEditSave(product: Product) {
-    if (product.price > 0) {
-      delete this.clonedProducts[product.id];
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Success',
-        detail: 'Product is updated',
-      });
-    } else {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Invalid Price',
-      });
-    }
+  onRowEditSave(inventoryItem: InventoryItem) {
+    console.log(inventoryItem);
   }
 
-  onRowEditCancel(product: Product, index: number) {
-    this.products[index] = this.clonedProducts[product.id];
-    delete this.clonedProducts[product.id];
+  onRowEditCancel(inventoryItem: InventoryItem, index: number) {
+    console.log(inventoryItem);
   }
 }
 
-interface Product {
+interface InventoryItem {
   id: number;
-  code: string;
   name: string;
-  price: number;
-  inventoryStatus: string;
+  quantity: number;
 }
