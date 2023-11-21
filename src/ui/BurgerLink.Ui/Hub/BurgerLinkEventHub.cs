@@ -13,11 +13,6 @@ public class BurgerLinkEventHub : Hub
         inventoryRepository.OnItemModified += OnItemModified;
     }
 
-    public override async Task OnConnectedAsync()
-    {
-        await Clients.All.SendAsync("OnConnected", $"{Context.ConnectionId} has joined.");
-    }
-
     private async void OnItemAdded(object? sender, InventoryItem e)
     {
         await _hubContext.Clients.All.SendCoreAsync(
