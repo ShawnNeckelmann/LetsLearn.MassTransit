@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable, Signal, signal } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
@@ -45,20 +46,33 @@ export class InventoryService {
     return this._inventoryItems.asReadonly();
   }
 
+  public AddInventoryItem(name: string): Observable<number> {
+    return this.http.post<number>(this.baseUrl + 'api/inventory', {
+      itemName: name,
+      quantity: 1,
+    });
+  }
+
   private configureHubEvents() {
     this.hubConnection.on('inventoryItemAdded', (data: InventoryItem) => {
       this._inventoryItems.mutate((value: InventoryItem[]) => {
+        const index = this._inventoryItems().findIndex((x) => x.id == data.id);
+        if (index > -1) {
+          return;
+        }
         value.push(data);
       });
     });
 
     this.hubConnection.on('inventoryItemModified', (data: InventoryItem) => {
       this._inventoryItems.mutate((value: InventoryItem[]) => {
+        console.log('inventoryItemModified');
         const index = value.findIndex((x) => x.id == data.id);
         if (index == -1) {
-          return;
+          value.push(data);
+        } else {
+          value[index] = data;
         }
-        value[index] = data;
       });
     });
   }

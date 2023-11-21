@@ -5,12 +5,21 @@ using Microsoft.AspNetCore.SignalR;
 public class BurgerLinkEventHub : Hub
 {
     private readonly IHubContext<BurgerLinkEventHub> _hubContext;
+    private readonly IInventoryRepository _inventoryRepository;
 
     public BurgerLinkEventHub(IHubContext<BurgerLinkEventHub> hubContext, IInventoryRepository inventoryRepository)
     {
         _hubContext = hubContext;
-        inventoryRepository.OnItemAdded += OnItemAdded;
-        inventoryRepository.OnItemModified += OnItemModified;
+        _inventoryRepository = inventoryRepository;
+
+        _inventoryRepository.OnItemAdded += OnItemAdded;
+        _inventoryRepository.OnItemModified += OnItemModified;
+    }
+
+    ~BurgerLinkEventHub()
+    {
+        _inventoryRepository.OnItemAdded += OnItemAdded;
+        _inventoryRepository.OnItemModified += OnItemModified;
     }
 
     private async void OnItemAdded(object? sender, InventoryItem e)

@@ -4,7 +4,6 @@ import {
   InventoryItem,
   InventoryService,
 } from '../services/InventoryService.service';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-inventory',
@@ -13,6 +12,7 @@ import { Observable } from 'rxjs';
 })
 export class InventoryComponent {
   inventoryItems: InventoryItem[] = [];
+  newItemName: string = '';
 
   constructor(
     private serviceTitle: Title,
@@ -32,5 +32,10 @@ export class InventoryComponent {
 
   onRowEditCancel(inventoryItem: InventoryItem, index: number) {
     console.log(inventoryItem);
+  }
+
+  onSubmit() {
+    this.serviceInventory.AddInventoryItem(this.newItemName).subscribe();
+    this.newItemName = '';
   }
 }
