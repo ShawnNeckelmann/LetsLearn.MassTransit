@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace BurgerLink.Ui.Consumers;
 
-public class InventoryItemQuantitySetConsumer : IConsumer<InventoryItemModified>, IConsumer<InventoryItemAdded>
+public class InventoryModifiedConsumer : IConsumer<InventoryItemModified>, IConsumer<InventoryItemAdded>
 {
     private readonly IHubContext<BurgerLinkEventHub> _hubContext;
 
-    public InventoryItemQuantitySetConsumer(IHubContext<BurgerLinkEventHub> hubContext)
+    public InventoryModifiedConsumer(IHubContext<BurgerLinkEventHub> hubContext)
     {
         _hubContext = hubContext;
     }

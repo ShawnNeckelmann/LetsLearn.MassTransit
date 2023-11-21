@@ -8,7 +8,6 @@ import { HubConnection } from '@microsoft/signalr';
 })
 export class InventoryService {
   private hubConnection: HubConnection;
-  private _backingInventory: Map<string, InventoryItem>;
   private _inventoryItems = signal<InventoryItem[]>([]);
 
   constructor(
@@ -17,17 +16,16 @@ export class InventoryService {
   ) {
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl('https://localhost:7221/events')
+      .withAutomaticReconnect()
       .build();
 
     this.startConnection();
-    this._backingInventory = new Map<string, InventoryItem>();
 
     this.http
       .get<InventoryResponse>(this.baseUrl + 'api/inventory')
       .subscribe((results) => {
         this._inventoryItems.mutate((x) => {
           results.inventoryItems.forEach((item) => {
-            this._backingInventory.set(item.id, item);
             x.push(item);
           });
         });
@@ -40,20 +38,28 @@ export class InventoryService {
       .then(() => console.log('Connection started'))
       .catch((err) => console.log('Error while starting connection: ' + err));
 
-    this.configureInventoryItemQuantitySet();
+    this.configureHubEvents();
   }
 
   get InventoryItems(): Signal<InventoryItem[]> {
     return this._inventoryItems.asReadonly();
   }
 
-  private configureInventoryItemQuantitySet() {
-    this.hubConnection.on('inventoryItemAdded', (data) => {
-      console.log('added: ' + JSON.stringify(data));
+  private configureHubEvents() {
+    this.hubConnection.on('inventoryItemAdded', (data: InventoryItem) => {
+      this._inventoryItems.mutate((value: InventoryItem[]) => {
+        value.push(data);
+      });
     });
 
-    this.hubConnection.on('inventoryItemModified', (data) => {
-      console.log('modified: ' + JSON.stringify(data));
+    this.hubConnection.on('inventoryItemModified', (data: InventoryItem) => {
+      this._inventoryItems.mutate((value: InventoryItem[]) => {
+        const index = value.findIndex((x) => x.id == data.id);
+        if (index == -1) {
+          return;
+        }
+        value[index] = data;
+      });
     });
   }
 }
@@ -64,6 +70,6 @@ export interface InventoryResponse {
 
 export interface InventoryItem {
   id: string;
-  name: string;
+  itemName: string;
   quantity: number;
 }
