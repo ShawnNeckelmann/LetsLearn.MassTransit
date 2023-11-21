@@ -13,7 +13,7 @@ public class MongoDbInventoryService : BaseMongoCollection<InventoryEntity>, IIn
 
     public async Task<InventoryEntity> InventoryEntityByItemName(string itemName)
     {
-        var filter = MongoDbFilters.InventoryFilter(itemName);
+        var filter = MongoDbFilters.InventoryFilterByName(itemName);
         var entity = await Collection
             .Find(filter)
             .SingleOrDefaultAsync();
