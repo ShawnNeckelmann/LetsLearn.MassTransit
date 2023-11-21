@@ -18,6 +18,11 @@
     "ConnectionString": "mongodb://root:example@localhost:27017",
     "DatabaseName": "OrderService"
   },
+  "UiDatabase": {
+    "CollectionName": "Inventory",
+    "ConnectionString": "mongodb://root:example@localhost:27017",
+    "DatabaseName": "UiService"
+  },
   "Otel": {
     "Address": "http://localhost:4317/"
   }

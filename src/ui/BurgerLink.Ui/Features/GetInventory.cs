@@ -1,52 +1,37 @@
-﻿using MediatR;
+﻿using BurgerLink.Ui.Repository;
+using MediatR;
 
 namespace BurgerLink.Ui.Features;
 
 public class GetInventory
 {
-    public class GetInventoryHandler : IRequestHandler<GetInventoryRequest, GetInventoryResponse>
+    public class HandlerGetInventory : IRequestHandler<RequestGetInventory, ResponseGetInventory>
     {
-        public async Task<GetInventoryResponse> Handle(GetInventoryRequest request, CancellationToken cancellationToken)
+        private readonly IInventoryRepository _inventoryRepository;
+
+        public HandlerGetInventory(IInventoryRepository inventoryRepository)
         {
-            var retval = new GetInventoryResponse
+            _inventoryRepository = inventoryRepository;
+        }
+
+        public async Task<ResponseGetInventory> Handle(RequestGetInventory request, CancellationToken cancellationToken)
+        {
+            var inventoryItems = (await _inventoryRepository.AllInventoryItems()).ToList();
+            var retval = new ResponseGetInventory
             {
-                InventoryItems = new List<InventoryItem>
-                {
-                    new()
-                    {
-                        Quantity = 10,
-                        Name = "ten",
-                        Id = 1
-                    },
-                    new()
-                    {
-                        Quantity = 20,
-                        Name = "twenty",
-                        Id = 2
-                    }
-                }
+                InventoryItems = inventoryItems
             };
 
-
-            return await Task.FromResult(retval);
+            return retval;
         }
     }
 
-    public class GetInventoryRequest : IRequest<GetInventoryResponse>
+    public class RequestGetInventory : IRequest<ResponseGetInventory>
     {
     }
 
-    public class GetInventoryResponse
+    public class ResponseGetInventory
     {
         public List<InventoryItem> InventoryItems { get; set; }
-    }
-
-    public record InventoryItem
-    {
-        public int Id { get; set; }
-
-        public string Name { get; set; }
-
-        public int Quantity { get; set; }
     }
 }

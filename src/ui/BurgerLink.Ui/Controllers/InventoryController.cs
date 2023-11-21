@@ -17,7 +17,7 @@ public class InventoryController : BaseController
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        var retval = await _mediator.Send(new GetInventory.GetInventoryRequest());
+        var retval = await _mediator.Send(new GetInventory.RequestGetInventory());
         return Ok(retval);
     }
 }

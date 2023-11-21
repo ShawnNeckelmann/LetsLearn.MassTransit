@@ -1,4 +1,5 @@
 using BurgerLink.Shared.AppConfiguration;
+using BurgerLink.Ui.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,7 @@ builder.Services.AddCors(options =>
         .AllowCredentials());
 });
 builder.Services
+    .ConfigureDependencyInjection(builder.Configuration)
     .AddAndConfigureMassTransit(cs)
     .ConfigureTelemetry(otelAddress);
 
@@ -36,7 +38,6 @@ var app = builder.Build();
 
 app.UseSwagger()
     .UseSwaggerUI();
-
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
