@@ -1,38 +1,43 @@
 ﻿using BurgerLink.Inventory.Contracts.Events;
+using BurgerLink.Ui.Repository;
 using MassTransit;
-using Microsoft.AspNetCore.SignalR;
 
 namespace BurgerLink.Ui.Consumers;
 
 public class InventoryModifiedConsumer : IConsumer<InventoryItemModified>, IConsumer<InventoryItemAdded>
 {
-    private readonly IHubContext<BurgerLinkEventHub> _hubContext;
+    private readonly IInventoryRepository _inventoryRepository;
 
-    public InventoryModifiedConsumer(IHubContext<BurgerLinkEventHub> hubContext)
+
+    public InventoryModifiedConsumer(IInventoryRepository inventoryRepository)
     {
-        _hubContext = hubContext;
+        _inventoryRepository = inventoryRepository;
     }
 
-    public Task Consume(ConsumeContext<InventoryItemAdded> context)
+    public async Task Consume(ConsumeContext<InventoryItemAdded> context)
     {
-        Console.WriteLine(context.Message.ItemName);
+        try
+        {
+            var msg = context.Message;
+            var item = new InventoryItem
+            {
+                Id = msg.Id,
+                ItemName = msg.ItemName,
+                Quantity = msg.Quantity
+            };
 
-        _hubContext.Clients.All.SendCoreAsync(
-            nameof(InventoryItemAdded),
-            new object?[] { context.Message },
-            context.CancellationToken);
-
-        return Task.CompletedTask;
+            await _inventoryRepository.AddInventoryItem(item);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public Task Consume(ConsumeContext<InventoryItemModified> context)
     {
         Console.WriteLine(context.Message.ItemName);
-
-        _hubContext.Clients.All.SendCoreAsync(
-            nameof(InventoryItemModified),
-            new object?[] { context.Message },
-            context.CancellationToken);
 
         return Task.CompletedTask;
     }

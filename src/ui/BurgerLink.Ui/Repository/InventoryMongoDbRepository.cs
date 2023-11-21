@@ -4,12 +4,6 @@ using MongoDB.Driver;
 
 namespace BurgerLink.Ui.Repository;
 
-public interface IInventoryRepository
-{
-    Task<InventoryItem> AddInventoryItem(InventoryItem item);
-    Task<IEnumerable<InventoryItem>> AllInventoryItems();
-}
-
 public class InventoryMongoDbRepository : BaseMongoCollection<InventoryItem>, IInventoryRepository
 {
     public InventoryMongoDbRepository(IOptions<MongoDbSettings> settings) : base(settings.Value)
@@ -19,8 +13,8 @@ public class InventoryMongoDbRepository : BaseMongoCollection<InventoryItem>, II
 
     public async Task<InventoryItem> AddInventoryItem(InventoryItem item)
     {
-        item.Id = string.Empty;
         await Collection.InsertOneAsync(item);
+        OnItemAdded?.Invoke(this, item);
         return item;
     }
 
@@ -29,4 +23,6 @@ public class InventoryMongoDbRepository : BaseMongoCollection<InventoryItem>, II
         var retval = await Collection.Find(item => true).ToListAsync();
         return retval ?? new List<InventoryItem>();
     }
+
+    public event EventHandler<InventoryItem>? OnItemAdded;
 }
