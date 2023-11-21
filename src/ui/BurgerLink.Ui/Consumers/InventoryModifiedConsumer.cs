@@ -37,6 +37,6 @@ public class InventoryModifiedConsumer : IConsumer<InventoryItemModified>, ICons
             ItemName = msg.ItemName
         };
 
-        await _inventoryRepository.ModifyItem(item);
+        await _inventoryRepository.ModifyInventoryItem(item);
     }
 }

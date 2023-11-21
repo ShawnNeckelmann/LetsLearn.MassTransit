@@ -4,7 +4,7 @@ public interface IInventoryRepository
 {
     Task<InventoryItem> AddInventoryItem(InventoryItem item);
     Task<IEnumerable<InventoryItem>> AllInventoryItems();
-    Task ModifyItem(InventoryItem item);
+    Task ModifyInventoryItem(InventoryItem item);
 
     event EventHandler<InventoryItem> OnItemAdded;
 

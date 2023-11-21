@@ -24,7 +24,7 @@ public class InventoryMongoDbRepository : BaseMongoCollection<InventoryItem>, II
         return retval ?? new List<InventoryItem>();
     }
 
-    public async Task ModifyItem(InventoryItem item)
+    public async Task ModifyInventoryItem(InventoryItem item)
     {
         var filter = Builders<InventoryItem>.Filter.Eq(inventoryItem => inventoryItem.Id, item.Id);
         var update = Builders<InventoryItem>.Update
