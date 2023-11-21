@@ -9,18 +9,26 @@ public class BurgerLinkEventHub : Hub
     public BurgerLinkEventHub(IHubContext<BurgerLinkEventHub> hubContext, IInventoryRepository inventoryRepository)
     {
         _hubContext = hubContext;
-        inventoryRepository.OnItemAdded += InventoryRepositoryOnOnItemAdded;
+        inventoryRepository.OnItemAdded += OnItemAdded;
+        inventoryRepository.OnItemModified += OnItemModified;
     }
 
-    private async void InventoryRepositoryOnOnItemAdded(object? sender, InventoryItem e)
+    public override async Task OnConnectedAsync()
+    {
+        await Clients.All.SendAsync("OnConnected", $"{Context.ConnectionId} has joined.");
+    }
+
+    private async void OnItemAdded(object? sender, InventoryItem e)
     {
         await _hubContext.Clients.All.SendCoreAsync(
             nameof(InventoryItemAdded),
             new object?[] { e });
     }
 
-    public override async Task OnConnectedAsync()
+    private async void OnItemModified(object? sender, InventoryItem e)
     {
-        await Clients.All.SendAsync("OnConnected", $"{Context.ConnectionId} has joined.");
+        await _hubContext.Clients.All.SendCoreAsync(
+            nameof(InventoryItemModified),
+            new object?[] { e });
     }
 }

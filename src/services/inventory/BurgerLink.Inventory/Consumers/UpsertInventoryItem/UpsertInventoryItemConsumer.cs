@@ -48,11 +48,9 @@ public class UpsertInventoryItemConsumer : IConsumer<Contracts.Commands.UpsertIn
                 Builders<InventoryEntity>.Update.Set(inventoryEntity => inventoryEntity.Quantity, quantity)
             );
 
-            var id = entity.Id ?? Guid.NewGuid().ToString();
-
             await context.Publish(new InventoryItemModified
             {
-                Id = id,
+                Id = entity.Id,
                 ItemName = context.Message.ItemName,
                 Quantity = quantity
             });

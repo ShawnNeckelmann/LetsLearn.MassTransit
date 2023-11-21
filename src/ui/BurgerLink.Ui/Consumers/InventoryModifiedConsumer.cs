@@ -16,29 +16,27 @@ public class InventoryModifiedConsumer : IConsumer<InventoryItemModified>, ICons
 
     public async Task Consume(ConsumeContext<InventoryItemAdded> context)
     {
-        try
+        var msg = context.Message;
+        var item = new InventoryItem
         {
-            var msg = context.Message;
-            var item = new InventoryItem
-            {
-                Id = msg.Id,
-                ItemName = msg.ItemName,
-                Quantity = msg.Quantity
-            };
+            Id = msg.Id,
+            ItemName = msg.ItemName,
+            Quantity = msg.Quantity
+        };
 
-            await _inventoryRepository.AddInventoryItem(item);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        await _inventoryRepository.AddInventoryItem(item);
     }
 
-    public Task Consume(ConsumeContext<InventoryItemModified> context)
+    public async Task Consume(ConsumeContext<InventoryItemModified> context)
     {
-        Console.WriteLine(context.Message.ItemName);
+        var msg = context.Message;
+        var item = new InventoryItem
+        {
+            Id = msg.Id,
+            Quantity = msg.Quantity,
+            ItemName = msg.ItemName
+        };
 
-        return Task.CompletedTask;
+        await _inventoryRepository.ModifyItem(item);
     }
 }
