@@ -66,7 +66,6 @@ export class InventoryService {
 
     this.hubConnection.on('inventoryItemModified', (data: InventoryItem) => {
       this._inventoryItems.mutate((value: InventoryItem[]) => {
-        console.log('inventoryItemModified');
         const index = value.findIndex((x) => x.id == data.id);
         if (index == -1) {
           value.push(data);

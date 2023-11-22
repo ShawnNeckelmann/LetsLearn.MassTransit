@@ -8,6 +8,7 @@ public static class ExtensionConfigureDependencyInjection
     public static IServiceCollection ConfigureDependencyInjection(this IServiceCollection services,
         ConfigurationManager configurationManager)
     {
+        services.AddHostedService<BurgerLinkEventHubNotifier>();
         services.AddSingleton<IInventoryRepository, InventoryMongoDbRepository>();
         services.Configure<MongoDbSettings>(configurationManager.GetSection("UiDatabase"));
         return services;
