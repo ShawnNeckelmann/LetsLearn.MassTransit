@@ -9,7 +9,7 @@ import { HubConnection } from '@microsoft/signalr';
 })
 export class InventoryService {
   private hubConnection: HubConnection;
-  private _inventoryItems = signal<InventoryItem[]>([]);
+  private _inventoryState = signal<InventoryItem[]>([]);
 
   constructor(
     @Inject('BASE_URL') private baseUrl: string,
@@ -25,7 +25,7 @@ export class InventoryService {
     this.http
       .get<InventoryResponse>(this.baseUrl + 'api/inventory')
       .subscribe((results) => {
-        this._inventoryItems.mutate((x) => {
+        this._inventoryState.mutate((x) => {
           results.inventoryItems.forEach((item) => {
             x.push(item);
           });
@@ -43,29 +43,41 @@ export class InventoryService {
   }
 
   get InventoryItems(): Signal<InventoryItem[]> {
-    return this._inventoryItems.asReadonly();
+    return this._inventoryState.asReadonly();
   }
 
-  public AddInventoryItem(name: string): Observable<number> {
+  public AddInventoryItem(
+    name: string,
+    quantity: number = 1
+  ): Observable<number> {
     return this.http.post<number>(this.baseUrl + 'api/inventory', {
       itemName: name,
-      quantity: 1,
+      quantity: quantity,
+    });
+  }
+
+  public ModifyInventoryItem(
+    id: string,
+    name: string,
+    quantity: number
+  ): Observable<number> {
+    return this.http.put<number>(this.baseUrl + 'api/inventory', {
+      id: id,
+      itemName: name,
+      quantity: quantity,
     });
   }
 
   private configureHubEvents() {
     this.hubConnection.on('inventoryItemAdded', (data: InventoryItem) => {
-      this._inventoryItems.mutate((value: InventoryItem[]) => {
-        const index = this._inventoryItems().findIndex((x) => x.id == data.id);
-        if (index > -1) {
-          return;
-        }
+      this._inventoryState.update((value: InventoryItem[]) => {
         value.push(data);
+        return value;
       });
     });
 
     this.hubConnection.on('inventoryItemModified', (data: InventoryItem) => {
-      this._inventoryItems.mutate((value: InventoryItem[]) => {
+      this._inventoryState.mutate((value: InventoryItem[]) => {
         const index = value.findIndex((x) => x.id == data.id);
         if (index == -1) {
           value.push(data);

@@ -2,7 +2,8 @@
 using BurgerLink.Ui.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using static BurgerLink.Ui.Features.AddInventory;
+using static BurgerLink.Ui.Features.AddInventoryItem;
+using static BurgerLink.Ui.Features.ModifyInventoryItem;
 
 namespace BurgerLink.Ui.Controllers;
 
@@ -27,5 +28,13 @@ public class InventoryController : BaseController
     {
         var retval = await _mediator.Send(new GetInventory.RequestGetInventory());
         return Ok(retval);
+    }
+
+
+    [HttpPut]
+    public async Task<IActionResult> ModifyInventoryItem(RequestModifyInventory modifyInventory)
+    {
+        await _mediator.Send(modifyInventory);
+        return Accepted();
     }
 }

@@ -1,9 +1,10 @@
-import { Component, WritableSignal, effect } from '@angular/core';
+import { Component, Signal, effect } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import {
   InventoryItem,
   InventoryService,
 } from '../services/InventoryService.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-inventory',
@@ -11,15 +12,42 @@ import {
   styleUrls: ['./inventory.component.css'],
 })
 export class InventoryComponent {
-  inventoryItems: InventoryItem[] = [];
-  newItemName: string = '';
+  inventoryItems: Signal<InventoryItem[]>;
+  inventoryIds: string[] = [];
+  newItemName: string = crypto.randomUUID();
 
   constructor(
     private serviceTitle: Title,
-    public serviceInventory: InventoryService
+    public serviceInventory: InventoryService,
+    private messageService: MessageService
   ) {
     this.serviceTitle.setTitle('BurgerLink.Ui > Inventory');
-    this.inventoryItems = serviceInventory.InventoryItems();
+    this.inventoryItems = serviceInventory.InventoryItems;
+
+    effect(() => {
+      this.serviceTitle.setTitle(
+        `BurgerLink.Ui > Inventory (${this.inventoryItems().length}) `
+      );
+
+      if (this.inventoryIds.length === 0) {
+        this.inventoryIds = this.inventoryItems().map((item) => item.id);
+        return;
+      }
+
+      const current = this.inventoryItems().map((i) => i.id);
+      const difference = current.filter(
+        (id) => !this.inventoryIds.includes(id)
+      );
+
+      difference.forEach((id) => {
+        const item = this.inventoryItems().filter((item) => item.id === id)[0];
+        this.messageService.add({
+          severity: 'success',
+          summary: 'New item!',
+          detail: `Just added ${item.quantity} ${item.itemName} to the inventory.`,
+        });
+      });
+    });
   }
 
   onRowEditInit(inventoryItem: InventoryItem) {
@@ -36,6 +64,7 @@ export class InventoryComponent {
 
   onSubmit() {
     this.serviceInventory.AddInventoryItem(this.newItemName).subscribe();
-    this.newItemName = '';
+    // this.newItemName = '';
+    this.newItemName = crypto.randomUUID();
   }
 }

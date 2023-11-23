@@ -13,6 +13,7 @@ import { MenuComponent } from './menu/menu.component';
 import { OrdersComponent } from './orders/orders.component';
 import { PrimengModule } from './primeng/primeng.module';
 import { MessageService } from 'primeng/api';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { MessageService } from 'primeng/api';
     OrdersComponent,
   ],
   imports: [
-    BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+    BrowserAnimationsModule,
+    BrowserModule,
     PrimengModule,
     HttpClientModule,
     FormsModule,
