@@ -41,7 +41,7 @@ export class InventoryComponent {
       difference.forEach((id) => {
         const item = this.inventoryItems().filter((item) => item.id === id)[0];
         this.messageService.add({
-          severity: 'success',
+          severity: 'info',
           summary: 'New item!',
           detail: `Just added ${item.quantity} ${item.itemName} to the inventory.`,
         });
