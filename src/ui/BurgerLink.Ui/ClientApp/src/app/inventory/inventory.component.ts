@@ -34,10 +34,9 @@ export class InventoryComponent {
         return;
       }
 
-      const current = this.inventoryItems().map((i) => i.id);
-      const difference = current.filter(
-        (id) => !this.inventoryIds.includes(id)
-      );
+      const difference = this.inventoryItems()
+        .map((i) => i.id)
+        .filter((id) => !this.inventoryIds.includes(id));
 
       difference.forEach((id) => {
         const item = this.inventoryItems().filter((item) => item.id === id)[0];
