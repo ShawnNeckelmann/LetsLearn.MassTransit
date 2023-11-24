@@ -13,7 +13,7 @@ import {
 export class InventoryComponent {
   inventoryItems: Signal<InventoryItem[]>;
   inventoryIds: string[] = [];
-  newItemName: string = crypto.randomUUID();
+  newItemName: string = '';
 
   constructor(
     private serviceTitle: Title,
@@ -29,12 +29,9 @@ export class InventoryComponent {
     });
   }
 
-  onRowEditInit(inventoryItem: InventoryItem) {
-    console.log(`onRowEditInit: ${JSON.stringify(inventoryItem)}`);
-  }
+  onRowEditInit(inventoryItem: InventoryItem) {}
 
   onRowEditSave(inventoryItem: InventoryItem) {
-    console.log(`onRowEditSave: ${JSON.stringify(inventoryItem)}`);
     this.serviceInventory
       .ModifyInventoryItem(
         inventoryItem.id,
@@ -44,9 +41,7 @@ export class InventoryComponent {
       .subscribe();
   }
 
-  onRowEditCancel(inventoryItem: InventoryItem, index: number) {
-    console.log(`onRowEditCancel: ${JSON.stringify(inventoryItem)}`);
-  }
+  onRowEditCancel(inventoryItem: InventoryItem, index: number) {}
 
   onSubmit() {
     this.serviceInventory.AddInventoryItem(this.newItemName).subscribe();

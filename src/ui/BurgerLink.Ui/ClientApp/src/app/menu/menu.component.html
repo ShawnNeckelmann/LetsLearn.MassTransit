@@ -4,11 +4,11 @@
       Menu
       <p-divider></p-divider>
       <div class="flex justify-content-center">
-        <p-listbox [options]="cities"
+        <p-listbox [options]="menuItemOptions()"
                    [filter]="true"
-                   [(ngModel)]="selectedCities"
+                   [(ngModel)]="selectedMenuItems"
                    [multiple]="true"
-                   optionLabel="name"
+                   optionLabel="itemName"
                    [metaKeySelection]="true"
                    [style]="{'width':'15rem'}"></p-listbox>
       </div>
@@ -20,8 +20,8 @@
       Order
       <p-divider></p-divider>
       <div class="card flex justify-content-center">
-        <p-listbox [options]="selectedCities"
-                   optionLabel="name"
+        <p-listbox [options]="selectedMenuItems"
+                   optionLabel="itemName"
                    [style]="{'width':'15rem'}"></p-listbox>
       </div>
     </div>

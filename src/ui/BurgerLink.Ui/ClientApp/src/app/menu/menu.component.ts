@@ -1,4 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Signal, effect } from '@angular/core';
+import {
+  InventoryItem,
+  InventoryService,
+} from '../services/InventoryService.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-menu',
@@ -6,23 +11,24 @@ import { Component } from '@angular/core';
   styleUrls: ['./menu.component.css'],
 })
 export class MenuComponent {
-  cities: City[];
+  menuItemOptions: Signal<InventoryItem[]>;
+  selectedMenuItems: InventoryItem[];
 
-  selectedCities: City[];
+  constructor(
+    private serviceTitle: Title,
+    public serviceInventory: InventoryService
+  ) {
+    this.selectedMenuItems = [];
+    this.menuItemOptions = serviceInventory.InventoryItems;
 
-  constructor() {
-    this.selectedCities = [];
-    this.cities = [
-      { name: 'New York', code: 'NY' },
-      { name: 'Rome', code: 'RM' },
-      { name: 'London', code: 'LDN' },
-      { name: 'Istanbul', code: 'IST' },
-      { name: 'Paris', code: 'PRS' },
-    ];
+    this.serviceTitle.setTitle(
+      `BurgerLink.Ui > Inventory (${this.menuItemOptions().length}) `
+    );
+
+    effect(() => {
+      this.serviceTitle.setTitle(
+        `BurgerLink.Ui > Menu (${this.menuItemOptions().length}) `
+      );
+    });
   }
-}
-
-interface City {
-  name: string;
-  code: string;
 }
