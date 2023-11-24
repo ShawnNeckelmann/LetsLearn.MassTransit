@@ -30,20 +30,26 @@ export class InventoryComponent {
   }
 
   onRowEditInit(inventoryItem: InventoryItem) {
-    console.log(inventoryItem);
+    console.log(`onRowEditInit: ${JSON.stringify(inventoryItem)}`);
   }
 
   onRowEditSave(inventoryItem: InventoryItem) {
-    console.log(inventoryItem);
+    console.log(`onRowEditSave: ${JSON.stringify(inventoryItem)}`);
+    this.serviceInventory
+      .ModifyInventoryItem(
+        inventoryItem.id,
+        inventoryItem.itemName,
+        inventoryItem.quantity
+      )
+      .subscribe();
   }
 
   onRowEditCancel(inventoryItem: InventoryItem, index: number) {
-    console.log(inventoryItem);
+    console.log(`onRowEditCancel: ${JSON.stringify(inventoryItem)}`);
   }
 
   onSubmit() {
     this.serviceInventory.AddInventoryItem(this.newItemName).subscribe();
-    // this.newItemName = '';
-    this.newItemName = crypto.randomUUID();
+    this.newItemName = '';
   }
 }
