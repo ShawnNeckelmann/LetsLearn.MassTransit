@@ -4,7 +4,6 @@ import {
   InventoryItem,
   InventoryService,
 } from '../services/InventoryService.service';
-import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-inventory',
@@ -18,8 +17,7 @@ export class InventoryComponent {
 
   constructor(
     private serviceTitle: Title,
-    public serviceInventory: InventoryService,
-    private messageService: MessageService
+    public serviceInventory: InventoryService
   ) {
     this.serviceTitle.setTitle('BurgerLink.Ui > Inventory');
     this.inventoryItems = serviceInventory.InventoryItems;
@@ -28,24 +26,6 @@ export class InventoryComponent {
       this.serviceTitle.setTitle(
         `BurgerLink.Ui > Inventory (${this.inventoryItems().length}) `
       );
-
-      if (this.inventoryIds.length === 0) {
-        this.inventoryIds = this.inventoryItems().map((item) => item.id);
-        return;
-      }
-
-      const difference = this.inventoryItems()
-        .map((i) => i.id)
-        .filter((id) => !this.inventoryIds.includes(id));
-
-      difference.forEach((id) => {
-        const item = this.inventoryItems().filter((item) => item.id === id)[0];
-        this.messageService.add({
-          severity: 'info',
-          summary: 'New item!',
-          detail: `Just added ${item.quantity} ${item.itemName} to the inventory.`,
-        });
-      });
     });
   }
 
