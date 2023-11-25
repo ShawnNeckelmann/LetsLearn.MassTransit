@@ -15,6 +15,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^16.2.12",
+    "@angular/cli": "^17.0.0",
     "@angular/common": "^16.2.12",
     "@angular/compiler": "^16.2.12",
     "@angular/core": "^16.2.12",
@@ -34,7 +35,7 @@
     "run-script-os": "^1.1.6",
     "rxjs": "~7.8.1",
     "tslib": "^2.5.0",
-    "zone.js": "~0.13.0"
+    "zone.js": "~0.14.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^16.2.10",
