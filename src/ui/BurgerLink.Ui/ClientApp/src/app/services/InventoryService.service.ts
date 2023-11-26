@@ -25,10 +25,12 @@ export class InventoryService {
     this.http
       .get<InventoryResponse>(this.baseUrl + 'api/inventory')
       .subscribe((results) => {
-        this._inventoryState.mutate((x) => {
+        this._inventoryState.update((x) => {
           results.inventoryItems.forEach((item) => {
             x.push(item);
           });
+
+          return x;
         });
       });
   }
@@ -77,13 +79,15 @@ export class InventoryService {
     });
 
     this.hubConnection.on('inventoryItemModified', (data: InventoryItem) => {
-      this._inventoryState.mutate((value: InventoryItem[]) => {
+      this._inventoryState.update((value: InventoryItem[]) => {
         const index = value.findIndex((x) => x.id == data.id);
         if (index == -1) {
           value.push(data);
         } else {
           value[index] = data;
         }
+
+        return value;
       });
     });
   }
