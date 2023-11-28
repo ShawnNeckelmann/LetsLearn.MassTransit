@@ -133,7 +133,7 @@ $tf/
 /.sass-cache
 /connect.lock
 /coverage
-/dist
+**/dist/
 /dist-server
 /libpeerconnection.log
 /node_modules

@@ -5,6 +5,7 @@ import { DividerModule } from 'primeng/divider';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { ListboxModule } from 'primeng/listbox';
+import { PickListModule } from 'primeng/picklist';
 import { SplitterModule } from 'primeng/splitter';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
@@ -18,6 +19,7 @@ import { ToastModule } from 'primeng/toast';
     DropdownModule,
     InputTextModule,
     ListboxModule,
+    PickListModule,
     SplitterModule,
     TableModule,
     ToastModule,
@@ -28,6 +30,7 @@ import { ToastModule } from 'primeng/toast';
     DropdownModule,
     InputTextModule,
     ListboxModule,
+    PickListModule,
     SplitterModule,
     TableModule,
     ToastModule,
