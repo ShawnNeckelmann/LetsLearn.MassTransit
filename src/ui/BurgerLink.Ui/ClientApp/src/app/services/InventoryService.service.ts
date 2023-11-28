@@ -26,11 +26,13 @@ export class InventoryService {
       .get<InventoryResponse>(this.baseUrl + 'api/inventory')
       .subscribe((results) => {
         this._inventoryState.update((x) => {
+          const retval: InventoryItem[] = [];
           results.inventoryItems.forEach((item) => {
-            x.push(item);
+            retval.push(item);
           });
 
-          return x;
+          console.log('InventoryResponse: ' + JSON.stringify(retval));
+          return retval;
         });
       });
   }

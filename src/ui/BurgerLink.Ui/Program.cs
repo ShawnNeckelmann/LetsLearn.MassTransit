@@ -1,5 +1,6 @@
 using BurgerLink.Shared.AppConfiguration;
 using BurgerLink.Ui.Infrastructure;
+using Microsoft.AspNetCore.HttpLogging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,7 @@ builder.Services.AddCors(options =>
         .AllowCredentials());
 });
 builder.Services
+    .AddHttpLogging(options => { options.LoggingFields = HttpLoggingFields.All; })
     .ConfigureDependencyInjection(builder.Configuration)
     .AddAndConfigureMassTransit(cs)
     .ConfigureTelemetry(otelAddress);
@@ -39,6 +41,7 @@ var app = builder.Build();
 app.UseSwagger()
     .UseSwaggerUI();
 
+app.UseHttpLogging();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
