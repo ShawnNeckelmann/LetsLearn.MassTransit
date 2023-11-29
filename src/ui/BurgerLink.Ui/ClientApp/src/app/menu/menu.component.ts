@@ -11,7 +11,9 @@ import { Title } from '@angular/platform-browser';
   styleUrls: ['./menu.component.css'],
 })
 export class MenuComponent {
-  menuItemOptions: Signal<InventoryItem[]>;
+  orderName: string = 'Order Name';
+  signalMenuItemOptions: Signal<InventoryItem[]>;
+  menuItemOptions: InventoryItem[] = [];
   selectedMenuItems: InventoryItem[];
 
   constructor(
@@ -19,15 +21,16 @@ export class MenuComponent {
     public serviceInventory: InventoryService
   ) {
     this.selectedMenuItems = [];
-    this.menuItemOptions = serviceInventory.InventoryItems;
+    this.signalMenuItemOptions = serviceInventory.InventoryItems;
 
     this.serviceTitle.setTitle(
-      `BurgerLink.Ui > Inventory (${this.menuItemOptions().length}) `
+      `BurgerLink.Ui > Inventory (${this.signalMenuItemOptions().length}) `
     );
 
     effect(() => {
+      this.menuItemOptions = this.signalMenuItemOptions();
       this.serviceTitle.setTitle(
-        `BurgerLink.Ui > Menu (${this.menuItemOptions().length}) `
+        `BurgerLink.Ui > Menu (${this.signalMenuItemOptions().length}) `
       );
     });
   }

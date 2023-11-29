@@ -1,30 +1,29 @@
-<p-splitter>
-  <ng-template pTemplate>
-    <div class="col flex align-items-center justify-content-center">
-      Menu
-      <p-divider></p-divider>
-      <div class="flex justify-content-center">
-        <p-listbox [options]="menuItemOptions()"
-                   [filter]="true"
-                   [(ngModel)]="selectedMenuItems"
-                   [multiple]="true"
-                   optionLabel="itemName"
-                   [metaKeySelection]="true"
-                   [style]="{'width':'15rem'}"></p-listbox>
+<div class="card">
+  <div style="text-align: center;">
+    <span class="p-input-icon-left"
+          style="width: 50%;">
+      <i class="pi pi-search"></i>
+      <input type="text"
+             style="width: 100%;"
+             pInputText
+             [(ngModel)]="orderName" />
+    </span>
+    <button pButton>Create Order</button>
+  </div>
+  <hr>
+  <p-pickList [source]="menuItemOptions"
+              [target]="selectedMenuItems"
+              sourceHeader="Menu"
+              targetHeader="Order"
+              [dragdrop]="true"
+              [responsive]="true">
+    <ng-template let-product
+                 pTemplate="item">
+      <div class="flex flex-wrap p-2 align-items-center gap-3">
+        <div class="flex-1 flex flex-column gap-2">
+          <span>{{ product.itemName }}</span>
+        </div>
       </div>
-    </div>
-  </ng-template>
-
-  <ng-template pTemplate>
-    <div class="col flex align-items-center justify-content-center">
-      Order
-      <p-divider></p-divider>
-      <div class="card flex justify-content-center">
-        <p-listbox [options]="selectedMenuItems"
-                   optionLabel="itemName"
-                   [style]="{'width':'15rem'}"></p-listbox>
-      </div>
-    </div>
-
-  </ng-template>
-</p-splitter>
+    </ng-template>
+  </p-pickList>
+</div>

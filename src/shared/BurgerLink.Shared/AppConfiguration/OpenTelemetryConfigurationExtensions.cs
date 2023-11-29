@@ -40,6 +40,12 @@ public static class OpenTelemetryConfigurationExtensions
             .ClearProviders()
             .AddOpenTelemetry(options =>
             {
+                options.IncludeFormattedMessage = true;
+                options.IncludeScopes = true;
+
+                AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+
+
                 options
                     .SetResourceBuilder(ResourceBuilder())
                     .AddConsoleExporter()
