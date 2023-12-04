@@ -1,0 +1,17 @@
+<div class="card">
+  <div>
+    <span class="p-float-label">
+      <input pInputText
+             id="orderName"
+             (keyup.enter)="onSubmit()"
+             (keypress)="onKeyPress()"
+             [(ngModel)]="orderName" />
+      <label htmlFor="orderName">Order Name</label>
+    </span>
+    <button pButton
+            pRipple
+            [disabled]="disabledSubmit"
+            (click)="onSubmit()"
+            type="button">Next</button>
+  </div>
+</div>

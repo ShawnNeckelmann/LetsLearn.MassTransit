@@ -3,6 +3,7 @@
     <span class="p-float-label">
       <input pInputText
              [(ngModel)]="newItemName"
+             (keyup.enter)="onSubmit()"
              id="addItem" />
       <label htmlFor="addItem">Add Item</label>
       <button pButton

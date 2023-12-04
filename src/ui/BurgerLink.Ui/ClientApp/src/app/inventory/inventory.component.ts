@@ -1,9 +1,6 @@
 import { Component, Signal, effect } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import {
-  InventoryItem,
-  InventoryService,
-} from '../services/InventoryService.service';
+import { InventoryItem, InventoryService } from '../services/inventory.service';
 
 @Component({
   selector: 'app-inventory',

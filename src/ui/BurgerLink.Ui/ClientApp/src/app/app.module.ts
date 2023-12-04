@@ -14,6 +14,7 @@ import { OrdersComponent } from './orders/orders.component';
 import { PrimengModule } from './primeng/primeng.module';
 import { MessageService } from 'primeng/api';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NameOrderComponent } from './order/name-order/name-order.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     NavMenuComponent,
     ExternalsComponent,
     InventoryComponent,
+    NameOrderComponent,
     MenuComponent,
     OrdersComponent,
   ],
@@ -37,8 +39,18 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         redirectTo: '/inventory',
       },
       { path: 'inventory', component: InventoryComponent },
+
       { path: 'menu', component: MenuComponent },
-      { path: 'orders', component: OrdersComponent },
+      {
+        path: 'orders',
+        component: OrdersComponent,
+        children: [
+          {
+            path: 'new-order',
+            component: NameOrderComponent,
+          },
+        ],
+      },
       { path: 'externals', component: ExternalsComponent },
     ]),
   ],

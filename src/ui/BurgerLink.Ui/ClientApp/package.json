@@ -31,12 +31,11 @@
     "jquery": "^3.6.4",
     "oidc-client": "^1.11.5",
     "popper.js": "^1.16.0",
-    "primeng": "^17.0.0-beta.1",
     "primeflex": "^3.3.1",
     "primeicons": "^6.0.1",
+    "primeng": "^17.0.0-rc.1",
     "run-script-os": "^1.1.6",
     "rxjs": "~7.8.1",
-    "tslib": "^2.5.0",
     "zone.js": "~0.14.2"
   },
   "devDependencies": {
@@ -52,6 +51,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "^2.0.0",
+    "tslib": "^2.6.2",
     "typescript": "~5.2.2"
   },
   "overrides": {

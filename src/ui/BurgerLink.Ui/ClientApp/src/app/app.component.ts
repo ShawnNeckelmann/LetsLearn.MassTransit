@@ -1,9 +1,6 @@
 import { Component, Signal, effect } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import {
-  InventoryItem,
-  InventoryService,
-} from './services/InventoryService.service';
+import { InventoryItem, InventoryService } from './services/inventory.service';
 
 @Component({
   selector: 'app-root',

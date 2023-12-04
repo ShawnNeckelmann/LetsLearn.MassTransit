@@ -31,7 +31,6 @@ export class InventoryService {
             retval.push(item);
           });
 
-          console.log('InventoryResponse: ' + JSON.stringify(retval));
           return retval;
         });
       });

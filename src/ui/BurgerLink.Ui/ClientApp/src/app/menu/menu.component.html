@@ -1,15 +1,22 @@
 <div class="card">
-  <div style="text-align: center;">
+  <div style="text-align: center; padding-top: 15px;">
     <span class="p-input-icon-left"
           style="width: 50%;">
       <i class="pi pi-search"></i>
+
       <input type="text"
+             placeholder="Order Name"
+             id="orderName"
+             (keyup.enter)="onCreateOrder()"
              style="width: 100%;"
              pInputText
              [(ngModel)]="orderName" />
+
     </span>
-    <button pButton>Create Order</button>
+    <button (click)="onCreateOrder()"
+            pButton>Create Order</button>
   </div>
+
   <hr>
   <p-pickList [source]="menuItemOptions"
               [target]="selectedMenuItems"

@@ -38,6 +38,7 @@ public static class OpenTelemetryConfigurationExtensions
     {
         loggingBuilder
             .ClearProviders()
+            .AddConsole()
             .AddOpenTelemetry(options =>
             {
                 options.IncludeFormattedMessage = true;
@@ -48,7 +49,7 @@ public static class OpenTelemetryConfigurationExtensions
 
                 options
                     .SetResourceBuilder(ResourceBuilder())
-                    .AddConsoleExporter()
+                    //.AddConsoleExporter()
                     .AddOtlpExporter(ConfigureExporter(httpOtelCollector));
 
                 options.IncludeFormattedMessage = true;
@@ -76,7 +77,7 @@ public static class OpenTelemetryConfigurationExtensions
             .AddAspNetCoreInstrumentation()
             .AddRuntimeInstrumentation()
             .AddProcessInstrumentation()
-            .AddConsoleExporter()
+            //.AddConsoleExporter()
             .AddOtlpExporter(ConfigureExporter(httpOtelCollector)));
     }
 
@@ -88,7 +89,7 @@ public static class OpenTelemetryConfigurationExtensions
             tracerProviderBuilder
                 .SetResourceBuilder(ResourceBuilder())
                 .AddSource(DiagnosticHeaders.DefaultListenerName)
-                .AddConsoleExporter()
+                //.AddConsoleExporter()
                 .AddOtlpExporter(ConfigureExporter(httpOtelCollector));
         });
     }

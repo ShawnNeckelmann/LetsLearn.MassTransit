@@ -2,8 +2,6 @@
 using BurgerLink.Ui.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using static BurgerLink.Ui.Features.AddInventoryItem;
-using static BurgerLink.Ui.Features.ModifyInventoryItem;
 
 namespace BurgerLink.Ui.Controllers;
 
@@ -17,22 +15,25 @@ public class InventoryController : BaseController
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddInventoryItem(RequestAddInventory addInventory)
+    [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
+    public async Task<IActionResult> AddInventoryItem(AddInventoryItem.Command addInventory)
     {
         await _mediator.Send(addInventory);
         return Accepted();
     }
 
     [HttpGet]
+    [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
     public async Task<IActionResult> Get()
     {
-        var retval = await _mediator.Send(new GetInventory.RequestGetInventory());
+        var retval = await _mediator.Send(new GetInventory.Query());
         return Ok(retval);
     }
 
 
     [HttpPut]
-    public async Task<IActionResult> ModifyInventoryItem(RequestModifyInventory modifyInventory)
+    [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Put))]
+    public async Task<IActionResult> ModifyInventoryItem(ModifyInventoryItem.Command modifyInventory)
     {
         await _mediator.Send(modifyInventory);
         return Accepted();

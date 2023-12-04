@@ -5,19 +5,19 @@ namespace BurgerLink.Ui.Features;
 
 public class GetInventory
 {
-    public class HandlerGetInventory : IRequestHandler<RequestGetInventory, ResponseGetInventory>
+    public class Handler : IRequestHandler<Query, Response>
     {
         private readonly IInventoryRepository _inventoryRepository;
 
-        public HandlerGetInventory(IInventoryRepository inventoryRepository)
+        public Handler(IInventoryRepository inventoryRepository)
         {
             _inventoryRepository = inventoryRepository;
         }
 
-        public async Task<ResponseGetInventory> Handle(RequestGetInventory request, CancellationToken cancellationToken)
+        public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
         {
             var inventoryItems = (await _inventoryRepository.AllInventoryItems()).ToList();
-            var retval = new ResponseGetInventory
+            var retval = new Response
             {
                 InventoryItems = inventoryItems
             };
@@ -26,11 +26,11 @@ public class GetInventory
         }
     }
 
-    public class RequestGetInventory : IRequest<ResponseGetInventory>
+    public class Query : IRequest<Response>
     {
     }
 
-    public class ResponseGetInventory
+    public class Response
     {
         public List<InventoryItem> InventoryItems { get; set; }
     }
