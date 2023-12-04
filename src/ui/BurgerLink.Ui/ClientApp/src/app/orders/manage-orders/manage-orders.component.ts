@@ -4,6 +4,7 @@ import {
   InventoryItem,
   InventoryService,
 } from '../../services/inventory.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-manage-orders',
@@ -17,14 +18,16 @@ export class ManageOrdersComponent {
 
   constructor(
     private serviceTitle: Title,
-    public serviceInventory: InventoryService
+    public serviceInventory: InventoryService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
-    this.serviceTitle.setTitle('BurgerLink.Ui > Inventory');
+    this.serviceTitle.setTitle('BurgerLink.Ui > Manage Orders');
     this.inventoryItems = serviceInventory.InventoryItems;
 
     effect(() => {
       this.serviceTitle.setTitle(
-        `BurgerLink.Ui > Inventory (${this.inventoryItems().length}) `
+        `BurgerLink.Ui > Manage Orders (${this.inventoryItems().length}) `
       );
     });
   }
@@ -46,5 +49,9 @@ export class ManageOrdersComponent {
   onSubmit() {
     this.serviceInventory.AddInventoryItem(this.newItemName).subscribe();
     this.newItemName = '';
+  }
+
+  onBeginNewOrder() {
+    this.router.navigate(['../new'], { relativeTo: this.route });
   }
 }

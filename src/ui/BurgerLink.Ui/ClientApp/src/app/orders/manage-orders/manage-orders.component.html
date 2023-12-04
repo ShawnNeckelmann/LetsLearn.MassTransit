@@ -1,19 +1,15 @@
 <div class="card">
-  <div>
-    <span class="p-float-label">
-      <input pInputText
-             [(ngModel)]="newItemName"
-             (keyup.enter)="onSubmit()"
-             id="addItem" />
-      <label htmlFor="addItem">Add Item</label>
-      <button pButton
-              pRipple
-              (click)="onSubmit()"
-              type="button">Submit</button>
-      <button pButton
-              pRipple
-              type="button">Begin New Order</button>
-    </span>
+  <div style="justify-content: space-around; display: flex;">
+
+    <button pButton
+            pRipple
+            (click)="onSubmit()"
+            type="button">Start Selected Order</button>
+    <button pButton
+            pRipple
+            (click)="onBeginNewOrder()"
+            type="button">Begin New Order</button>
+
   </div>
   <p-table [value]="inventoryItems()"
            dataKey="id"
