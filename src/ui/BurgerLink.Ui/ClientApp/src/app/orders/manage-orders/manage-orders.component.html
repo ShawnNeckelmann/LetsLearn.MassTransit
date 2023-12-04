@@ -1,0 +1,103 @@
+<div class="card">
+  <div>
+    <span class="p-float-label">
+      <input pInputText
+             [(ngModel)]="newItemName"
+             (keyup.enter)="onSubmit()"
+             id="addItem" />
+      <label htmlFor="addItem">Add Item</label>
+      <button pButton
+              pRipple
+              (click)="onSubmit()"
+              type="button">Submit</button>
+      <button pButton
+              pRipple
+              type="button">Begin New Order</button>
+    </span>
+  </div>
+  <p-table [value]="inventoryItems()"
+           dataKey="id"
+           editMode="row"
+           [tableStyle]="{'min-width': '50rem'}">
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width:25%">Id</th>
+        <th pSortableColumn="itemName"><p-sortIcon field="itemName"></p-sortIcon>Name</th>
+        <th pSortableColumn="quantity"
+            style="width:10%"><p-sortIcon field="quantity"></p-sortIcon>Quantity</th>
+        <th style="width:25%">Modify</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body"
+                 let-inventoryItem
+                 let-editing="editing"
+                 let-ri="rowIndex">
+      <tr [pEditableRow]="inventoryItem">
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <label>{{ inventoryItem.id }}</label>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{inventoryItem.id}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText
+                     type="text"
+                     [(ngModel)]="inventoryItem.itemName"
+                     required>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{inventoryItem.itemName }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText
+                     type="text"
+                     [(ngModel)]="inventoryItem.quantity"
+                     required>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{inventoryItem.quantity}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <div class="flex align-items-center justify-content-center gap-2">
+            <button *ngIf="!editing"
+                    pButton
+                    pRipple
+                    type="button"
+                    pInitEditableRow
+                    icon="pi pi-pencil"
+                    (click)="onRowEditInit(inventoryItem)"
+                    class="p-button-rounded p-button-text"></button>
+            <button *ngIf="editing"
+                    pButton
+                    pRipple
+                    type="button"
+                    pSaveEditableRow
+                    icon="pi pi-check"
+                    (click)="onRowEditSave(inventoryItem)"
+                    class="p-button-rounded p-button-text p-button-success mr-2"></button>
+            <button *ngIf="editing"
+                    pButton
+                    pRipple
+                    icon="pi pi-times"
+                    type="button"
+                    pCancelEditableRow
+                    (click)="onRowEditCancel(inventoryItem, ri)"
+                    class="p-button-rounded p-button-text p-button-danger"></button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

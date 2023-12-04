@@ -10,21 +10,19 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { ExternalsComponent } from './externals/externals.component';
 import { InventoryComponent } from './inventory/inventory.component';
 import { MenuComponent } from './menu/menu.component';
-import { OrdersComponent } from './orders/orders.component';
 import { PrimengModule } from './primeng/primeng.module';
 import { MessageService } from 'primeng/api';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NameOrderComponent } from './order/name-order/name-order.component';
+import { ManageOrdersComponent } from './orders/manage-orders/manage-orders.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
     ExternalsComponent,
+    ManageOrdersComponent,
     InventoryComponent,
-    NameOrderComponent,
     MenuComponent,
-    OrdersComponent,
   ],
   imports: [
     BrowserAnimationsModule,
@@ -33,21 +31,15 @@ import { NameOrderComponent } from './order/name-order/name-order.component';
     HttpClientModule,
     FormsModule,
     RouterModule.forRoot([
-      {
-        path: '',
-        pathMatch: 'full',
-        redirectTo: '/inventory',
-      },
+      { path: '', pathMatch: 'full', redirectTo: '/inventory' },
       { path: 'inventory', component: InventoryComponent },
-
       { path: 'menu', component: MenuComponent },
       {
-        path: 'orders',
-        component: OrdersComponent,
+        path: 'orders/manage',
         children: [
           {
-            path: 'new-order',
-            component: NameOrderComponent,
+            component: ManageOrdersComponent,
+            path: '',
           },
         ],
       },
