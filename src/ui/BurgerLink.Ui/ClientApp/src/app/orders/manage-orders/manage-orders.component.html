@@ -3,12 +3,8 @@
 
     <button pButton
             pRipple
-            (click)="onSubmit()"
-            type="button">Start Selected Order</button>
-    <button pButton
-            pRipple
             (click)="onBeginNewOrder()"
-            type="button">Begin New Order</button>
+            type="button">Start New Order</button>
 
   </div>
   <p-table [value]="inventoryItems()"
@@ -18,10 +14,10 @@
     <ng-template pTemplate="header">
       <tr>
         <th style="width:25%">Id</th>
-        <th pSortableColumn="itemName"><p-sortIcon field="itemName"></p-sortIcon>Name</th>
+        <th pSortableColumn="itemName"><p-sortIcon field="itemName"></p-sortIcon>Order Name</th>
         <th pSortableColumn="quantity"
-            style="width:10%"><p-sortIcon field="quantity"></p-sortIcon>Quantity</th>
-        <th style="width:25%">Modify</th>
+            style="width:25%"><p-sortIcon field="quantity"></p-sortIcon>Current Status</th>
+        <th style="width:25%"></th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body"
@@ -51,6 +47,12 @@
               {{inventoryItem.itemName }}
             </ng-template>
           </p-cellEditor>
+        </td>
+        <td>
+          <button pButton
+                  pRipple
+                  (click)="onBeginNewOrder()"
+                  type="button">Start Order</button>
         </td>
         <td>
           <p-cellEditor>
