@@ -15,6 +15,7 @@ import { MessageService } from 'primeng/api';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ManageOrdersComponent } from './orders/manage-orders/manage-orders.component';
 import { NewOrderComponent } from './orders/new-order/new-order.component';
+import { NewOrder2Component } from './orders/new-order-2/new-order-2.component';
 
 @NgModule({
   declarations: [
@@ -32,25 +33,34 @@ import { NewOrderComponent } from './orders/new-order/new-order.component';
     PrimengModule,
     HttpClientModule,
     FormsModule,
-    RouterModule.forRoot([
-      { path: '', pathMatch: 'full', redirectTo: '/inventory' },
-      { path: 'inventory', component: InventoryComponent },
-      { path: 'menu', component: MenuComponent },
+    RouterModule.forRoot(
+      [
+        { path: '', pathMatch: 'full', redirectTo: '/inventory' },
+        { path: 'inventory', component: InventoryComponent },
+        { path: 'menu', component: MenuComponent },
+        {
+          path: 'orders',
+          children: [
+            {
+              component: ManageOrdersComponent,
+              path: 'manage',
+            },
+            {
+              component: NewOrderComponent,
+              path: 'create',
+            },
+            {
+              component: NewOrder2Component,
+              path: 'edit/:id',
+            },
+          ],
+        },
+        { path: 'externals', component: ExternalsComponent },
+      ],
       {
-        path: 'orders',
-        children: [
-          {
-            component: ManageOrdersComponent,
-            path: 'manage',
-          },
-          {
-            component: NewOrderComponent,
-            path: 'new',
-          },
-        ],
-      },
-      { path: 'externals', component: ExternalsComponent },
-    ]),
+        enableTracing: false,
+      }
+    ),
   ],
   providers: [MessageService],
   bootstrap: [AppComponent],

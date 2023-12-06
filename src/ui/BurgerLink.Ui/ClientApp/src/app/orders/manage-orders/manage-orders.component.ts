@@ -52,6 +52,6 @@ export class ManageOrdersComponent {
   }
 
   onBeginNewOrder() {
-    this.router.navigate(['../new'], { relativeTo: this.route });
+    this.router.navigate(['../create'], { relativeTo: this.route });
   }
 }

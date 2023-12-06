@@ -1,1 +1,11 @@
-<p>new-order works!</p>
+<div class="card flex justify-content-center">
+  <input type="text"
+         id="orderName"
+         pInputText
+         placeholder="Order Name"
+         [(ngModel)]="orderName" />
+  <button pButton
+          pRipple
+          (click)="onSubmit()"
+          type="button">Next</button>
+</div>

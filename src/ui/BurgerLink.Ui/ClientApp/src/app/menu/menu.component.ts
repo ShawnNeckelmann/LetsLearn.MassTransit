@@ -1,8 +1,8 @@
 import { Component, Signal, effect } from '@angular/core';
 import { InventoryItem, InventoryService } from '../services/inventory.service';
 import { Title } from '@angular/platform-browser';
-import { CreateOrder, OrderService } from '../services/order.service';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { OrderService } from '../services/order.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-menu',

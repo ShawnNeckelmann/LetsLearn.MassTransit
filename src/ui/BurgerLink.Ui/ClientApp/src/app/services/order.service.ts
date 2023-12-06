@@ -11,35 +11,26 @@ export class OrderService {
     private http: HttpClient
   ) {}
 
-  public createOrder(orderName: string, ids: string[]): Observable<string> {
-    const createOrder: CreateOrder = {
+  public createOrder(orderName: string, ids: string[] = []): Observable<Order> {
+    const createOrder: Order = {
       orderName: orderName,
       orderItemIds: ids,
-      orderId: this.createGUID(),
+      orderId: '',
     };
 
-    return this.http
-      .post<CreateOrder>(`${this.baseUrl}api/order`, createOrder)
-      .pipe(
-        map((x) => {
-          return createOrder.orderId;
-        })
-      );
+    return this.http.post<Order>(`${this.baseUrl}api/order`, createOrder);
   }
 
-  private createGUID(): string {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
-      /[xy]/g,
-      function (c) {
-        const r = (Math.random() * 16) | 0;
-        const v = c === 'x' ? r : (r & 0x3) | 0x8;
-        return v.toString(16);
-      }
-    );
+  public getOrder(orderId: string): Observable<Order> {
+    return this.http.get<Order>(`${this.baseUrl}api/order?orderId=${orderId}`);
+  }
+
+  public getOrders(): Observable<Order> {
+    return this.http.get<Order>(`${this.baseUrl}api/order`);
   }
 }
 
-export interface CreateOrder {
+export interface Order {
   orderName: string;
   orderItemIds: string[];
   orderId: string;
