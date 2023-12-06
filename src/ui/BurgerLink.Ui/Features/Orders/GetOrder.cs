@@ -29,7 +29,21 @@ public class GetOrder
         {
 
             var order = await _ordersRepository.Order(request.OrderId);
+            if (order is null)
+            {
+                return null;
+            }
 
+            var retval = new Response
+            {
+                ConfirmationStatus = order.ConfirmationStatus,
+                Id = order.Id,
+                OrderName = order.OrderName,
+                OrderItemIds = order.OrderItemIds
+            };
+
+            return retval;
+            
         }
     }
 }

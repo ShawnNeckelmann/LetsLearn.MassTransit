@@ -1,4 +1,5 @@
-﻿using BurgerLink.Ui.Repository.Orders.Models;
+﻿using BurgerLink.Ui.Repository.Orders;
+using BurgerLink.Ui.Repository.Orders.Models;
 using MediatR;
 
 namespace BurgerLink.Ui.Features.Orders;
@@ -11,24 +12,30 @@ public class GetOrders
     }
     public class Response
     {
-        public IList<Order> Orders { get; set; }
+        public IList<OrderItem> Orders { get; set; }
 
         public int Count { get; set; }
     }
 
     public class Handler : IRequestHandler<Command, Response>
     {
-        public Task<Response> Handle(Command request, CancellationToken cancellationToken)
+        private readonly IOrdersRepository _ordersRepository;
+
+        public Handler(IOrdersRepository ordersRepository)
         {
+            _ordersRepository = ordersRepository;
+        }
+
+        public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
+        {
+            var orders = await _ordersRepository.AllOrders();
             var retval = new Response
             {
-                Orders = Enumerable.Range(1, 10).Select(i => Order.RandomGenerated()).ToList()
-
+                Orders = orders,
+                Count = orders.Count
             };
-            retval.Count = retval.Orders.Count;
 
-            return Task.FromResult(retval);
-
+            return retval;
         }
     }
 
