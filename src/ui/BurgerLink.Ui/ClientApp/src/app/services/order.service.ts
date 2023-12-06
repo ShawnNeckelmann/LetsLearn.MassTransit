@@ -11,10 +11,10 @@ export class OrderService {
     private http: HttpClient
   ) {}
 
-  public createOrder(orderName: string, ids: string[] = []): Observable<Order> {
+  public createOrder(orderName: string): Observable<Order> {
     const createOrder: Order = {
       orderName: orderName,
-      orderItemIds: ids,
+      orderItemIds: [],
       orderId: '',
     };
 

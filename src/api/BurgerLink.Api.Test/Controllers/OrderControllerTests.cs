@@ -136,8 +136,7 @@ public class OrderControllerTests
             var httpResponseMessage = await client.PostAsync(urlGetAll, JsonContent.Create(new SagaCreateOrder
             {
                 OrderId = orderId,
-                OrderName = "Test",
-                StatusUpdateAddress = new Uri("http://localhost")
+                OrderName = "Test"
             }));
 
             httpResponseMessage.EnsureSuccessStatusCode();

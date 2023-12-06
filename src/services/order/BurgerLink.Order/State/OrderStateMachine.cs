@@ -8,8 +8,6 @@ using BurgerLink.Order.Contracts.Responses;
 using BurgerLink.Order.Entity;
 using BurgerLink.Preparation.Contracts.Commands;
 using MassTransit;
-using System.Net.Http.Json;
-using System.Text.Json;
 
 namespace BurgerLink.Order.State;
 
@@ -55,43 +53,11 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
     {
         arg.Saga.Prepared.Add(arg.Message.PreparedOrderItem);
 
-        if (arg.Saga.StatusUpdateAddress == null)
-        {
-            return;
-        }
-
-        var client = new HttpClient();
-        client.BaseAddress = arg.Saga.StatusUpdateAddress;
-
-        await client.PostAsJsonAsync(
-            (string?)null,
-            new
-            {
-                Message = "item prepared",
-                arg.Message.PreparedOrderItem
-            },
-            new JsonSerializerOptions(JsonSerializerDefaults.Web),
-            CancellationToken.None);
     }
 
-    private static async Task OnItemUnavailable(BehaviorContext<OrderState, ItemUnavailable> arg)
+    private static Task OnItemUnavailable(BehaviorContext<OrderState, ItemUnavailable> arg)
     {
-        var client = new HttpClient();
-        client.BaseAddress = arg.Saga.StatusUpdateAddress;
-
-        arg.Message.Variables.TryGetValue("unavailable-item", out var o);
-        var item = o as string;
-
-        await client.PostAsJsonAsync(
-            (string?)null,
-            new
-            {
-                Message = "item unavailable",
-                Item = item,
-                arg.Message.OrderName
-            },
-            new JsonSerializerOptions(JsonSerializerDefaults.Web),
-            CancellationToken.None);
+        return Task.CompletedTask;
     }
 
     private static async Task OnItemValidated(BehaviorContext<OrderState, ItemAvailabilityValidated> obj)
@@ -101,11 +67,11 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
         if (value is true)
         {
             obj.Saga.Items.Add(obj.Message.ItemName);
-            await SendStatusUpdate(obj.Message, obj.Saga.StatusUpdateAddress, true);
+            //await SendStatusUpdate(obj.Message, obj.Saga.StatusUpdateAddress, true);
         }
         else
         {
-            await SendStatusUpdate(obj.Message, obj.Saga.StatusUpdateAddress, false);
+            //await SendStatusUpdate(obj.Message, obj.Saga.StatusUpdateAddress, false);
         }
     }
 
@@ -129,23 +95,9 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
         }));
     }
 
-    private static async Task OnOrderPrepared(BehaviorContext<OrderState, PreparationComplete> arg)
+    private static Task OnOrderPrepared(BehaviorContext<OrderState, PreparationComplete> arg)
     {
-        var uri = arg.Saga.StatusUpdateAddress;
-        if (uri == null)
-        {
-            return;
-        }
-
-        var client = new HttpClient();
-        client.BaseAddress = uri;
-        await client.PostAsJsonAsync((string?)null, new
-            {
-                Message = $"order for {arg.Saga.OrderName} is ready",
-                Timestamp = DateTime.UtcNow
-            },
-            new JsonSerializerOptions(JsonSerializerDefaults.Web),
-            CancellationToken.None);
+        return Task.CompletedTask;
     }
 
     private static async Task SendStatusUpdate(ItemAvailabilityValidated itemValidated, Uri? uri, bool valid)
@@ -162,10 +114,10 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
             Message = valid ? "item added" : "invalid item provided"
         };
 
-        var client = new HttpClient();
-        client.BaseAddress = uri;
-        await client.PostAsJsonAsync((string?)null, status, new JsonSerializerOptions(JsonSerializerDefaults.Web),
-            CancellationToken.None);
+        //var client = new HttpClient();
+        //client.BaseAddress = uri;
+        //await client.PostAsJsonAsync((string?)null, status, new JsonSerializerOptions(JsonSerializerDefaults.Web),
+        //    CancellationToken.None);
     }
 
     private void ConfigureBehavior()
@@ -216,8 +168,7 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
                         new OrderStatus
                         {
                             Items = context.Saga.Items.ToList(),
-                            OrderName = context.Saga.OrderName,
-                            StatusUpdateAddress = context.Saga.StatusUpdateAddress
+                            OrderName = context.Saga.OrderName
                         })
                 )
         );
@@ -236,7 +187,6 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
                     var retval = new OrderState
                     {
                         OrderName = context.Message.OrderName,
-                        StatusUpdateAddress = context.Message.StatusUpdateAddress,
                         Items = new List<string>(),
                         Prepared = new List<string>()
                     };

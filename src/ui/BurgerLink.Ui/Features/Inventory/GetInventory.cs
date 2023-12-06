@@ -1,7 +1,7 @@
 ﻿using BurgerLink.Ui.Repository;
 using MediatR;
 
-namespace BurgerLink.Ui.Features;
+namespace BurgerLink.Ui.Features.Inventory;
 
 public class GetInventory
 {

@@ -9,6 +9,5 @@ public class OrderState : SagaStateMachineInstance, ISagaVersion
     public List<string> Items { get; set; }
     public string OrderName { get; set; }
     public List<string> Prepared { get; set; }
-    public Uri? StatusUpdateAddress { get; set; }
     public int Version { get; set; }
 }

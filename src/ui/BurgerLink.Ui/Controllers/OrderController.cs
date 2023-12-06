@@ -1,4 +1,4 @@
-﻿using BurgerLink.Ui.Features;
+﻿using BurgerLink.Ui.Features.Orders;
 using BurgerLink.Ui.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -18,24 +18,42 @@ public class OrderController : BaseController
     [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
     public async Task<IActionResult> CreateOrder(CreateOrder.Command command)
     {
-        await _mediator.Send(command);
+        var order = await _mediator.Send(command);
         var retval = CreatedAtAction(
             nameof(GetOrderById),
-            new { orderId = command.OrderId },
+            new { orderId = order.OrderId },
             command);
 
         return await Task.FromResult(retval);
     }
 
     [HttpGet]
+    [ProducesResponseType(typeof(Unit), 200)]
     [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-    public IActionResult GetOrderById(string orderId)
+    public async Task<IActionResult> GetOrderById(Guid orderId)
     {
-        var o = new CreateOrder.Command
+        var order = new GetOrder.Command
         {
             OrderId = orderId
         };
 
-        return Ok(o);
+        var retval = await _mediator.Send(order);
+
+        if (retval is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(retval);
+    }
+
+    [HttpGet]
+    [ProducesResponseType(typeof(GetOrders.Response), 200)]
+    [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
+    public async Task<IActionResult> GetOrders()
+    {
+        var command = new GetOrders.Command();
+        var retval = await _mediator.Send(command);
+        return Ok(retval);
     }
 }

@@ -1,4 +1,4 @@
-﻿using BurgerLink.Ui.Features;
+﻿using BurgerLink.Ui.Features.Inventory;
 using BurgerLink.Ui.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

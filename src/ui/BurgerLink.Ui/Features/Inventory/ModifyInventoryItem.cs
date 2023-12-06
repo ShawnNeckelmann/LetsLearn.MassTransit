@@ -2,12 +2,13 @@
 using MassTransit;
 using MediatR;
 
-namespace BurgerLink.Ui.Features;
+namespace BurgerLink.Ui.Features.Inventory;
 
-public class AddInventoryItem
+public class ModifyInventoryItem
 {
     public class Command : IRequest<Unit>
     {
+        public string Id { get; set; }
         public string ItemName { get; init; }
 
         public int Quantity { get; set; }
@@ -22,17 +23,18 @@ public class AddInventoryItem
             _publishEndpoint = publishEndpoint;
         }
 
-        public async Task<Unit> Handle(Command command, CancellationToken cancellationToken)
+
+        public async Task<Unit> Handle(Command request,
+            CancellationToken cancellationToken)
         {
             var msg = new UpsertInventoryItem
             {
-                Id = null,
-                Quantity = command.Quantity,
-                ItemName = command.ItemName
+                Id = request.Id,
+                ItemName = request.ItemName,
+                Quantity = request.Quantity
             };
 
             await _publishEndpoint.Publish(msg, cancellationToken);
-
             return Unit.Value;
         }
     }
