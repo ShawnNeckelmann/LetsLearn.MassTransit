@@ -1,4 +1,6 @@
-﻿namespace BurgerLink.Ui.Repository;
+﻿using BurgerLink.Ui.Repository.Inventory.Models;
+
+namespace BurgerLink.Ui.Repository.Inventory;
 
 public interface IInventoryRepository
 {

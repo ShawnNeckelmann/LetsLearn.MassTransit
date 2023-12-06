@@ -125,6 +125,12 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
         Initially(
             When(EventCreateOrder)
                 .TransitionTo(StateSubmitted)
+                .Publish(context => context.Init<OrderCreated>(new OrderCreated()
+                {
+                    OrderId = context.Message.OrderId,
+                    OrderName = context.Message.OrderName
+
+                }))
         );
 
         During(

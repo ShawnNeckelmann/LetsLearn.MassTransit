@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace BurgerLink.Ui.Repository;
+namespace BurgerLink.Ui.Repository.Inventory.Models;
 
 public record InventoryItem
 {

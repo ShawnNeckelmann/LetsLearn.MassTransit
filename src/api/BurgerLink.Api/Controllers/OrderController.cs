@@ -70,7 +70,7 @@ public class OrderController : BaseController
     }
 
     [HttpPost]
-    public async Task<IActionResult> StartOrder(SagaCreateOrder sagaCreateOrder)
+    public async Task<IActionResult> CreateOrder(SagaCreateOrder sagaCreateOrder)
     {
         await _publishEndpoint.Publish(sagaCreateOrder);
         return Accepted();

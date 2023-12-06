@@ -1,4 +1,5 @@
-﻿using BurgerLink.Ui.Repository;
+﻿using BurgerLink.Ui.Repository.Inventory;
+using BurgerLink.Ui.Repository.Inventory.Models;
 using MediatR;
 
 namespace BurgerLink.Ui.Features.Inventory;

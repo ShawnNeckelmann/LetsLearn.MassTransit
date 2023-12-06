@@ -1,4 +1,4 @@
-﻿using BurgerLink.Ui.Features.Orders.Models;
+﻿using BurgerLink.Ui.Repository.Orders.Models;
 using MediatR;
 
 namespace BurgerLink.Ui.Features.Orders;

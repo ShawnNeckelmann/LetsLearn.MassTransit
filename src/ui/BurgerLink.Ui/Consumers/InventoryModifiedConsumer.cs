@@ -1,5 +1,6 @@
 ﻿using BurgerLink.Inventory.Contracts.Events;
-using BurgerLink.Ui.Repository;
+using BurgerLink.Ui.Repository.Inventory;
+using BurgerLink.Ui.Repository.Inventory.Models;
 using MassTransit;
 
 namespace BurgerLink.Ui.Consumers;

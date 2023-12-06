@@ -1,8 +1,9 @@
 ﻿using BurgerLink.Shared.MongDbConfiguration;
+using BurgerLink.Ui.Repository.Inventory.Models;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
-namespace BurgerLink.Ui.Repository;
+namespace BurgerLink.Ui.Repository.Inventory;
 
 public class InventoryMongoDbRepository : BaseMongoCollection<InventoryItem>, IInventoryRepository
 {
