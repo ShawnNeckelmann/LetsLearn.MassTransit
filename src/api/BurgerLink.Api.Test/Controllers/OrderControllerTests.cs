@@ -135,7 +135,7 @@ public class OrderControllerTests
             const string urlGetAll = "/order";
             var httpResponseMessage = await client.PostAsync(urlGetAll, JsonContent.Create(new SagaCreateOrder
             {
-                OrderId = orderId,
+                OrderId = orderId.ToString(),
                 OrderName = "Test"
             }));
 

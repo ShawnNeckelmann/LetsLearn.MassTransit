@@ -125,12 +125,11 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
         Initially(
             When(EventCreateOrder)
                 .TransitionTo(StateSubmitted)
-                .Publish(context => context.Init<OrderCreated>(new OrderCreated()
+                .Publish(context => new OrderCreated
                 {
                     OrderId = context.Message.OrderId,
                     OrderName = context.Message.OrderName
-
-                }))
+                })
         );
 
         During(
@@ -186,12 +185,13 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
             () => EventCreateOrder,
             x =>
             {
-                x.CorrelateById(context => context.Message.OrderId);
+                x.CorrelateById(context => context.Message.CorrelationId);
                 x.InsertOnInitial = true;
                 x.SetSagaFactory(context =>
                 {
                     var retval = new OrderState
                     {
+                        CorrelationId = Guid.NewGuid(),
                         OrderName = context.Message.OrderName,
                         Items = new List<string>(),
                         Prepared = new List<string>()

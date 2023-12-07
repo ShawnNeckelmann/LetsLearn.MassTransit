@@ -12,7 +12,6 @@ export class ExternalsService {
   ) {}
 
   public Sites(): Observable<ExternalSite[]> {
-    console.log('BASE URL' + this.baseUrl);
     return this.http
       .get<ExternalsResponse>(this.baseUrl + 'api/externals')
       .pipe(map((x) => x.externals));

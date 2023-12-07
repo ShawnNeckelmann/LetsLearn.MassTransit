@@ -8,7 +8,7 @@ public class GetOrder
 {
     public class Command : IRequest<Response?>
     {
-        public Guid OrderId { get; set; }
+        public string OrderId { get; set; }
     }
 
     public class Response : OrderItem

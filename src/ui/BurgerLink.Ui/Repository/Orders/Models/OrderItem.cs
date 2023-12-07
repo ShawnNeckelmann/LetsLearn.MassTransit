@@ -7,10 +7,11 @@ namespace BurgerLink.Ui.Repository.Orders.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public Guid Id { get; set; }
-        public List<string> OrderItemIds { get; set; }
-        public string OrderName { get; set; }
+        public string? Id { get; set; }
 
-        public string ConfirmationStatus { get; set; }
+        public List<string> OrderItemIds { get; set; } = new();
+        public string OrderName { get; set; } = string.Empty;
+
+        public string ConfirmationStatus { get; set; } = string.Empty;
     }
 }

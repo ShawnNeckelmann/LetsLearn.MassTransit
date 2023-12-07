@@ -4,12 +4,12 @@ namespace BurgerLink.Ui.Repository.Orders
 {
     public interface IOrdersRepository
     {
-        Task<OrderItem?> Order(Guid orderId);
+        Task<OrderItem?> Order(string orderId);
 
         Task<List<OrderItem>> AllOrders();
 
-        Task<OrderItem> SubmitOrderForConfirmation(OrderItem orderItem);
+        Task<OrderItem> SubmitOrderForConfirmation(string orderName);
 
-        Task<OrderItem?> OrderConfirmed(Guid orderId);
+        Task<OrderItem?> OrderSubmitted(string orderId);
     }
 }

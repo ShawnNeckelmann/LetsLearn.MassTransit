@@ -38,10 +38,7 @@ export class MenuComponent {
   }
 
   public onCreateOrder() {
-    const ids = this.selectedMenuItems.map((item) => item.id);
-
-    this.serviceOrder.createOrder(this.orderName, ids).subscribe((orderId) => {
-      // append the orderId to the current route
+    this.serviceOrder.createOrder(this.orderName).subscribe((orderId) => {
       this.serviceRoute.navigate([orderId], { relativeTo: this.route });
     });
   }

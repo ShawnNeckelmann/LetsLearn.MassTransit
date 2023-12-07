@@ -16,6 +16,6 @@ public class OrderConsumer : IConsumer<OrderCreated>
     public async Task Consume(ConsumeContext<OrderCreated> context)
     {
         var msg = context.Message;
-        await _ordersRepository.OrderConfirmed(msg.OrderId);
+        await _ordersRepository.OrderSubmitted(msg.OrderId);
     }
 }

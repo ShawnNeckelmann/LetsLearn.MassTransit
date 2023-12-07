@@ -21,16 +21,16 @@ public class OrderController : BaseController
         var order = await _mediator.Send(command);
         var retval = CreatedAtAction(
             nameof(GetOrderById),
-            new { orderId = order.OrderId },
-            command);
+            new { orderId = order.OrderId.ToString() },
+            order);
 
-        return await Task.FromResult(retval);
+        return retval;
     }
 
     [HttpGet]
     [ProducesResponseType(typeof(Unit), 200)]
     [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-    public async Task<IActionResult> GetOrderById(Guid orderId)
+    public async Task<IActionResult> GetOrderById(string orderId)
     {
         var order = new GetOrder.Command
         {
@@ -47,7 +47,7 @@ public class OrderController : BaseController
         return Ok(retval);
     }
 
-    [HttpGet]
+    [HttpGet("all")]
     [ProducesResponseType(typeof(GetOrders.Response), 200)]
     [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
     public async Task<IActionResult> GetOrders()

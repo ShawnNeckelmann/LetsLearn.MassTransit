@@ -1,17 +1,20 @@
-﻿using BurgerLink.Shared.MongDbConfiguration;
+﻿using BurgerLink.Order.Contracts.Commands;
+using BurgerLink.Shared.MongDbConfiguration;
 using BurgerLink.Ui.Repository.Orders.Models;
+using MassTransit;
 using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace BurgerLink.Ui.Repository.Orders;
 
-public class OrderMongoDbRepository : BaseMongoCollection<OrderItem> , IOrdersRepository
+public class OrderMongoDbRepository : BaseMongoCollection<OrderItem>, IOrdersRepository
 {
-    public async Task<OrderItem?> Order(Guid orderId)
+    private readonly IPublishEndpoint _publishEndpoint;
+
+    public OrderMongoDbRepository(IOptions<OrderSettings> settings, IPublishEndpoint publishEndpoint) : base(settings.Value)
     {
-        var filter = Builders<OrderItem>.Filter.Eq(order => order.Id, orderId);
-        var retval = await Collection.FindAsync(filter);
-        return retval?.Current.First();
+        _publishEndpoint = publishEndpoint;
     }
 
     public async Task<List<OrderItem>> AllOrders()
@@ -20,20 +23,22 @@ public class OrderMongoDbRepository : BaseMongoCollection<OrderItem> , IOrdersRe
         return retval ?? new List<OrderItem>();
     }
 
-    public async Task<OrderItem> SubmitOrderForConfirmation(OrderItem order)
+    public async Task<OrderItem?> Order(string orderId)
     {
-        order.ConfirmationStatus = "Pending";
-        await Collection.InsertOneAsync(order);
-        return order;
+        var parsed = new ObjectId(orderId);
+        var filter = Builders<OrderItem>.Filter.Eq("_id", parsed);
+        var asyncCursor = await Collection.FindAsync(filter);
+        var retval = asyncCursor.FirstOrDefault();
+        return retval;
     }
 
-    public async Task<OrderItem?> OrderConfirmed(Guid orderId)
+    public async Task<OrderItem?> OrderSubmitted(string orderId)
     {
         var filter = Builders<OrderItem>.Filter.Eq(inventoryItem => inventoryItem.Id, orderId);
         var update = Builders<OrderItem>.Update
-            .Set(orderItem => orderItem.ConfirmationStatus, "Confirmed");
+            .Set(orderItem => orderItem.ConfirmationStatus, "Submitted");
 
-        var options = new FindOneAndUpdateOptions<OrderItem>()
+        var options = new FindOneAndUpdateOptions<OrderItem>
         {
             ReturnDocument = ReturnDocument.After
         };
@@ -42,7 +47,22 @@ public class OrderMongoDbRepository : BaseMongoCollection<OrderItem> , IOrdersRe
         return updatedItem ?? null;
     }
 
-    public OrderMongoDbRepository(IOptions<MongoDbSettings> settings) : base(settings.Value)
+    public async Task<OrderItem> SubmitOrderForConfirmation(string orderName)
     {
+        var order = new OrderItem
+        {
+            ConfirmationStatus = "Pending",
+            OrderName = orderName,
+            OrderItemIds = new List<string>()
+        };
+
+        await Collection.InsertOneAsync(order);
+        await _publishEndpoint.Publish(new SagaCreateOrder
+        {
+            OrderName = orderName,
+            OrderId = order.Id
+        });
+
+        return order;
     }
 }

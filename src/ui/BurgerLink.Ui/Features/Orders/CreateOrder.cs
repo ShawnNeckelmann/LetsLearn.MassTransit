@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using BurgerLink.Ui.Repository.Orders;
+using MediatR;
 
 namespace BurgerLink.Ui.Features.Orders;
 
@@ -6,8 +7,9 @@ public class CreateOrder
 {
     public class Response
     {
-        public Guid OrderId { get; set; }
-        public string OrderName { get; set; }
+        public string OrderId { get; set; }
+        public string OrderName { get; set; } = string.Empty;
+        public string OrderStatus { get; set; } = string.Empty;
     }
 
     public class Command :  IRequest<Response>
@@ -18,17 +20,25 @@ public class CreateOrder
     public class Handler : IRequestHandler<Command, Response>
 
     {
+        private readonly IOrdersRepository _ordersRepository;
+
+        public Handler(IOrdersRepository ordersRepository)
+        {
+            _ordersRepository = ordersRepository;
+        }
         
 
-        public Task<Response> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
         {
+            var order = await _ordersRepository.SubmitOrderForConfirmation(request.OrderName);
             var retval = new Response
             {
-                OrderId = Guid.NewGuid(),
-                OrderName = request.OrderName
+                OrderName = order.OrderName,
+                OrderId = order.Id,
+                OrderStatus = order.ConfirmationStatus
             };
 
-            return Task.FromResult(retval);
+            return retval;
         }
     }
 }

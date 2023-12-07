@@ -7,7 +7,7 @@ namespace BurgerLink.Ui.Repository.Inventory;
 
 public class InventoryMongoDbRepository : BaseMongoCollection<InventoryItem>, IInventoryRepository
 {
-    public InventoryMongoDbRepository(IOptions<MongoDbSettings> settings) : base(settings.Value)
+    public InventoryMongoDbRepository(IOptions<InventorySettings> settings) : base(settings.Value)
     {
     }
 
