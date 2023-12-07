@@ -3,10 +3,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
-
 import { ExternalsComponent } from './externals/externals.component';
 import { InventoryComponent } from './inventory/inventory.component';
 import { MenuComponent } from './menu/menu.component';
@@ -26,6 +24,7 @@ import { NewOrder2Component } from './orders/new-order-2/new-order-2.component';
     InventoryComponent,
     MenuComponent,
     NewOrderComponent,
+    NewOrder2Component,
   ],
   imports: [
     BrowserAnimationsModule,

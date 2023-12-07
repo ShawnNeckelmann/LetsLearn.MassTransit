@@ -1,4 +1,14 @@
-<p>new-order-2 works!</p>
 <span>
-  {{ json }}
+  Order name: {{ order.orderName }}
 </span>
+<p-pickList [source]="availableItems$()"
+            sourceHeader="Menu Items"
+            targetHeader="Selected"
+            [dragdrop]="true"
+            [target]="selectedItems">
+
+  <ng-template let-inventory
+               pTemplate="item">
+    <span>{{ inventory.itemName }}</span>
+  </ng-template>
+</p-pickList>

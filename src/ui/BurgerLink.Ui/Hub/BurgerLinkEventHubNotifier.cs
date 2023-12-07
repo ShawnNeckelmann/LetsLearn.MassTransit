@@ -1,45 +1,34 @@
 using BurgerLink.Inventory.Contracts.Events;
-using BurgerLink.Ui.Repository.Inventory;
-using BurgerLink.Ui.Repository.Inventory.Models;
+using BurgerLink.Ui.Repository.Inventory.Models.Events;
+using MediatR;
 using Microsoft.AspNetCore.SignalR;
 
-public class BurgerLinkEventHubNotifier : BackgroundService
+public class BurgerLinkEventHubNotifier : BackgroundService, INotificationHandler<ItemAdded>,
+    INotificationHandler<ItemModified>
 {
     private readonly IHubContext<BurgerLinkEventHub> _context;
-    private readonly IInventoryRepository _inventoryRepository;
 
-    public BurgerLinkEventHubNotifier(IHubContext<BurgerLinkEventHub> context, IInventoryRepository inventoryRepository)
+    public BurgerLinkEventHubNotifier(IHubContext<BurgerLinkEventHub> context)
     {
         _context = context;
-        _inventoryRepository = inventoryRepository;
-        _inventoryRepository.OnItemAdded += OnItemAdded;
-        _inventoryRepository.OnItemModified += OnItemModified;
+    }
+    
+    public async Task Handle(ItemAdded notification, CancellationToken cancellationToken)
+    {
+        await _context.Clients.All.SendCoreAsync(
+            nameof(InventoryItemAdded),
+            new object?[] { notification }, cancellationToken);
+    }
+
+    public async Task Handle(ItemModified notification, CancellationToken cancellationToken)
+    {
+        await _context.Clients.All.SendCoreAsync(
+            nameof(InventoryItemModified),
+            new object?[] { notification }, cancellationToken);
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         while (!stoppingToken.IsCancellationRequested) await Task.Delay(1000, stoppingToken);
-    }
-
-
-    private async void OnItemAdded(object? sender, InventoryItem e)
-    {
-        await _context.Clients.All.SendCoreAsync(
-            nameof(InventoryItemAdded),
-            new object?[] { e });
-    }
-
-    private async void OnItemModified(object? sender, InventoryItem e)
-    {
-        await _context.Clients.All.SendCoreAsync(
-            nameof(InventoryItemModified),
-            new object?[] { e });
-    }
-
-    public override Task StopAsync(CancellationToken cancellationToken)
-    {
-        _inventoryRepository.OnItemAdded += OnItemAdded;
-        _inventoryRepository.OnItemModified += OnItemModified;
-        return base.StopAsync(cancellationToken);
     }
 }

@@ -73,6 +73,8 @@ export class InventoryService {
 
   private configureHubEvents() {
     this.hubConnection.on('inventoryItemAdded', (data: InventoryItem) => {
+      console.log('an item has been added to inventory');
+
       this._inventoryState.update((value: InventoryItem[]) => {
         value.push(data);
         return value;

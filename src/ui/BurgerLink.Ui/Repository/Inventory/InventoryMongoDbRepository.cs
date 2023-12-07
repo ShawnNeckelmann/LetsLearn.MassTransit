@@ -1,5 +1,7 @@
 ﻿using BurgerLink.Shared.MongDbConfiguration;
 using BurgerLink.Ui.Repository.Inventory.Models;
+using BurgerLink.Ui.Repository.Inventory.Models.Events;
+using MediatR;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
@@ -7,15 +9,18 @@ namespace BurgerLink.Ui.Repository.Inventory;
 
 public class InventoryMongoDbRepository : BaseMongoCollection<InventoryItem>, IInventoryRepository
 {
-    public InventoryMongoDbRepository(IOptions<InventorySettings> settings) : base(settings.Value)
+    private readonly IMediator _mediator;
+
+    public InventoryMongoDbRepository(IOptions<InventorySettings> settings, IMediator mediator) : base(settings.Value)
     {
+        _mediator = mediator;
     }
 
 
     public async Task<InventoryItem> AddInventoryItem(InventoryItem item)
     {
         await Collection.InsertOneAsync(item);
-        OnItemAdded?.Invoke(this, item);
+        await _mediator.Publish(new ItemAdded(item));
         return item;
     }
 
@@ -44,9 +49,6 @@ public class InventoryMongoDbRepository : BaseMongoCollection<InventoryItem>, II
             return;
         }
 
-        OnItemModified?.Invoke(this, updatedItem);
+        await _mediator.Publish(new ItemModified(item));
     }
-
-    public event EventHandler<InventoryItem>? OnItemAdded;
-    public event EventHandler<InventoryItem>? OnItemModified;
 }
