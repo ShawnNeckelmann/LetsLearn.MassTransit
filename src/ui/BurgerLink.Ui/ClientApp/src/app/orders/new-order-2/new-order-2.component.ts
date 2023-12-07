@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, Observable, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Order, OrderService } from 'src/app/services/order.service';
 
 @Component({
@@ -11,6 +11,7 @@ import { Order, OrderService } from 'src/app/services/order.service';
 export class NewOrder2Component implements OnInit {
   public order$: Observable<Order>;
   public order: Order;
+  public json: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -40,6 +41,9 @@ export class NewOrder2Component implements OnInit {
     this.order$ = this.serviceOrder.getOrder(idOrder).pipe(
       tap((order: Order) => {
         this.order = order;
+
+        let json = JSON.stringify(order);
+        this.json = json;
       })
     );
 
