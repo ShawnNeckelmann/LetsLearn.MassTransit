@@ -12,7 +12,8 @@ public class OrderMongoDbRepository : BaseMongoCollection<OrderItem>, IOrdersRep
 {
     private readonly IPublishEndpoint _publishEndpoint;
 
-    public OrderMongoDbRepository(IOptions<OrderSettings> settings, IPublishEndpoint publishEndpoint) : base(settings.Value)
+    public OrderMongoDbRepository(IOptions<OrderSettings> settings, IPublishEndpoint publishEndpoint) : base(
+        settings.Value)
     {
         _publishEndpoint = publishEndpoint;
     }

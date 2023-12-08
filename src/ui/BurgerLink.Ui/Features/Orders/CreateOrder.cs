@@ -5,14 +5,7 @@ namespace BurgerLink.Ui.Features.Orders;
 
 public class CreateOrder
 {
-    public class Response
-    {
-        public string OrderId { get; set; }
-        public string OrderName { get; set; } = string.Empty;
-        public string OrderStatus { get; set; } = string.Empty;
-    }
-
-    public class Command :  IRequest<Response>
+    public class Command : IRequest<Response>
     {
         public string OrderName { get; set; }
     }
@@ -26,7 +19,7 @@ public class CreateOrder
         {
             _ordersRepository = ordersRepository;
         }
-        
+
 
         public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
         {
@@ -40,5 +33,12 @@ public class CreateOrder
 
             return retval;
         }
+    }
+
+    public class Response
+    {
+        public string OrderId { get; set; }
+        public string OrderName { get; set; } = string.Empty;
+        public string OrderStatus { get; set; } = string.Empty;
     }
 }

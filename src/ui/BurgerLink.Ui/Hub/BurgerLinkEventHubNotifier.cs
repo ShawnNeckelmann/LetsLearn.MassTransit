@@ -12,7 +12,7 @@ public class BurgerLinkEventHubNotifier : BackgroundService, INotificationHandle
     {
         _context = context;
     }
-    
+
     public async Task Handle(ItemAdded notification, CancellationToken cancellationToken)
     {
         await _context.Clients.All.SendCoreAsync(

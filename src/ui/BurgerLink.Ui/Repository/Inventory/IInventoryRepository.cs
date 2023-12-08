@@ -7,5 +7,4 @@ public interface IInventoryRepository
     Task<InventoryItem> AddInventoryItem(InventoryItem item);
     Task<IEnumerable<InventoryItem>> AllInventoryItems();
     Task ModifyInventoryItem(InventoryItem item);
-    
 }

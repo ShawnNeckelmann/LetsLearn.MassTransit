@@ -14,21 +14,21 @@ public class OrderControllerTests
 
         void Configurator(IBusRegistrationConfigurator configurator)
         {
-            configurator.AddHandler<SagaModifyOrderAddItem>(context => context.RespondAsync(new OrderUpdateAccepted()));
+            configurator.AddHandler<SagaSetOrderItems>(context => context.RespondAsync(new OrderUpdateAccepted()));
         }
 
         async Task Test(ITestHarness harness, HttpClient client)
         {
             const string urlGetAll = "/order/addItem";
-            var httpResponseMessage = await client.PostAsync(urlGetAll, JsonContent.Create(new SagaModifyOrderAddItem
+            var httpResponseMessage = await client.PostAsync(urlGetAll, JsonContent.Create(new SagaSetOrderItems
             {
-                OrderName = "Test",
+                OrderId = "Test",
                 ItemName = "Test Item"
             }));
 
             httpResponseMessage.EnsureSuccessStatusCode();
             Assert.Equal(StatusCodes.Status202Accepted, (int)httpResponseMessage.StatusCode);
-            Assert.True(await harness.Consumed.Any<SagaModifyOrderAddItem>());
+            Assert.True(await harness.Consumed.Any<SagaSetOrderItems>());
         }
     }
 
@@ -102,9 +102,9 @@ public class OrderControllerTests
 
         void Configurator(IBusRegistrationConfigurator configurator)
         {
-            configurator.AddHandler<SagaModifyOrderAddItem>(context => context.RespondAsync(new OrderNotFound
+            configurator.AddHandler<SagaSetOrderItems>(context => context.RespondAsync(new OrderNotFound
             {
-                OrderName = context.Message.OrderName,
+                OrderName = context.Message.OrderId,
                 Timestamp = DateTime.UtcNow
             }));
         }
@@ -112,14 +112,14 @@ public class OrderControllerTests
         async Task Test(ITestHarness harness, HttpClient client)
         {
             const string urlGetAll = "/order/addItem";
-            var httpResponseMessage = await client.PostAsync(urlGetAll, JsonContent.Create(new SagaModifyOrderAddItem
+            var httpResponseMessage = await client.PostAsync(urlGetAll, JsonContent.Create(new SagaSetOrderItems
             {
-                OrderName = "Test",
+                OrderId = "Test",
                 ItemName = "Test Item"
             }));
 
             Assert.Equal(StatusCodes.Status404NotFound, (int)httpResponseMessage.StatusCode);
-            Assert.True(await harness.Consumed.Any<SagaModifyOrderAddItem>());
+            Assert.True(await harness.Consumed.Any<SagaSetOrderItems>());
         }
     }
 

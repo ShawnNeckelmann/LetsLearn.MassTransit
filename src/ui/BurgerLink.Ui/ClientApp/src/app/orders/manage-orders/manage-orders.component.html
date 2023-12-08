@@ -4,7 +4,9 @@
     <button pButton
             pRipple
             (click)="onBeginNewOrder()"
-            type="button">Start New Order</button>
+            type="button">
+      Start New Order
+    </button>
 
   </div>
   <p-table [value]="inventoryItems()"
@@ -16,7 +18,9 @@
         <th style="width:25%">Id</th>
         <th pSortableColumn="itemName"><p-sortIcon field="itemName"></p-sortIcon>Order Name</th>
         <th pSortableColumn="quantity"
-            style="width:25%"><p-sortIcon field="quantity"></p-sortIcon>Current Status</th>
+            style="width:25%">
+          <p-sortIcon field="quantity"></p-sortIcon>Current Status
+        </th>
         <th style="width:25%"></th>
       </tr>
     </ng-template>
@@ -52,7 +56,9 @@
           <button pButton
                   pRipple
                   (click)="onBeginNewOrder()"
-                  type="button">Start Order</button>
+                  type="button">
+            Start Order
+          </button>
         </td>
         <td>
           <p-cellEditor>
@@ -76,7 +82,8 @@
                     pInitEditableRow
                     icon="pi pi-pencil"
                     (click)="onRowEditInit(inventoryItem)"
-                    class="p-button-rounded p-button-text"></button>
+                    class="p-button-rounded p-button-text">
+            </button>
             <button *ngIf="editing"
                     pButton
                     pRipple
@@ -84,7 +91,8 @@
                     pSaveEditableRow
                     icon="pi pi-check"
                     (click)="onRowEditSave(inventoryItem)"
-                    class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                    class="p-button-rounded p-button-text p-button-success mr-2">
+            </button>
             <button *ngIf="editing"
                     pButton
                     pRipple
@@ -92,7 +100,8 @@
                     type="button"
                     pCancelEditableRow
                     (click)="onRowEditCancel(inventoryItem, ri)"
-                    class="p-button-rounded p-button-text p-button-danger"></button>
+                    class="p-button-rounded p-button-text p-button-danger">
+            </button>
           </div>
         </td>
       </tr>

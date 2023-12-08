@@ -4,12 +4,14 @@
       <input pInputText
              [(ngModel)]="newItemName"
              (keyup.enter)="onSubmit()"
-             id="addItem" />
+             id="addItem"/>
       <label htmlFor="addItem">Add Item</label>
       <button pButton
               pRipple
               (click)="onSubmit()"
-              type="button">Submit</button>
+              type="button">
+        Submit
+      </button>
     </span>
   </div>
   <p-table [value]="inventoryItems()"
@@ -21,7 +23,9 @@
         <th style="width:25%">Id</th>
         <th pSortableColumn="itemName"><p-sortIcon field="itemName"></p-sortIcon>Name</th>
         <th pSortableColumn="quantity"
-            style="width:10%"><p-sortIcon field="quantity"></p-sortIcon>Quantity</th>
+            style="width:10%">
+          <p-sortIcon field="quantity"></p-sortIcon>Quantity
+        </th>
         <th style="width:25%">Modify</th>
       </tr>
     </ng-template>
@@ -75,7 +79,8 @@
                     pInitEditableRow
                     icon="pi pi-pencil"
                     (click)="onRowEditInit(inventoryItem)"
-                    class="p-button-rounded p-button-text"></button>
+                    class="p-button-rounded p-button-text">
+            </button>
             <button *ngIf="editing"
                     pButton
                     pRipple
@@ -83,7 +88,8 @@
                     pSaveEditableRow
                     icon="pi pi-check"
                     (click)="onRowEditSave(inventoryItem)"
-                    class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                    class="p-button-rounded p-button-text p-button-success mr-2">
+            </button>
             <button *ngIf="editing"
                     pButton
                     pRipple
@@ -91,7 +97,8 @@
                     type="button"
                     pCancelEditableRow
                     (click)="onRowEditCancel(inventoryItem, ri)"
-                    class="p-button-rounded p-button-text p-button-danger"></button>
+                    class="p-button-rounded p-button-text p-button-danger">
+            </button>
           </div>
         </td>
       </tr>

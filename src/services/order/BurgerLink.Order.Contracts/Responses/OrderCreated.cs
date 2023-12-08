@@ -1,8 +1,7 @@
-﻿namespace BurgerLink.Order.Contracts.Responses
+﻿namespace BurgerLink.Order.Contracts.Responses;
+
+public class OrderCreated
 {
-    public class OrderCreated
-    {
-        public string OrderId { get; set; }
-        public string OrderName { get; set; }
-    }
+    public string OrderId { get; set; }
+    public string OrderName { get; set; }
 }

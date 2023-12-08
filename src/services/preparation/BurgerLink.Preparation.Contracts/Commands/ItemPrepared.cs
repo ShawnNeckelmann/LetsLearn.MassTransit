@@ -1,8 +1,7 @@
-﻿namespace BurgerLink.Preparation.Contracts.Commands
+﻿namespace BurgerLink.Preparation.Contracts.Commands;
+
+public interface ItemPrepared
 {
-    public interface ItemPrepared
-    {
-        public string PreparedOrderItem { get; set; }
-        public string OrderName { get; set; }
-    }
+    public string OrderName { get; set; }
+    public string PreparedOrderItem { get; set; }
 }

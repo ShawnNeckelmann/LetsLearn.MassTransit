@@ -8,13 +8,6 @@ public class GetOrders
 {
     public class Command : IRequest<Response>
     {
-
-    }
-    public class Response
-    {
-        public IList<OrderItem> Orders { get; set; }
-
-        public int Count { get; set; }
     }
 
     public class Handler : IRequestHandler<Command, Response>
@@ -39,4 +32,9 @@ public class GetOrders
         }
     }
 
+    public class Response
+    {
+        public int Count { get; set; }
+        public IList<OrderItem> Orders { get; set; }
+    }
 }

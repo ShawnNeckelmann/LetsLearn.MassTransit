@@ -10,8 +10,12 @@
   <ng-template pTemplate="body"
                let-product>
     <tr>
-      <td><a [href]=product.address
-           target="_blank">{{ product.name }}</a></td>
+      <td>
+        <a [href]="product.address"
+           target="_blank">
+          {{ product.name }}
+        </a>
+      </td>
       <td>{{ product.credentials }}</td>
       <td>{{ product.information }}</td>
     </tr>

@@ -11,11 +11,6 @@ public class GetOrder
         public string OrderId { get; set; }
     }
 
-    public class Response : OrderItem
-    {
-
-    }
-
     public class Handler : IRequestHandler<Command, Response?>
     {
         private readonly IOrdersRepository _ordersRepository;
@@ -27,7 +22,6 @@ public class GetOrder
 
         public async Task<Response?> Handle(Command request, CancellationToken cancellationToken)
         {
-
             var order = await _ordersRepository.Order(request.OrderId);
             if (order is null)
             {
@@ -43,7 +37,10 @@ public class GetOrder
             };
 
             return retval;
-            
         }
+    }
+
+    public class Response : OrderItem
+    {
     }
 }

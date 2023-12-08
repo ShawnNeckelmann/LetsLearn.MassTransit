@@ -1,8 +1,7 @@
 ﻿using BurgerLink.Shared.MongDbConfiguration;
 
-namespace BurgerLink.Ui.Repository.Inventory.Models
+namespace BurgerLink.Ui.Repository.Inventory.Models;
+
+public class InventorySettings : MongoDbSettings
 {
-    public class InventorySettings : MongoDbSettings
-    {
-    }
 }

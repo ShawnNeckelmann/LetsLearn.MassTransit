@@ -21,7 +21,7 @@ public class OrderController : BaseController
         var order = await _mediator.Send(command);
         var retval = CreatedAtAction(
             nameof(GetOrderById),
-            new { orderId = order.OrderId.ToString() },
+            new { orderId = order.OrderId },
             order);
 
         return retval;

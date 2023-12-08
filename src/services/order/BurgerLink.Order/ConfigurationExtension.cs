@@ -33,9 +33,9 @@ internal static class ConfigurationExtension
                         {
                             var partition = sagaConfigurator.CreatePartitioner(5);
 
-                            sagaConfigurator.Message<SagaModifyOrderAddItem>(x =>
+                            sagaConfigurator.Message<SagaSetOrderItems>(x =>
                                 x.UsePartitioner(partition,
-                                    consumeContext => consumeContext.Message.OrderName));
+                                    consumeContext => consumeContext.Message.OrderId));
                             sagaConfigurator.Message<SagaBeginPreparation>(x =>
                                 x.UsePartitioner(partition,
                                     consumeContext => consumeContext.Message.OrderName));

@@ -56,4 +56,8 @@ export class NewOrder2Component implements OnInit {
 
     this.order$.subscribe();
   }
+
+  onSave() {
+    console.log(this.selectedItems);
+  }
 }
