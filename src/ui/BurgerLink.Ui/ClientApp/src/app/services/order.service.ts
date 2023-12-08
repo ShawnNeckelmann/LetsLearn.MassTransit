@@ -16,6 +16,7 @@ export class OrderService {
       orderName: orderName,
       orderItemIds: [],
       id: '',
+      confirmationStatus: '',
     };
 
     return this.http.post<Order>(`${this.baseUrl}api/order`, createOrder);
@@ -42,7 +43,8 @@ export class OrderService {
 }
 
 export interface Order {
-  orderName: string;
-  orderItemIds: string[];
+  confirmationStatus: string;
   id: string;
+  orderItemIds: string[];
+  orderName: string;
 }

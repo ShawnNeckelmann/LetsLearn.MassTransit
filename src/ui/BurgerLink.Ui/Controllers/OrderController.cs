@@ -21,7 +21,7 @@ public class OrderController : BaseController
         var order = await _mediator.Send(command);
         var retval = CreatedAtAction(
             nameof(GetOrderById),
-            new { orderId = order.Id },
+            new { order.Id },
             order);
 
         return retval;
@@ -38,13 +38,7 @@ public class OrderController : BaseController
         };
 
         var retval = await _mediator.Send(order);
-
-        if (retval is null)
-        {
-            return NotFound();
-        }
-
-        return Ok(retval);
+        return retval is null ? NotFound() : Ok(retval);
     }
 
     [HttpGet("all")]
@@ -58,6 +52,8 @@ public class OrderController : BaseController
     }
 
     [HttpPut("items")]
+    [ProducesResponseType(404)]
+    [ProducesResponseType(202)]
 
     public async Task<IActionResult> SetOrderItems(SetOrderItems orderItems)
     {

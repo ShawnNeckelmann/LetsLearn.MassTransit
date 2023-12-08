@@ -29,6 +29,7 @@ export class NewOrder2Component implements OnInit {
       orderName: '',
       orderItemIds: [],
       id: '',
+      confirmationStatus: '',
     };
     this.order$ = new BehaviorSubject<Order>(this.order);
 
