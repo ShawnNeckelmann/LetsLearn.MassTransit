@@ -16,7 +16,7 @@ export class NewOrder2Component implements OnInit {
   public order$: Observable<Order>;
   public order: Order;
   public availableItems$: Signal<InventoryItem[]>;
-  public selectedItems: Order[] = [];
+  public selectedItems: InventoryItem[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -28,7 +28,7 @@ export class NewOrder2Component implements OnInit {
     this.order = {
       orderName: '',
       orderItemIds: [],
-      orderId: '',
+      id: '',
     };
     this.order$ = new BehaviorSubject<Order>(this.order);
 
@@ -58,6 +58,9 @@ export class NewOrder2Component implements OnInit {
   }
 
   onSave() {
-    console.log(this.selectedItems);
+    const ids = this.selectedItems.map((i) => i.id);
+
+    console.log('order', this.order);
+    this.serviceOrder.setOrderItems(this.order.id, ids).subscribe();
   }
 }

@@ -1,4 +1,5 @@
 ﻿using BurgerLink.Ui.Repository.Orders;
+using BurgerLink.Ui.Repository.Orders.Models;
 using MediatR;
 
 namespace BurgerLink.Ui.Features.Orders;
@@ -7,7 +8,7 @@ public class CreateOrder
 {
     public class Command : IRequest<Response>
     {
-        public string OrderName { get; set; }
+        public string OrderName { get; set; } = string.Empty;
     }
 
     public class Handler : IRequestHandler<Command, Response>
@@ -27,18 +28,16 @@ public class CreateOrder
             var retval = new Response
             {
                 OrderName = order.OrderName,
-                OrderId = order.Id,
-                OrderStatus = order.ConfirmationStatus
+                Id = order.Id,
+                ConfirmationStatus= order.ConfirmationStatus
             };
 
             return retval;
         }
     }
 
-    public class Response
+    public class Response : OrderItem
     {
-        public string OrderId { get; set; }
-        public string OrderName { get; set; } = string.Empty;
-        public string OrderStatus { get; set; } = string.Empty;
+        
     }
 }

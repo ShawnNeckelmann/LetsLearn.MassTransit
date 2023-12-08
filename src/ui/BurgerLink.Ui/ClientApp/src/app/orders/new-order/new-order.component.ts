@@ -21,7 +21,7 @@ export class NewOrderComponent {
       let json = JSON.stringify(obj);
       console.log(json);
 
-      this.router.navigate(['../edit', obj.orderId], {
+      this.router.navigate(['../edit', obj.id], {
         relativeTo: this.route,
       });
     });

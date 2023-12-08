@@ -15,7 +15,7 @@ export class OrderService {
     const createOrder: Order = {
       orderName: orderName,
       orderItemIds: [],
-      orderId: '',
+      id: '',
     };
 
     return this.http.post<Order>(`${this.baseUrl}api/order`, createOrder);
@@ -28,10 +28,21 @@ export class OrderService {
   public getOrders(): Observable<Order> {
     return this.http.get<Order>(`${this.baseUrl}api/order/all`);
   }
+
+  public setOrderItems(orderId: string, items: string[]): Observable<Order> {
+    const putItem = {
+      orderId: orderId,
+      inventoryIds: items,
+    };
+
+    console.log(putItem);
+
+    return this.http.put<Order>(`${this.baseUrl}api/order/items`, putItem);
+  }
 }
 
 export interface Order {
   orderName: string;
   orderItemIds: string[];
-  orderId: string;
+  id: string;
 }

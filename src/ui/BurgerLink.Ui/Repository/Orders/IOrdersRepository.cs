@@ -10,4 +10,5 @@ public interface IOrdersRepository
     Task<OrderItem?> OrderSubmitted(string orderId);
 
     Task<OrderItem> SubmitOrderForConfirmation(string orderName);
+    Task<OrderItem?> SetOrderItems(string requestOrderId, List<string> requestInventoryIds);
 }

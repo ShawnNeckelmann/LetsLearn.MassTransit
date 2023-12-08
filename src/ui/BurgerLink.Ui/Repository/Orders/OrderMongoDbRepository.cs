@@ -5,6 +5,8 @@ using MassTransit;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.Core.Operations;
+using ReturnDocument = MongoDB.Driver.ReturnDocument;
 
 namespace BurgerLink.Ui.Repository.Orders;
 
@@ -35,7 +37,7 @@ public class OrderMongoDbRepository : BaseMongoCollection<OrderItem>, IOrdersRep
 
     public async Task<OrderItem?> OrderSubmitted(string orderId)
     {
-        var filter = Builders<OrderItem>.Filter.Eq(inventoryItem => inventoryItem.Id, orderId);
+        var filter = Builders<OrderItem>.Filter.Eq(orderItem => orderItem.Id, orderId);
         var update = Builders<OrderItem>.Update
             .Set(orderItem => orderItem.ConfirmationStatus, "Submitted");
 
@@ -65,5 +67,20 @@ public class OrderMongoDbRepository : BaseMongoCollection<OrderItem>, IOrdersRep
         });
 
         return order;
+    }
+
+    public async Task<OrderItem?> SetOrderItems(string requestOrderId, List<string> requestInventoryIds)
+    {
+        var filter = Builders<OrderItem>.Filter.Eq(inventoryItem => inventoryItem.Id, requestOrderId);
+        var update = Builders<OrderItem>.Update
+            .Set(orderItem => orderItem.OrderItemIds, requestInventoryIds);
+
+        var options = new FindOneAndUpdateOptions<OrderItem>
+        {
+            ReturnDocument = ReturnDocument.After
+        };
+
+        var updatedItem = await Collection.FindOneAndUpdateAsync(filter, update, options);
+        return updatedItem ?? null;
     }
 }

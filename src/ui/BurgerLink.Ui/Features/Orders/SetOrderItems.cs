@@ -4,10 +4,18 @@ using MediatR;
 
 namespace BurgerLink.Ui.Features.Orders;
 
-public class GetOrders
+public class SetOrderItems
 {
-    public class Command : IRequest<Response>
+    public class Command : IRequest<Response?>
     {
+        public string OrderId { get; set; }
+
+        public List<string> InventoryIds { get; set; }
+    }
+
+    public class Response : OrderItem
+    {
+
     }
 
     public class Handler : IRequestHandler<Command, Response>
@@ -21,20 +29,15 @@ public class GetOrders
 
         public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
         {
-            var orders = await _ordersRepository.AllOrders();
-            var retval = new Response
+            var order = await _ordersRepository.SetOrderItems(request.OrderId, request.InventoryIds);
+            if (order == null)
             {
-                Orders = orders,
-                Count = orders.Count
-            };
+                return null;
+            }
+
+            var retval = new Response();
 
             return retval;
         }
-    }
-
-    public class Response 
-    {
-        public int Count { get; set; }
-        public IList<OrderItem> Orders { get; set; }
     }
 }
