@@ -31,14 +31,16 @@ export class OrderService {
   }
 
   public setOrderItems(orderId: string, items: string[]): Observable<Order> {
-    const putItem = {
-      orderId: orderId,
-      inventoryIds: items,
+    const putItem: Order = {
+      confirmationStatus: '',
+      id: orderId,
+      orderItemIds: items,
+      orderName: '',
     };
 
     console.log(putItem);
 
-    return this.http.put<Order>(`${this.baseUrl}api/order/items`, putItem);
+    return this.http.put<Order>(`${this.baseUrl}api/order`, putItem);
   }
 }
 

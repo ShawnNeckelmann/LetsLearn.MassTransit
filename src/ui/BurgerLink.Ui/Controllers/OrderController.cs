@@ -51,18 +51,11 @@ public class OrderController : BaseController
         return Ok(retval);
     }
 
-    [HttpPut("items")]
-    [ProducesResponseType(404)]
-    [ProducesResponseType(202)]
-
-    public async Task<IActionResult> SetOrderItems(SetOrderItems orderItems)
+    [HttpPut]
+    [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Put))]
+    public async Task<IActionResult> SetOrderItems(SetOrderItems.Command orderItems)
     {
         var retval = await _mediator.Send(orderItems);
-        if (retval is null)
-        {
-            return NotFound();
-        }
-
-        return Accepted();
+        return retval is null ? NotFound() : Accepted();
     }
 }

@@ -6,11 +6,9 @@ namespace BurgerLink.Ui.Features.Orders;
 
 public class SetOrderItems
 {
-    public class Command : IRequest<Response?>
+    public class Command : OrderItem, IRequest<Response?>
     {
-        public string OrderId { get; set; }
-
-        public List<string> InventoryIds { get; set; }
+        
     }
 
     public class Response : OrderItem
@@ -18,7 +16,7 @@ public class SetOrderItems
 
     }
 
-    public class Handler : IRequestHandler<Command, Response>
+    public class Handler : IRequestHandler<Command, Response?>
     {
         private readonly IOrdersRepository _ordersRepository;
 
@@ -27,9 +25,14 @@ public class SetOrderItems
             _ordersRepository = ordersRepository;
         }
 
-        public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<Response?> Handle(Command request, CancellationToken cancellationToken)
         {
-            var order = await _ordersRepository.SetOrderItems(request.OrderId, request.InventoryIds);
+            if (request.Id == null)
+            {
+                return null;
+            }
+
+            var order = await _ordersRepository.SetOrderItems(request.Id, request.OrderItemIds);
             if (order == null)
             {
                 return null;
