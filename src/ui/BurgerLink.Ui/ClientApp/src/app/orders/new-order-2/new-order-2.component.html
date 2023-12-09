@@ -1,0 +1,22 @@
+<span>
+  Order name: {{ order.orderName }}
+</span>
+<span>
+  <button pButton
+          pRipple
+          (click)="onSave()"
+          type="button">
+    Save
+  </button>
+</span>
+<p-pickList [source]="availableItems$()"
+            sourceHeader="Menu Items"
+            targetHeader="Selected"
+            [dragdrop]="true"
+            [target]="selectedItems">
+
+  <ng-template let-inventory
+               pTemplate="item">
+    <span>{{ inventory.itemName }}</span>
+  </ng-template>
+</p-pickList>

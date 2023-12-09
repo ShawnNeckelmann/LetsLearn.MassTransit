@@ -1,0 +1,38 @@
+<div class="card">
+  <div style="text-align: center; padding-top: 15px;">
+    <span class="p-input-icon-left"
+          style="width: 50%;">
+      <i class="pi pi-search"></i>
+
+      <input type="text"
+             placeholder="Order Name"
+             id="orderName"
+             (keyup.enter)="onCreateOrder()"
+             style="width: 100%;"
+             pInputText
+             [(ngModel)]="orderName"/>
+
+    </span>
+    <button (click)="onCreateOrder()"
+            pButton>
+      Create Order
+    </button>
+  </div>
+
+  <hr>
+  <p-pickList [source]="menuItemOptions"
+              [target]="selectedMenuItems"
+              sourceHeader="Menu"
+              targetHeader="Order"
+              [dragdrop]="true"
+              [responsive]="true">
+    <ng-template let-product
+                 pTemplate="item">
+      <div class="flex flex-wrap p-2 align-items-center gap-3">
+        <div class="flex-1 flex flex-column gap-2">
+          <span>{{ product.itemName }}</span>
+        </div>
+      </div>
+    </ng-template>
+  </p-pickList>
+</div>

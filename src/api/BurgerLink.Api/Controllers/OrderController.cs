@@ -8,12 +8,12 @@ namespace BurgerLink.Api.Controllers;
 
 public class OrderController : BaseController
 {
-    private readonly IRequestClient<SagaModifyOrderAddItem> _addItemRequestClient;
+    private readonly IRequestClient<SagaSetOrderItems> _addItemRequestClient;
     private readonly IRequestClient<SagaOrderStatusRequest> _orderStatusRequestClient;
     private readonly IPublishEndpoint _publishEndpoint;
 
     public OrderController(
-        IRequestClient<SagaModifyOrderAddItem> addItemRequestClient,
+        IRequestClient<SagaSetOrderItems> addItemRequestClient,
         IRequestClient<SagaOrderStatusRequest> orderStatusRequestClient,
         IPublishEndpoint publishEndpoint)
     {
@@ -24,10 +24,10 @@ public class OrderController : BaseController
     }
 
     [HttpPost("addItem")]
-    public async Task<IActionResult> AddItem(SagaModifyOrderAddItem addItemToOrder)
+    public async Task<IActionResult> AddItem(SagaSetOrderItems itemsToOrder)
     {
         var (accepted, notfound) =
-            await _addItemRequestClient.GetResponse<OrderUpdateAccepted, OrderNotFound>(addItemToOrder);
+            await _addItemRequestClient.GetResponse<OrderUpdateAccepted, OrderNotFound>(itemsToOrder);
 
         if (accepted.IsCompletedSuccessfully)
         {
@@ -37,8 +37,15 @@ public class OrderController : BaseController
         await notfound;
         return NotFound(new
         {
-            addItemToOrder.OrderName
+            OrderName = itemsToOrder.OrderId
         });
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateOrder(SagaCreateOrder sagaCreateOrder)
+    {
+        await _publishEndpoint.Publish(sagaCreateOrder);
+        return Accepted();
     }
 
     [HttpGet]
@@ -66,13 +73,6 @@ public class OrderController : BaseController
     public async Task<IActionResult> StartOrderPreparation(SagaBeginPreparation beginPreparation)
     {
         await _publishEndpoint.Publish(beginPreparation);
-        return Accepted();
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> StartOrder(SagaCreateOrder sagaCreateOrder)
-    {
-        await _publishEndpoint.Publish(sagaCreateOrder);
         return Accepted();
     }
 }

@@ -3,7 +3,7 @@ version: '3.4'
 services:
   # http://localhost:8080/swagger/index.html
   burgerlink.api:
-    container_name: BurgerLink.Api	
+    container_name: BurgerLink.api
     image: ${DOCKER_REGISTRY-}burgerlinkapi
     build:
       context: .
@@ -19,7 +19,7 @@ services:
       - ./local-settings/.env
     depends_on:
       - rabbitmq
-      
+
   burgerlink.inventory:
     container_name: BurgerLink.Inventory	
     image: ${DOCKER_REGISTRY-}burgerlinkinventory

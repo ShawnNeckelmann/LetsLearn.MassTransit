@@ -17,5 +17,13 @@
     "CollectionName": "Orders",
     "ConnectionString": "mongodb://root:example@mongo:27017",
     "DatabaseName": "OrderService"
+  },
+  "UiDatabase": {
+    "CollectionName": "Inventory",
+    "ConnectionString": "mongodb://root:example@mongo:27017",
+    "DatabaseName": "UiService"
+  },
+  "Otel": {
+    "Address": "http://otel-collector:4317/"
   }
 }

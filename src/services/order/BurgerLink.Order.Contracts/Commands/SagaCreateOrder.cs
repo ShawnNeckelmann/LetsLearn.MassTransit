@@ -2,8 +2,7 @@
 
 public class SagaCreateOrder
 {
-    public Guid OrderId { get; set; }
+    public Guid CorrelationId { get; set; }
+    public string OrderId { get; set; }
     public string OrderName { get; set; }
-
-    public Uri StatusUpdateAddress { get; set; }
 }

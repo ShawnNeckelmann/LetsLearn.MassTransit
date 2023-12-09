@@ -23,7 +23,7 @@ public class
             return context.Compensated();
         }
 
-        var filter = MongoDbFilters.InventoryFilter(context.Log.ItemName);
+        var filter = MongoDbFilters.InventoryFilterByName(context.Log.ItemName);
         var quantity = entity.Quantity + 1;
         await _inventoryService.Collection.UpdateOneAsync(
             filter,
@@ -49,7 +49,7 @@ public class
                 );
         }
 
-        var filter = MongoDbFilters.InventoryFilter(context.Arguments.ItemName);
+        var filter = MongoDbFilters.InventoryFilterByName(context.Arguments.ItemName);
         var quantity = entity.Quantity - 1;
         await _inventoryService.Collection.UpdateOneAsync(
             filter,

@@ -24,26 +24,33 @@ public static class OpenTelemetryConfigurationExtensions
         }
     }
 
-    private static Action<OtlpExporterOptions> ConfigureExporter()
+    private static Action<OtlpExporterOptions> ConfigureExporter(string httpOtelCollector)
     {
         return otlpExporterOptions =>
         {
             otlpExporterOptions.ExportProcessorType = ExportProcessorType.Simple;
             otlpExporterOptions.Protocol = OtlpExportProtocol.Grpc;
-            otlpExporterOptions.Endpoint = new Uri("http://otel-collector:4317/");
+            otlpExporterOptions.Endpoint = new Uri(httpOtelCollector);
         };
     }
 
-    public static ILoggingBuilder ConfigureLogging(this ILoggingBuilder loggingBuilder)
+    public static ILoggingBuilder ConfigureLogging(this ILoggingBuilder loggingBuilder, string httpOtelCollector)
     {
         loggingBuilder
             .ClearProviders()
+            .AddConsole()
             .AddOpenTelemetry(options =>
             {
+                options.IncludeFormattedMessage = true;
+                options.IncludeScopes = true;
+
+                AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+
+
                 options
                     .SetResourceBuilder(ResourceBuilder())
-                    .AddConsoleExporter()
-                    .AddOtlpExporter(ConfigureExporter());
+                    //.AddConsoleExporter()
+                    .AddOtlpExporter(ConfigureExporter(httpOtelCollector));
 
                 options.IncludeFormattedMessage = true;
                 options.IncludeScopes = true;
@@ -53,15 +60,16 @@ public static class OpenTelemetryConfigurationExtensions
         return loggingBuilder;
     }
 
-    public static void ConfigureTelemetry(this IServiceCollection serviceCollection)
+    public static void ConfigureTelemetry(this IServiceCollection serviceCollection, string httpOtelCollector)
     {
         serviceCollection.AddOpenTelemetry()
             .ConfigureResource(builder => { builder.AddService(ServiceName); })
-            .PrivateConfigureTracing()
-            .PrivateConfigureMetrics();
+            .PrivateConfigureTracing(httpOtelCollector)
+            .PrivateConfigureMetrics(httpOtelCollector);
     }
 
-    private static OpenTelemetryBuilder PrivateConfigureMetrics(this OpenTelemetryBuilder openTelemetryBuilder)
+    private static OpenTelemetryBuilder PrivateConfigureMetrics(this OpenTelemetryBuilder openTelemetryBuilder,
+        string httpOtelCollector)
     {
         return openTelemetryBuilder.WithMetrics(opts => opts
             .SetResourceBuilder(ResourceBuilder())
@@ -69,19 +77,20 @@ public static class OpenTelemetryConfigurationExtensions
             .AddAspNetCoreInstrumentation()
             .AddRuntimeInstrumentation()
             .AddProcessInstrumentation()
-            .AddConsoleExporter()
-            .AddOtlpExporter(ConfigureExporter()));
+            //.AddConsoleExporter()
+            .AddOtlpExporter(ConfigureExporter(httpOtelCollector)));
     }
 
-    private static OpenTelemetryBuilder PrivateConfigureTracing(this OpenTelemetryBuilder openTelemetryBuilder)
+    private static OpenTelemetryBuilder PrivateConfigureTracing(this OpenTelemetryBuilder openTelemetryBuilder,
+        string httpOtelCollector)
     {
         return openTelemetryBuilder.WithTracing(tracerProviderBuilder =>
         {
             tracerProviderBuilder
                 .SetResourceBuilder(ResourceBuilder())
                 .AddSource(DiagnosticHeaders.DefaultListenerName)
-                .AddConsoleExporter()
-                .AddOtlpExporter(ConfigureExporter());
+                //.AddConsoleExporter()
+                .AddOtlpExporter(ConfigureExporter(httpOtelCollector));
         });
     }
 

@@ -3,10 +3,11 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>7d3ffbd0-ebef-4bb3-adce-a99789a5c220</ProjectGuid>
-    <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
-    <DockerServiceUrl>http://localhost:8080/swagger/index.html</DockerServiceUrl>
-    <DockerServiceName>burgerlink.api</DockerServiceName>
+    <DockerPublishLocally>False</DockerPublishLocally>
+    <ProjectGuid>49da0c6e-5cd3-41b1-980b-6d239ce6500e</ProjectGuid>
+    <DockerLaunchAction>None</DockerLaunchAction>
+    <!--<DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>-->
+    <!--<DockerServiceName>burgerlink.ui</DockerServiceName>-->
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">

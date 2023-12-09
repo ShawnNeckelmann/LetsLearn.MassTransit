@@ -1,3 +1,4 @@
+using BurgerLink.Inventory.Contracts.Events;
 using BurgerLink.Inventory.Entity;
 using BurgerLink.Inventory.Services;
 using MassTransit;
@@ -16,29 +17,52 @@ public class UpsertInventoryItemConsumer : IConsumer<Contracts.Commands.UpsertIn
 
     public async Task Consume(ConsumeContext<Contracts.Commands.UpsertInventoryItem> context)
     {
-        var filter = MongoDbFilters.InventoryFilter(context.Message.ItemName);
+        var msg = context.Message;
+        var id = msg.Id;
 
-        var entity = await _inventoryService.Collection.Find(filter).SingleOrDefaultAsync();
-
-        if (entity == null)
+        if (id == null)
         {
             var item = new InventoryEntity
             {
-                ItemName = context.Message.ItemName,
-                Quantity = context.Message.Quantity
+                ItemName = msg.ItemName,
+                Quantity = msg.Quantity
             };
 
             await _inventoryService.Collection.InsertOneAsync(item);
+
+            await context.Publish(new InventoryItemAdded
+            {
+                Id = item.Id,
+                ItemName = msg.ItemName,
+                Quantity = msg.Quantity
+            });
         }
         else
         {
-            var quantity = context.Message.Quantity + entity.Quantity;
+            var filter = Builders<InventoryEntity>.Filter.Eq(inventoryEntity => inventoryEntity.Id, msg.Id);
 
-            await _inventoryService.Collection.UpdateOneAsync(
-                Builders<InventoryEntity>.Filter.Eq(inventoryEntity => inventoryEntity.ItemName,
-                    context.Message.ItemName),
-                Builders<InventoryEntity>.Update.Set(inventoryEntity => inventoryEntity.Quantity, quantity)
-            );
+            var update =
+                Builders<InventoryEntity>.Update
+                    .Set(entity => entity.Quantity, msg.Quantity)
+                    .Set(entity => entity.ItemName, msg.ItemName);
+
+            var options = new FindOneAndUpdateOptions<InventoryEntity>
+            {
+                ReturnDocument = ReturnDocument.After
+            };
+
+            var updatedEntity = await _inventoryService.Collection.FindOneAndUpdateAsync(filter, update, options);
+            if (updatedEntity?.Id is null)
+            {
+                return;
+            }
+
+            await context.Publish(new InventoryItemModified
+            {
+                Id = updatedEntity.Id,
+                ItemName = updatedEntity.ItemName,
+                Quantity = updatedEntity.Quantity
+            });
         }
     }
 }

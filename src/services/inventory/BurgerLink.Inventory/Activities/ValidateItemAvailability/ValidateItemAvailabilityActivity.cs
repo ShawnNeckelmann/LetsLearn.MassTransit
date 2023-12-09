@@ -15,7 +15,7 @@ public class ValidateItemAvailabilityActivity : IExecuteActivity<Contracts.Comma
 
     public async Task<ExecutionResult> Execute(ExecuteContext<Contracts.Commands.ValidateItemAvailability> context)
     {
-        var filter = MongoDbFilters.InventoryFilter(context.Arguments.ItemName);
+        var filter = MongoDbFilters.InventoryFilterByName(context.Arguments.ItemName);
         var entity = await _inventoryService.Collection
             .Find(filter)
             .SingleOrDefaultAsync();

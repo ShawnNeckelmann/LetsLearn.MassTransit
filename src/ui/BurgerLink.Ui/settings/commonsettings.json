@@ -1,0 +1,36 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "ConnectionStrings": {
+    "RabbitMq": "amqp://guest:guest@localhost:5672"
+  },
+  "InventoryDatabase": {
+    "ConnectionString": "mongodb://root:example@localhost:27017",
+    "DatabaseName": "InventoryService",
+    "CollectionName": "Inventory"
+  },
+  "OrderDatabase": {
+    "CollectionName": "Orders",
+    "ConnectionString": "mongodb://root:example@localhost:27017",
+    "DatabaseName": "OrderService"
+  },
+  "UiDatabase": {
+    "OrderCollection": {
+      "CollectionName": "Orders",
+      "ConnectionString": "mongodb://root:example@localhost:27017",
+      "DatabaseName": "UiService"
+    },
+    "InventoryCollection": {
+      "CollectionName": "Inventory",
+      "ConnectionString": "mongodb://root:example@localhost:27017",
+      "DatabaseName": "UiService"
+    }
+  },
+  "Otel": {
+    "Address": "http://localhost:4317/"
+  }
+}

@@ -16,20 +16,24 @@ public class GetItemConsumer : IConsumer<Contracts.Requests.GetInventoryItem>
 
     public async Task Consume(ConsumeContext<Contracts.Requests.GetInventoryItem> context)
     {
-        var filter = MongoDbFilters.InventoryFilter(context.Message.ItemName);
+        var filter = MongoDbFilters.InventoryFilterByName(context.Message.ItemName);
         var entity = await _inventoryService.Collection
             .Find(filter)
             .SingleOrDefaultAsync();
 
         if (entity == null)
+        {
             await context.RespondAsync<InventoryItemNotFound>(new
             {
             });
+        }
         else
+        {
             await context.RespondAsync<InventoryItem>(new
             {
                 entity.ItemName,
                 entity.Quantity
             });
+        }
     }
 }

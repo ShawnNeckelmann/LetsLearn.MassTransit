@@ -16,7 +16,8 @@
         "mongo": "StartWithoutDebugging",
         "mongo-express": "StartWithoutDebugging",
         "prometheus": "StartWithoutDebugging",
-        "rabbitmq": "StartWithoutDebugging"
+        "rabbitmq": "StartWithoutDebugging",
+        "burgerlink.ui": "StartDebugging"
       }
     }
   }
