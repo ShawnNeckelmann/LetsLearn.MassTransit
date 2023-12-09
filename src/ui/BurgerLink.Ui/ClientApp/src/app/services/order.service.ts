@@ -1,15 +1,27 @@
-import { Inject, Injectable } from '@angular/core';
+import { Inject, Injectable, Signal, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OrderService {
+  private _orderState = signal<Order[]>([]);
+
   constructor(
     @Inject('BASE_URL') private baseUrl: string,
     private http: HttpClient
-  ) {}
+  ) {
+    console.log('BASE_URL', baseUrl);
+
+    this.http
+      .get<AllOrders>(`${this.baseUrl}api/order/all`)
+      .subscribe((results: AllOrders) => {
+        this._orderState.update((x) => {
+          return results.orders;
+        });
+      });
+  }
 
   public createOrder(orderName: string): Observable<Order> {
     const createOrder: Order = {
@@ -26,8 +38,8 @@ export class OrderService {
     return this.http.get<Order>(`${this.baseUrl}api/order?orderId=${orderId}`);
   }
 
-  public getOrders(): Observable<Order> {
-    return this.http.get<Order>(`${this.baseUrl}api/order/all`);
+  get getAllOrders(): Signal<Order[]> {
+    return this._orderState.asReadonly();
   }
 
   public setOrderItems(orderId: string, items: string[]): Observable<Order> {
@@ -49,4 +61,9 @@ export interface Order {
   id: string;
   orderItemIds: string[];
   orderName: string;
+}
+
+export interface AllOrders {
+  count: number;
+  orders: Order[];
 }

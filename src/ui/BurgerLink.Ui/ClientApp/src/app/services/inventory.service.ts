@@ -15,6 +15,8 @@ export class InventoryService {
     @Inject('BASE_URL') private baseUrl: string,
     private http: HttpClient
   ) {
+    console.log('BASE_URL', baseUrl);
+
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl('https://localhost:7221/events')
       .withAutomaticReconnect()
@@ -26,12 +28,7 @@ export class InventoryService {
       .get<InventoryResponse>(this.baseUrl + 'api/inventory')
       .subscribe((results) => {
         this._inventoryState.update((x) => {
-          const retval: InventoryItem[] = [];
-          results.inventoryItems.forEach((item) => {
-            retval.push(item);
-          });
-
-          return retval;
+          return results.inventoryItems;
         });
       });
   }

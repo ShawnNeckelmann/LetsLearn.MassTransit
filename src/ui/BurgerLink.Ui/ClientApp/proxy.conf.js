@@ -10,7 +10,7 @@ const target = 'https://localhost:7221';
 const PROXY_CONFIG = [
   {
     context: [
-      "/api/*",
+      "/api/**",
    ],
     proxyTimeout: 10000,
     target: target,
